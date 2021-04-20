@@ -1,7 +1,8 @@
+import { PrismaClient } from '@prisma/client'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
-export default function Home() {
+export default function Home(props: { allUsers: any[] }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -13,6 +14,12 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
+
+        <p className={styles.description}>
+          <code className={styles.code}>
+            allUsers = {JSON.stringify(props.allUsers)}
+          </code>
+        </p>
 
         <p className={styles.description}>
           Get started by editing{' '}
@@ -62,4 +69,29 @@ export default function Home() {
       </footer>
     </div>
   )
+}
+
+// Created the first user with:
+// await prisma.user.create({
+//   data: {
+//     name: 'Bob',
+//     email: 'bob@example.com',
+//     projects: { create: [{ title: "Bob's Big Project" }] },
+//   },
+// })
+
+Home.getInitialProps = async () => {
+  const prisma = new PrismaClient()
+  
+  const allUsers = await prisma.user.findMany({
+    include: { projects: true }
+  })
+
+  console.log('allUsers', allUsers);
+
+  prisma.$disconnect();
+
+  return {
+    allUsers,
+  }
 }
