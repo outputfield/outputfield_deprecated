@@ -16,12 +16,12 @@ const RegisterPage = () => {
     if (password == confirmPassword) {
       try {
         const body = { username, email, password }
-        await fetch(`http://localhost:3000/api/user`, {
+        const res = await fetch('/api/user', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body),
         })
-        await Router.push('/')
+        //await Router.push('/')
       } catch (error) {
         console.error(error)
       }
