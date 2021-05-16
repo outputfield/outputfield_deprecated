@@ -1,0 +1,32 @@
+@use '../../styles/theme.scss';
+
+.root{
+  & .tabHeader{
+    --col:1;
+    box-sizing: border-box;
+    padding: 0px 36px;
+    display: grid;
+    grid-template-columns: repeat(var(--col),1fr);
+    margin: 0px 0px 28px;
+
+    & .tabButton{
+      display: inline-block;
+      cursor: pointer;
+      height: 22px;
+      border-bottom: 2px solid transparent;
+      text-transform: uppercase;
+    }
+    & .tabButton.active{
+      color: theme.$blue;
+      border-bottom-color: theme.$blue;
+    }
+  }
+  & .tabFrame{
+    & .tabPanel{
+      display: none;
+    }
+    & .tabPanel.active{
+      display: block;
+    }
+  }
+}

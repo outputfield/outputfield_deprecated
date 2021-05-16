@@ -1,0 +1,66 @@
+@use '../../styles/theme.scss';
+
+.root{
+  @include theme.base;
+  position: relative;
+  min-height: 696px;
+  min-width: 375px;
+  background-color: theme.$backgroundwhite;
+  // width: 375px;
+  // margin: 25px;
+  // border: 1px solid theme.$black;
+  padding: 48px 0px 20px;
+
+  & .exit{
+    @include theme.pointerCursor;
+    position: absolute;
+    display: flex;
+    z-index: 10;
+    padding-left: 8px;
+    top: 16px;
+    right: 20px;
+    height: 17px;
+    width: 17px;
+  }
+  & .exit::before,
+  & .exit::after{
+    display: block;
+    position: relative;
+    align-self: center;
+    justify-self: center;
+    width: 0px;
+    height: 24px;
+    content: "";
+  }
+  & .exit::before{
+    transform: rotate(45deg);
+    border-left: 1px solid black;
+    transform-origin: center center;
+  }
+  & .exit::after{
+    transform: rotate(-45deg);
+    left: -1px;
+    border-right: 1px solid black;
+    transform-origin: center center;
+  }
+  // & .exit{
+  //   position: absolute;
+  //   z-index: 10;
+  //   top: 16px;
+  //   right: 20px;
+  //   height: 17px;
+  //   width: 17px;
+  //   background:
+  //     linear-gradient(45deg, transparent 0px, transparent 11.5px, theme.$black 11.5px, theme.$black 12.5px, transparent 12.5px, transparent 24px) top left,
+  //     linear-gradient(-45deg, transparent 0px, transparent 11.5px, theme.$black 11.5px, theme.$black 12.5px, transparent 12.5px, transparent 24px) top right;
+  //   background-size: 100% 100%;
+  //   background-repeat: no-repeat;
+  // }
+}
+.root.overlay{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  min-height: 100%;
+}

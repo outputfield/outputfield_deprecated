@@ -1,0 +1,129 @@
+@use '../../styles/theme.scss';
+
+.root{
+  display: block;
+  text-align: center;
+  padding: 0px 0px 8px;
+  & .header{
+    @include theme.small;
+    padding: 20px 16px 16px 16px;
+    display: block;
+  }
+  & .topicSelector{
+    & div{
+      @include theme.smallcaps;
+      display: inline-flex;
+      position: relative;
+      align-items: center;
+      height:36px;
+      padding: 9px 16px;
+      box-sizing: border-box;
+      border-radius: 32px;
+      border: 1px solid theme.$black;
+      margin: 0.5px;
+    }
+    & div:nth-of-type(2){
+      margin: 0.5px 12.5px;
+    }
+    & div.active{
+      background-color: theme.$grey-lt;
+      margin: 0px;
+      border: 1.5px solid theme.$blue;
+    }
+    & div:nth-of-type(2).active{
+      margin: 0px 12px;
+    }
+    & div.active::after{
+      content:"";
+      display: block;
+      position: absolute;
+      height: 69px;
+      width: 0px;
+      border-left: 1px solid theme.$blue;
+      top: 34px;
+      left: 50%;
+    }
+  }
+  & .messageWrap{
+    margin: 68px 16px 70px;
+    & .contactSpacer{
+      height: 26px;
+      // margin: 0px 16px;
+      border-left: 1px dashed theme.$grey-50;
+      border-right: 1px dashed theme.$grey-50;
+    }
+    & .subject,
+    & .message{
+      @include theme.small;
+      color: theme.$black;
+      box-sizing: border-box;
+      border-radius: 0px;
+      border: 1px solid theme.$black;
+      outline: none;
+      width: 100%;
+      // margin: 0px 16px;
+    }
+    & .subject::placeholder,
+    & .message::placeholder{
+      color: theme.$grey-66;
+    }
+    & .subject:disabled,
+    & .message:disabled,{
+      border-color: theme.$grey-50;
+      color: theme.$grey-50;
+    }
+    & .subject:disabled::placeholder,
+    & .message:disabled::placeholder{
+      color: theme.$grey-50;
+    }
+    & .subject{
+      padding: 9px 8px;
+    }
+    & .message{
+      padding: 12px;
+      min-height: 200px;
+      vertical-align: top;
+      resize: vertical;
+      line-height: 21px;
+      white-space: normal;
+      overflow: auto;
+    }
+  }
+  & .error{
+    @include theme.small;
+    color: theme.$error;
+    text-align: center;
+    height: 18px;
+    margin-bottom: 16px;
+  }
+  & .contactBack{
+    @include theme.smallcaps;
+    @include theme.pointerCursor;
+    display: inline-block;
+    margin: 48px auto 0px;
+  }
+  & .contactBack::before{
+    content: "";
+    display: inline-block;
+    height: 8px;
+    width: 44px;
+    margin-right: 12px;
+    background-image: url("/backarrow.png");
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+}
+.root.separateTab{
+  position: relative;
+  background: theme.$backgroundwhite;
+  margin: 8px 20px 0px;
+  text-align: center;
+  width: calc(100% - 40px);
+  min-height: 184px;
+  padding: 0px 0px 32px;
+  box-shadow:
+    0px 0px 20px 5px theme.$blue,
+    0px 0px 5px 3px transparentize(theme.$blue, 0.6),
+    0px 0px 2px 1px transparentize(theme.$blue, 0.5);
+  }

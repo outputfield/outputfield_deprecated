@@ -1,0 +1,16 @@
+@use '../../styles/theme.scss';
+
+.root{
+  @include theme.pointerCursor;
+  margin: 0px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 48px;
+  background-color: transparent;
+  border: 1px solid theme.$black;
+  box-sizing: border-box;
+  text-transform: capitalize;
+  border-radius: 100%;
+}

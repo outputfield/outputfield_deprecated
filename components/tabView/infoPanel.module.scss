@@ -1,0 +1,118 @@
+@use '../../styles/theme.scss';
+
+.root{
+  position: relative;
+  background: theme.$backgroundwhite;
+  text-align: center;
+  margin: 8px 20px 0px;
+  width: calc(100% - 40px);
+  min-height: 184px;
+  padding: 0px 0px 32px;
+  box-shadow:
+    0px 0px 20px 5px theme.$blue,
+    0px 0px 5px 3px transparentize(theme.$blue, 0.6),
+    0px 0px 2px 1px transparentize(theme.$blue, 0.5);
+
+  & .info{
+    display: none;
+
+    & .bio{
+      @include theme.smallcaps;
+      width: 100%;
+      padding: 20px 13px 56px 16px;
+      box-sizing: border-box;
+      white-space: pre-wrap;
+    }
+    & .mediums{
+      position: relative;
+      display: inline-block;
+      padding: 18px 48px 0px 45px;
+      height: 160px;
+      margin: 0px auto;
+      box-sizing: content-box;
+      @include theme.smallcaps;
+
+      & .mediumTop,
+      & .mediumBottom{
+        position: relative;
+        min-height: 36px;
+      }
+      & .mediumTop{
+        width: 122px;
+      }
+      & .mediumBottom{
+        width: 160px;
+        margin: 48px 0px 0px 82px;
+      }
+      & .mediumCircle{
+        display: block;
+        position: absolute;
+        height: 160px;
+        width: 160px;
+        z-index: 0;
+        top: 0px;
+        left: 62px;
+        border-radius: 100%;
+        border: 1px dashed theme.$grey-33;
+      }
+    }
+    & .links{
+      padding: 80px 0px 50px;
+      display: grid;
+      grid-template-columns: 1fr;
+      & .linkRow{
+        @include theme.smallcaps;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0px 16px;
+        & a{
+          position: relative;
+          display: block;
+          padding-right: 29px;
+        }
+        & a::after{
+          content: "";
+          display: inline-block;
+          height: 17px;
+          width: 17px;
+          position: absolute;
+          right: 0px;
+          top: 1px;
+          background-image: url("/extarrow.png");
+        }
+      }
+    }
+    & .referral{
+      @include theme.small;
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      padding: 0px 61px;
+      margin-bottom: 68px;
+
+      & .referredBy{
+        text-align: left;
+
+        & a{
+          @include theme.smallcaps;
+          text-decoration: underline;
+          text-shadow:
+            0px 4px 4px transparentize(theme.$black, 0.75),
+            0px 4px 4px transparentize(theme.$highlight, 0.25);
+        }
+      }
+    }
+    & .referral.noPad{
+      margin-bottom: 0px;
+    }
+  }
+  & .contact{
+    display: none;
+  }
+  & .info.active,
+  & .contact.active{
+    display: block;
+  }
+}

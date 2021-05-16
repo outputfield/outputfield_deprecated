@@ -1,0 +1,115 @@
+@use '../../styles/theme.scss';
+
+.root{
+  // width:375px;
+  // margin: 25px;
+  // border: 1px solid theme.$black;
+  min-width: 375px;
+  padding-bottom: 25px;
+  & .header{
+    width: 100%;
+    padding: 21px 25px;
+    text-align: right;
+    border-bottom: 1px dashed theme.$grey-50;
+    & .results{
+      @include theme.small;
+      display: inline-block;
+      height: 12px;
+      margin: 0px 0px 0px auto;
+    }
+    & .results::before,
+    & .results::after{
+      @include theme.thin;
+    }
+    & .results::before{
+      content: "(";
+    }
+    & .results::after{
+      content: ")";
+    }
+  }
+}
+
+.artistHeader{
+  display: grid;
+  grid-template-columns: 36px auto 135px;
+  @include theme.base;
+
+  & .icon{
+    --iconcolor: #000000;
+    display: block;
+    height: 18px;
+    width: 18px;
+    border-radius: 100%;
+    background:
+      radial-gradient(circle at 200% 200%, transparent 78%, var(--iconcolor) 100%) 100% 100%,
+      radial-gradient(circle at -100% 200%, transparent 78%, var(--iconcolor) 100%) 0% 100%,
+      radial-gradient(circle at -100% -100%, transparent 78%, var(--iconcolor) 100%) 0% 0%,
+      radial-gradient(circle at 200% -100%, transparent 78%, var(--iconcolor) 100%) 100% 0%;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    transform: rotate(-10deg);
+    margin: 3px auto 0px;
+  }
+
+  & .info{
+    & H1,
+    & div{
+      display: inline-block;
+    }
+
+    & H1.name{
+      @include theme.base;
+    }
+
+    & .handle::before,
+    & .handle::after{
+      @include theme.thin;
+    }
+    & .handle::before{
+      content:"‘";
+    }
+    & .handle::after{
+      content:"’";
+    }
+    & .separator{
+      user-select: none;
+      margin: 0px 10px;
+    }
+    & .separator::after{
+      content: "◦";
+    }
+  }
+
+  & .medium{
+    text-align: right;
+    padding-right: 20px;
+  }
+}
+.artistHeader.list{
+  border-bottom: 1px dashed theme.$grey-50;
+  padding: 17px 0px 19px;
+}
+.artistHeader.detail{
+  border-top: 1px dashed theme.$grey-33;
+  padding-top: 17px;
+  margin: 0px 0px 40px;
+
+  & .info{
+    & .pronouns::before{
+      content:"(";
+    }
+    & .pronouns::after{
+      content:")";
+    }
+    & .pronouns,
+    & .pronouns::before,
+    & .pronouns::after{
+      @include theme.thin;
+      color: theme.$grey-50;
+    }
+    & .pronouns{
+      margin-top: 1px;
+    }
+  }
+}
