@@ -8,14 +8,65 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  name     String?  @db.VarChar(255)
-  email    String   @unique @db.VarChar(255)
-  projects Project[]
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @db.VarChar(255)
+  password  String?
+  email     String    @unique @db.VarChar(255)
+  pronoun   String?
+  role      UserRole  @default(ARTIST)
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  bio       String    @default("")
+  medium    String    @default("")
+
+  // Relation fields
+  tokens    Token[]
+  projects  Project[]
+}
+
+model Artist {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique @db.VarChar(255)
+  email     String    @unique @db.VarChar(255)
+  pronoun   String?   @default("")
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  bio       String    @default("")
+  medium    String    @default("")
+  location  String    @default("")
+  iconColor String    @default("")
+  handle    String    @default("")
+
+  // Relation fields
+  //tokens    Token[]
+  //projects  Project[]
+}
+
+model Token {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  type       TokenType
+  emailToken String?   @unique // Only used for short lived email tokens
+  valid      Boolean   @default(true)
+  expiration DateTime
+
+  // Relation fields
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
 }
 
 model Project {
   id            Int      @id @default(autoincrement())
   title         String?  @db.VarChar(255)
   contributors  User[]
+}
+
+enum UserRole {
+  ARTIST
+  CURTATOR
+  VENUE
+}
+
+enum TokenType {
+  EMAIL // used as a short lived token sent to the user's email
+  API
 }

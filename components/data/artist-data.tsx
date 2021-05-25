@@ -37,7 +37,7 @@ sound
 class artistlist{
   artists: Artist[];
 
-  constructor(artists : Artist[]){
+  constructor(artists : Artist[] = null){
     this.artists = artists;
   }
 

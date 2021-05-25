@@ -6,6 +6,7 @@ import { WorkPanel } from "../tabView/workPanel.component";
 import { InfoPanel } from "../tabView/infoPanel.component";
 import { ContactPanel } from "../tabView/contactPanel.component";
 import artistdata from "../data/artist-data";
+import Artist from '../data/artist';
 
 interface Props{
   overlay?: boolean;
@@ -21,14 +22,15 @@ const ArtistPage = (
   }:Props,
   props
 ) => {
-
   // renders contact section as a third tab in main view instead of accessible through info
   const contactTab = false;
 
   const router = useRouter();
   let artist;
+
   if (router.query.hasOwnProperty("artistid")){
     artist = artistdata.get(router.query["artistid"]);
+
     console.log(artist);
   } else if (artistid != undefined || artistid != "") {
     artist = artistdata.get(artistid);
