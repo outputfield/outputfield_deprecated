@@ -26,16 +26,13 @@ const ArtistPage = (
   const contactTab = false;
 
   const router = useRouter();
-  let artist;
+  let artist = props.test;
 
   if (router.query.hasOwnProperty("artistid")){
     artist = artistdata.get(router.query["artistid"]);
-
-    console.log(artist);
   } else if (artistid != undefined || artistid != "") {
     artist = artistdata.get(artistid);
   }
-
 
   // when page opened as direct url, exit navigates to list
   function closeArtist(){
@@ -50,7 +47,6 @@ const ArtistPage = (
       (exitFunction)(false);
     }
   };
-
 
   if(artist==null||artist==undefined){
     /*

@@ -7,62 +7,7 @@ import Artist from "../artist/artist.component";
 
 let data = artistdata.artists;
 
-// import { PrismaClient } from '@prisma/client'
-// export async function getServerSideProps() {
-//   const prisma = new PrismaClient();
-//   const allArtists = await prisma.artist.findMany({});
-//   prisma.$disconnect();
-//   return {
-//     props: { allArtists }, // will be passed to the page component as props
-//   }
-// }
-//
-// const getData = async () => {
-//   try {
-//     const res = await fetch('http://localhost:3000/api/artists/1')
-//     const data = await res.json()
-//     return { data }
-//   } catch (err) {
-//     console.error(err.message);
-//   }
-// };
-
 const ArtistListPage = ({artists}) => {
-
-  // const getServerSideProps = async({ req }: NextPageContext) => {
-  //   const res = await fetch('http://localhost:3000/api/artists/1')
-  //   const data = await res.json()
-  //   return { stars: data }
-  // }
-  // console.log(props.stars)
-  //
-  const [testdata, setTestdata] = useState([])
-  // useEffect(() => {
-  //   let mounted = true;
-  //   getData().then(items => {
-  //       if(mounted) {
-  //         setTestdata(items)
-  //       }
-  //   })
-  //   return () => mounted = false;
-  // }, [])
-  console.log(artists)
-  //let testtest = this.props;
-  //console.log(testtest)
-  //console.log(testtest.artists)
-  //console.log(artists)
-  // useEffect(() => {
-  //   fetch.get('/api/artists/1').then(response => {
-  //     const data = await response.json()
-  //
-  //     if (!data) {
-  //       return {
-  //         notFound: true,
-  //       }
-  //     }
-  //     console.log(data)
-  //   });
-  // }, []);
 
   const [overlay, setOverlay] = useState("");
 
@@ -108,12 +53,6 @@ const ArtistListPage = ({artists}) => {
       }
     </div>
   );
-};
-
-Artist.getInitialProps = async function () {
-  const res = await fetch('http://localhost:3000/api/artists/1')
-  const artists = await res.json()
-  return { artists }
 };
 
 export default ArtistListPage;

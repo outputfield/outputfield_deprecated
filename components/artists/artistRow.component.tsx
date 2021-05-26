@@ -13,8 +13,8 @@ export const ArtistRow = ({
   onClick = null,
 }:Props) => {
   let row = (
-    <div className={styles.artistHeader+" "+styles[type]}>
-      <div className={styles.icon} style={{"--iconcolor":artist.iconColor}}/>
+    <div className={styles.artistHeader +" "+ styles[type]}>
+      <div className={styles.icon} style={{"--iconcolor": artist.iconColor}}/>
       <div className={styles.info}>
         <h1 className={styles.name}>
           {artist.name}

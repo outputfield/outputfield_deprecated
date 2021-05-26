@@ -19,11 +19,10 @@ const ArtistListPage = ({ artists }) => {
 
   // save scroll position to return to original point in list after state change
   let scroll = 0;
-
   function loadArtist(handle){
     window.history.pushState({},'',"/artists/" + handle);
     scroll = window.scrollY;
-    window.scrollTo(window.scrollX,0);
+    window.scrollTo(window.scrollX, 0);
     setOverlay(handle);
   }
 
@@ -64,14 +63,7 @@ const ArtistListPage = ({ artists }) => {
 ArtistListPage.getInitialProps = async function () {
   const res = await fetch('http://localhost:3000/api/artists')
   const artists = await res.json()
-  //console.log("json: " + JSON.stringify(artists));
   return { artists }
 };
-
-// ArtistListPage.getInitialProps = async ({ params }) => {
-//   const res = await fetch('http://localhost:3000/api/artists/1')
-//   const artists = await res.json()
-//   return { props: { artists } }
-// }
 
 export default ArtistListPage;
