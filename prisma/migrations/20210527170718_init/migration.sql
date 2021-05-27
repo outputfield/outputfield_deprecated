@@ -30,7 +30,9 @@ CREATE TABLE "Artist" (
     "medium" TEXT NOT NULL DEFAULT E'',
     "location" TEXT NOT NULL DEFAULT E'',
     "iconColor" TEXT NOT NULL DEFAULT E'',
-    "handle" TEXT NOT NULL DEFAULT E'',
+    "handle" VARCHAR(255) NOT NULL,
+    "mediums" TEXT[],
+    "mediumsOfInterest" TEXT[],
 
     PRIMARY KEY ("id")
 );
@@ -58,6 +60,26 @@ CREATE TABLE "Project" (
 );
 
 -- CreateTable
+CREATE TABLE "Work" (
+    "id" SERIAL NOT NULL,
+    "type" TEXT DEFAULT E'',
+    "link" TEXT NOT NULL DEFAULT E'',
+    "artistID" INTEGER NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Link" (
+    "id" SERIAL NOT NULL,
+    "type" TEXT DEFAULT E'',
+    "link" TEXT NOT NULL DEFAULT E'',
+    "artistID" INTEGER NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_ProjectToUser" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
@@ -76,6 +98,9 @@ CREATE UNIQUE INDEX "Artist.name_unique" ON "Artist"("name");
 CREATE UNIQUE INDEX "Artist.email_unique" ON "Artist"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Artist.handle_unique" ON "Artist"("handle");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Token.emailToken_unique" ON "Token"("emailToken");
 
 -- CreateIndex
@@ -86,6 +111,12 @@ CREATE INDEX "_ProjectToUser_B_index" ON "_ProjectToUser"("B");
 
 -- AddForeignKey
 ALTER TABLE "Token" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Work" ADD FOREIGN KEY ("artistID") REFERENCES "Artist"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Link" ADD FOREIGN KEY ("artistID") REFERENCES "Artist"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ProjectToUser" ADD FOREIGN KEY ("A") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;

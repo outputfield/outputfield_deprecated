@@ -9,8 +9,12 @@ export default async function (
   // }
   if (req.method === 'GET') {
     try {
-      const data = await prisma.artist.findMany()
-
+      const data = await prisma.artist.findMany({
+        include: {
+          work: true,
+          links: true
+        },
+      })
       if (!data) {
         return res.status(404)
       } else {

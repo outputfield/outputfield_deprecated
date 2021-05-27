@@ -65,10 +65,10 @@ export const InfoPanel = ({
           }
         </div>
         <div className={styles.referral+(includeContact?"":" "+styles.noPad)}>
-          <div className={styles.referredBy}>
+          {/* <div className={styles.referredBy}>
             Referred By:<br/>
             <a href={"../artists/"+artist.referredBy.handle}>{artist.referredBy.name}</a>
-          </div>
+          </div> */}
         </div>
         {includeContact?
           (

@@ -5,6 +5,7 @@ import { TabView } from "../../components/tabView/tabView.component";
 import { WorkPanel } from "../../components/tabView/workPanel.component";
 import { InfoPanel } from "../../components/tabView/infoPanel.component";
 import { ContactPanel } from "../../components/tabView/contactPanel.component";
+import { convertDataToSingleArtist } from '../../lib/misc'
 
 export const getStaticPaths = async () => {
   const res = await fetch('http://localhost:3000/api/artists');
@@ -12,7 +13,7 @@ export const getStaticPaths = async () => {
 
   const paths = data.map(artist => {
     return {
-      params: { id: artist.id.toString()}
+      params: { name: artist.handle}
     }
   })
 
@@ -23,17 +24,19 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async(context) => {
-  const id = context.params.id;
-  const res = await fetch('http://localhost:3000/api/artists/' + id);
+  const name = context.params.name;
+  const res = await fetch('http://localhost:3000/api/artists/' + name);
   const data = await res.json();
 
   return {
-    props: { artist : data }
+    props: { artistdata : data }
   }
 }
 
-const ArtistPage = ({ overlay=false, artist }) => {
+const ArtistPage = ({ overlay=false, artistdata }) => {
   const contactTab = false;
+
+  let artist = convertDataToSingleArtist(artistdata);
 
   const router = useRouter();
   function closeArtist() {

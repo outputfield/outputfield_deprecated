@@ -24,16 +24,22 @@ model User {
 }
 
 model Artist {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique @db.VarChar(255)
-  email     String    @unique @db.VarChar(255)
-  pronoun   String?   @default("")
-  createdAt DateTime  @default(now()) @map(name: "created_at")
-  bio       String    @default("")
-  medium    String    @default("")
-  location  String    @default("")
-  iconColor String    @default("")
-  handle    String    @default("")
+  id                Int       @id @default(autoincrement())
+  name              String    @unique @db.VarChar(255)
+  email             String    @unique @db.VarChar(255)
+  pronoun           String?   @default("")
+  createdAt         DateTime  @default(now()) @map(name: "created_at")
+  bio               String    @default("")
+  medium            String    @default("")
+  location          String    @default("")
+  iconColor         String    @default("")
+  handle            String    @unique @db.VarChar(255)
+  mediums           String[]
+  mediumsOfInterest String[]
+
+  work              Work[]
+  links             Link[]
+  //referredBy        Artist[]
 
   // Relation fields
   //tokens    Token[]
@@ -58,6 +64,24 @@ model Project {
   id            Int      @id @default(autoincrement())
   title         String?  @db.VarChar(255)
   contributors  User[]
+}
+
+model Work {
+  id        Int       @id @default(autoincrement())
+  type      String?   @default("")
+  link      String    @default("")
+
+  artist    Artist    @relation(fields: [artistID], references: [id])
+  artistID  Int
+}
+
+model Link {
+  id        Int    @id @default(autoincrement())
+  type      String?   @default("")
+  link      String    @default("")
+
+  artist    Artist @relation(fields: [artistID], references: [id])
+  artistID  Int
 }
 
 enum UserRole {

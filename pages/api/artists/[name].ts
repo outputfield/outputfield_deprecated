@@ -8,11 +8,14 @@ export default async function (
   // if (req.method === 'POST') {
   // }
   if (req.method === 'GET') {
-    const artistid = parseInt(req.query.artistid)
     try {
       const artist = await prisma.artist.findUnique({
         where: {
-          id: artistid
+          handle:req.query.name
+        },
+        include: {
+          work: true,
+          links: true
         },
       })
       if (!artist) {
