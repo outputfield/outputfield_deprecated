@@ -1,22 +1,34 @@
-// import { PrismaClient } from '@prisma/client'
-// import Head from 'next/head'
-// import styles from '../styles/Home.module.css'
-
-import {useEffect} from 'react';
+import type {ReactElement} from 'react';
+import Layout from '../components/layout';
+import React, {useEffect} from 'react';
 import Router from 'next/router';
 
-export const Index = () => {
-  useEffect(()=>{
-    const {pathname} = Router;
-    if(pathname=="/"){
-      Router.push("/artists");
-    }
-  }, []);
-
-  return(null);
+export default function Page() {
+  return (
+    <h1 className="text-3xl font-bold underline">Output Field</h1>
+  );
 }
 
-export default Index;
+Page.getLayout = function getLayout(page:ReactElement) {
+  return (
+    <Layout>
+      {page}
+    </Layout>
+  );
+};
+
+// export const Index = () => {
+//   useEffect(()=>{
+//     const {pathname} = Router;
+//     if (pathname=='/') {
+//       Router.push('/artists');
+//     }
+//   }, []);
+
+//   return (null);
+// };
+
+// export default Index;
 
 // export default function Home(props: { allUsers: any[] }) {
 //   return (
