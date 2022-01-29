@@ -1,11 +1,10 @@
 import { useUser } from '../lib/hooks'
-import Layout from '../components/layout'
 
 const Home = () => {
   const user = useUser()
 
   return (
-    <Layout>
+    <>
       <h1 className="text-3xl font-bold underline">Home</h1>
 
       <p>Steps to test this authentication example:</p>
@@ -50,7 +49,7 @@ const Home = () => {
           word-wrap: break-word;
         }
       `}</style>
-    </Layout>
+    </>
   )
 }
 

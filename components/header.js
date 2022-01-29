@@ -13,6 +13,11 @@ const Header = () => {
               <a>Home</a>
             </Link>
           </li>
+          <li>
+            <Link href="/artists">
+              <a>Artists</a>
+            </Link>
+          </li>
           {user ? (
             <>
               <li>
