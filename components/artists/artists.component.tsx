@@ -1,6 +1,5 @@
 import { useEffect, useState, componentWillMount } from "react";
 import { NextPageContext } from 'next'
-import styles from "./artists.module.scss";
 import { ArtistRow } from "./artistRow.component";
 import artistdata from "../data/artist-data";
 import Artist from "../artist/artist.component";

@@ -1,21 +1,7 @@
-import '../styles/globals.css';
-
-// declare module 'csstype' {
-//   interface Properties {
-//     '--iconcolor'?: any;
-//     '--col'?: any;
-//   }
-// }
-
-// function MyApp({Component, pageProps}) {
-//   return <Component {...pageProps} />;
-// }
-
-// export default MyApp;
-
 import type {ReactElement, ReactNode} from 'react';
 import type {NextPage} from 'next';
 import type {AppProps} from 'next/app';
+import '../styles/globals.css';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode

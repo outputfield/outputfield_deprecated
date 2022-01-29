@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import styles from "./artist.module.scss";
 import { ArtistRow } from "../artists/artistRow.component";
 import { TabView } from "../tabView/tabView.component";
 import { WorkPanel } from "../tabView/workPanel.component";

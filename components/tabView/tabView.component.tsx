@@ -1,5 +1,5 @@
-import * as React from "react";
-import styles from "./tabView.module.scss";
+import React from "react";
+import parse from "html-react-parser";
 
 interface Props {
   headers?: string[];
@@ -29,39 +29,39 @@ export const TabView = ({
   function selectTab(i){
     let t = document.querySelector("#tabHeader");
     let f = document.querySelector("#tabFrame");
-    t.querySelectorAll("."+styles.tabButton).forEach(
-      tab => tab.classList.remove(styles.active)
+    t.querySelectorAll(".tabButton").forEach(
+      tab => tab.classList.remove("active")
     );
-    f.querySelectorAll("."+styles.tabPanel).forEach(
-      frame => frame.classList.remove(styles.active)
+    f.querySelectorAll(".tabPanel").forEach(
+      frame => frame.classList.remove("active")
     );
-    t.querySelectorAll("."+styles.tabButton)[i].classList.add(styles.active);
-    f.querySelectorAll("."+styles.tabPanel)[i].classList.add(styles.active);
+    t.querySelectorAll(".tabButton")[i].classList.add("active");
+    f.querySelectorAll(".tabPanel")[i].classList.add("active");
   }
 
-  const parse = require('html-react-parser');
+
   let parsedText, updatedChildren = [];
-  for(let i = 0; i < children.length; i++){
+  for(let i = 0; i < children.length; i++) {
     if(typeof children[i] == "string"){
       parsedText = parse(children[i]);
     } else {
       parsedText = children[i];
     }
-    let cN = (parsedText.props.className || "") + " "+styles.tabPanel+(i==activeTab?" "+styles.active:" ");
+    let cN = `${parsedText.props.className || ""} tabPanel display-none active:display-block`;
     updatedChildren[i] = React.cloneElement(parsedText, {className : cN, key: "pane_"+i});
   }
   children = updatedChildren;
 
   return (
-    <div className={styles.root}>
-      <div className={styles.tabHeader} id="tabHeader" style={{"--col":(Array.isArray(headers)?headers.length:1)}}>
+    <div>
+      <div className={`grid grid-cols-${(Array.isArray(headers) && headers.length) || 1} box-border px-36 mr-28`} id="tabHeader">
         {
           headers.map((t, i) => {
-            return <div key={"tabWrap_"+i}><div key={"tabButton_"+i} className={`${styles.tabButton}`+(i==activeTab?` ${styles.active}`:``)} onClick={()=>selectTab(i)}>{t}</div></div>;
+            return (<div key={"tabWrap_"+i}><div key={"tabButton_"+i} className={`tabButton inline-block cursor-pointer border-solid border-2 border-sky-500 active:blue-500`} onClick={()=>selectTab(i)}>{t}</div></div>);
           })
         }
       </div>
-      <div className={styles.tabFrame} id="tabFrame">
+      <div id="tabFrame">
         {
           children
         }
