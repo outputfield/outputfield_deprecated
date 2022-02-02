@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { PrismaClient } from "@prisma/client";
+import prisma from '../../lib/prisma';
 
 export default async function handle (
   request: NextApiRequest,
@@ -8,7 +8,6 @@ export default async function handle (
   // if (req.method === 'POST') {
   // }
   if (request.method === 'GET') {
-    const prisma = new PrismaClient()
     try {
       const allUsers = await prisma.user.findMany({
         include: { projects: true }
