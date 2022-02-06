@@ -14,8 +14,9 @@ export const InfoPanel = ({
   className,
   includeContact = true,
 }: Props) => {
-  const [showContact, setShowContact] = useState(true)
+  const [showContact, setShowContact] = useState(false)
   // TODO: ContactPanel and Contact button should not show if user is not logged in
+
   return (
     <div
       className={`${className} relative mt-2 mx-5 min-h-184`}
@@ -61,9 +62,7 @@ export const InfoPanel = ({
           })}
         </div>
         <div
-          className={`flex justify-end w-full py-0 px-61 mb-68 ${
-            includeContact ? "" : " " + styles.noPad
-          }`}>
+          className={`flex justify-end w-full py-0 px-61 mb-68`}>
           {/* <div className="text-left">
             Referred By:<br/>
             <a href={"../artists/"+artist.referredBy.handle}>{artist.referredBy.name}</a>
@@ -74,13 +73,6 @@ export const InfoPanel = ({
       {showContact && ( 
           <ContactPanel artist={artist} onClick={() => setShowContact(false)} separateTab />
       )}
-      {/* {includeContact ? (
-        <div id="contact" className="hidden">
-          <ContactPanel artist={artist} onClick={closeContact} />
-        </div>
-      ) : (
-        ""
-      )} */}
     </div>
   );
 };
