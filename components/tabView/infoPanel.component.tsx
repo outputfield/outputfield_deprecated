@@ -2,6 +2,7 @@ import { useState } from "react";
 import Artist from "../data/artist";
 import { ContactPanel } from "../tabView/contactPanel.component";
 import { Button } from "../button/button.component";
+import {useRouter} from 'next/router';
 
 interface Props {
   artist: Artist;
@@ -15,6 +16,8 @@ export const InfoPanel = ({
   includeContact = true,
 }: Props) => {
   const [showContact, setShowContact] = useState(false)
+  const router = useRouter();
+  console.log(router)
   // TODO: ContactPanel and Contact button should not show if user is not logged in
 
   return (
@@ -68,7 +71,7 @@ export const InfoPanel = ({
             <a href={"../artists/"+artist.referredBy.handle}>{artist.referredBy.name}</a>
           </div> */}
         </div>
-        {includeContact ? <Button onClick={() => setShowContact(true)}>contact</Button> : ""}
+        {includeContact ? <Button onClick={() => router.push(`${router.asPath}/contact`)}>contact</Button> : ""}
       </div>
       {showContact && ( 
           <ContactPanel artist={artist} onClick={() => setShowContact(false)} separateTab />

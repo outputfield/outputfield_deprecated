@@ -1,7 +1,30 @@
-import { useUser } from '../lib/hooks'
+import { useUser } from "../lib/hooks";
 
 const Home = () => {
-  const user = useUser()
+  const user = useUser();
+
+// const handleSubmit = async (e) => {
+//     e.preventDefault();
+//       const res = await fetch("/api/sendgrid", {
+//         // body: JSON.stringify({
+//         //   email: email,
+//         //   fullname: fullname,
+//         //   subject: subject,
+//         //   message: message,
+//         // }),
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         method: "POST",
+//       });
+
+//       const { error } = await res.json();
+//       if (error) {
+//         console.log(error);
+//         return;
+//       }
+//     // console.log(fullname, email, subject, message);
+//   };
 
   return (
     <>
@@ -22,12 +45,11 @@ const Home = () => {
       </ol>
 
       <p>
-        To learn more about Magic, visit their{' '}
+        To learn more about Magic, visit their{" "}
         <a
           href="https://docs.magic.link/"
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
           documentation
         </a>
         .
@@ -50,7 +72,7 @@ const Home = () => {
         }
       `}</style>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

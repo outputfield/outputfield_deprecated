@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
-import { ArtistRow } from "../../components/artists/artistRow.component";
-import Tabs from "../../components/tabView/tabView.component";
-import { WorkPanel } from "../../components/tabView/workPanel.component";
-import { InfoPanel } from "../../components/tabView/infoPanel.component";
-import { ContactPanel } from "../../components/tabView/contactPanel.component";
-import { convertDataToSingleArtist } from "../../lib/misc";
+import {ArtistRow } from "../../../components/artists/artistRow.component"
+import Tabs from "../../../components/tabView/tabView.component";
+import { WorkPanel } from "../../../components/tabView/workPanel.component";
+import { InfoPanel } from "../../../components/tabView/infoPanel.component";
+import { ContactPanel } from "../../../components/tabView/contactPanel.component";
+import { convertDataToSingleArtist } from "../../../lib/misc";
 
 export const getStaticPaths = async () => {
   const res = await fetch("http://localhost:3000/api/artists");
