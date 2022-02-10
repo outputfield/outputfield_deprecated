@@ -1,8 +1,9 @@
 import { useState } from "react";
 import Artist from "../data/artist";
-import { ContactPanel } from "../tabView/contactPanel.component";
-import { Button } from "../button/button.component";
-import {useRouter} from 'next/router';
+import { Button } from '../button/button.component';
+import { useRouter } from "next/router";
+import { useUser } from "../../lib/hooks";
+import Link from 'next/link';
 
 interface Props {
   artist: Artist;
@@ -15,15 +16,11 @@ export const InfoPanel = ({
   className,
   includeContact = true,
 }: Props) => {
-  const [showContact, setShowContact] = useState(false)
+  const user = useUser();
   const router = useRouter();
-  console.log(router)
-  // TODO: ContactPanel and Contact button should not show if user is not logged in
 
   return (
-    <div
-      className={`${className} relative mt-2 mx-5 min-h-184`}
-      id="infoPanel">
+    <div className={`${className} relative mt-2 mx-5 min-h-184`} id="infoPanel">
       <div id="info">
         <div className="w-full pt-5 pr-3 pb-12 pl-6 border-box whitespace-pre-wrap">
           {artist.bio}
@@ -39,15 +36,15 @@ export const InfoPanel = ({
               {artist.mediums.join(", ")}
             </div>
           )}
-          {artist.mediumsOfInterest.length == 0 ? (
-            <div className="relative w-160 min-h-36 mt-12 pr-0 pb-0 pl-18" />
-          ) : (
-            <div className="relative w-160 min-h-36 mt-12 pr-0 pb-0 pl-18">
-              Mediums Of Interest:
-              <br />
-              {artist.mediumsOfInterest.join(", ")}
-            </div>
-          )}
+          <div className="relative w-160 min-h-36 mt-12 pr-0 pb-0 pl-18">
+            {artist.mediumsOfInterest.length !== 0 && (
+              <>
+                Mediums Of Interest:
+                <br />
+                {artist.mediumsOfInterest.join(", ")}
+              </>
+            )}
+          </div>
         </div>
         <div className="grid pt-80 px-0 pb-50 grid-cols-1">
           {artist.links.map((e, i) => {
@@ -64,18 +61,23 @@ export const InfoPanel = ({
             );
           })}
         </div>
-        <div
-          className={`flex justify-end w-full py-0 px-61 mb-68`}>
+        <div className={`flex justify-end w-full py-0 px-61 mb-68`}>
+          {/* TODO: add referred by */}
           {/* <div className="text-left">
             Referred By:<br/>
             <a href={"../artists/"+artist.referredBy.handle}>{artist.referredBy.name}</a>
           </div> */}
         </div>
-        {includeContact ? <Button onClick={() => router.push(`${router.asPath}/contact`)}>contact</Button> : ""}
+        {includeContact && user ? (
+          <Link href={`${router.asPath}/contact`}>
+            <Button>
+              contact
+            </Button>
+          </Link>
+        ) : (
+          ""
+        )}
       </div>
-      {showContact && ( 
-          <ContactPanel artist={artist} onClick={() => setShowContact(false)} separateTab />
-      )}
     </div>
   );
 };
