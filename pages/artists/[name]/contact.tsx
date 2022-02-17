@@ -5,7 +5,7 @@ import Artist from "../../..components/data/artist";
 import { Button } from "../../../components/button/button.component";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { useUser } from "../../../lib/hooks";
+import { useUser } from "../../../lib/useUser";
 
 interface Props {
   artist: Artist;

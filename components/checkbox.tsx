@@ -5,47 +5,18 @@ type Props = {
   value: boolean;
 };
 
-// // first, define a helper for combining refs
-// function useCombinedRefs(...refs) {
-//   const targetRef = React.useRef();
-
-//   React.useEffect(() => {
-//     refs.forEach(ref => {
-//       if (!ref) return;
-
-//       if (typeof ref === "function") {
-//         ref(targetRef.current);
-//       } else {
-//         ref.current = targetRef.current;
-//       }
-//     });
-//   }, [refs]);
-
-//   return targetRef;
-// }
-
 const Checkbox = React.forwardRef(
   ({ value, name, label, onChange, defaultChecked }: Props, forwardedRef) => {
     const [checked, setChecked] = React.useState(defaultChecked || false);
+
     const handleChange = (e) => {
-        // console.log(e.target.value)
         onChange(name, e.target.checked)
-        // console.log(e)
         setChecked(!checked)
     }
 
     React.useEffect(() => {
         setChecked(value)
     }, [value])
-
-    // const innerRef = React.useRef(null);
-    // const combinedRef = useCombinedRefs(forwardedRef, innerRef);
-
-    // React.useEffect(() => {
-    //   if (onChange) {
-    //     onChange(checked);
-    //   }
-    // }, [checked]);
 
     return (
       <div className="p-4" key={name}>
@@ -55,10 +26,7 @@ const Checkbox = React.forwardRef(
             id={name}
             name={name}
             className="opacity-0 absolute h-8 w-8 peer"
-            // ref={forwardedRef}
-            // ref={combinedRef}
             value={true}
-            // defaultChecked={checked}
             onChange={handleChange}
             checked={checked}
           />
@@ -73,7 +41,7 @@ const Checkbox = React.forwardRef(
                 <g filter="url(#filter0_d_17_1381)">
                   <path
                     d="M5 15.2222L9 21L17 5"
-                    stroke="#001AFF"
+                    stroke="#001AFF" // TODO: replace with theme blue
                     strokeWidth="2"
                   />
                 </g>

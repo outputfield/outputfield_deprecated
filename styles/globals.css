@@ -3,31 +3,29 @@
 @tailwind utilities;
 
 .blurred {
-    /* Any browser which supports CSS3 */
-   filter: blur(1px);
+  /* Any browser which supports CSS3 */
+  filter: blur(1px);
 
-   /* Firefox version 34 and earlier */
-   filter: url("../assets/blur.svg#gaussian_blur");
+  /* Firefox version 34 and earlier */
+  filter: url("../assets/blur.svg#gaussian_blur");
 
-   /* Webkit in Chrome 52, Safari 9, Opera 39, and earlier */
-   -webkit-filter: blur(1px);
+  /* Webkit in Chrome 52, Safari 9, Opera 39, and earlier */
+  -webkit-filter: blur(1px);
 }
 
 .glow {
-    /* Primaries/Blue */
-    
+  /* Primaries/Blue */
 
-color: #001AFF;
+  color: #001aff;
 
-/* Shadows/Text */
+  /* Shadows/Text */
 
-text-shadow: 0px 0px 2px #001AFF;
+  text-shadow: 0px 0px 2px #001aff;
 }
 
-
 input:checked + div {
-    @apply border-blue;
-  }
-  input:checked + div svg {
-    @apply block;
-  }
+  @apply border-blue;
+}
+input:checked + div svg {
+  @apply block;
+}

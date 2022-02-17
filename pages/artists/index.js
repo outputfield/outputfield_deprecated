@@ -5,15 +5,19 @@ import Link from "next/link";
 
 import ArtistsFilter from "./artistsFilter.tsx";
 import prisma from "../../lib/prisma";
+import { usePaginatedArtists } from '../../lib/usePaginatedArtists'
 import { convertDataToArtists } from "../../lib/misc";
 import { ArtistRow } from "../../components/artists/artistRow.component";
 import { Button } from "../../components/button/button.component";
 import { Checkbox } from "../../components/checkbox.tsx";
 
-const ArtistListPage = ({ artists, mediums }) => {
+const ArtistListPage = ({ mediums }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
   const router = useRouter();
+  // https://www.ibrahima-ndaw.com/blog/data-fetching-in-nextjs-using-useswr/#paginating-the-data-with-useswrinfinite
+  const { artists, error, isLoadingMore, size, setSize, isReachingEnd } =
+    usePaginatedArtists("/api/artists");
 
   const openFilters = () => {
     router.replace(`${router.pathname}#filter`);
@@ -33,6 +37,8 @@ const ArtistListPage = ({ artists, mediums }) => {
     window.scrollTo(0, parseInt(scrollY || "0") * -1);
   };
 
+  if (error) return <h1>Something went wrong!</h1>
+
   return (
     <div>
       <div>
@@ -41,7 +47,7 @@ const ArtistListPage = ({ artists, mediums }) => {
             placeholder="search"
             className={`border border-black focus:border-blue-500 z-20 peer rounded-none`}
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
                 console.log(`searchterm: ${searchTerm}`);
@@ -74,6 +80,15 @@ const ArtistListPage = ({ artists, mediums }) => {
               />
             );
           })}
+          <button
+            disabled={isLoadingMore || isReachingEnd}
+            onClick={() => setSize(size + 1)}>
+            {isLoadingMore
+              ? "Loading..."
+              : isReachingEnd
+              ? "No more posts"
+              : "Load more"}
+          </button>
         </div>
       </div>
       {filterOpen && <ArtistsFilter filters={mediums} onClose={closeFilters} />}

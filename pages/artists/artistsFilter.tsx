@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import Overlay from "../../components/overlay";
 import Checkbox from "../../components/checkbox";
 import { Button } from "../../components/button/button.component";
+import prisma from '../../lib/prisma'
 
 export default function ArtistsFilter({ onClose, filters: mediums }) {
   const { register, handleSubmit, reset, watch } = useForm();
@@ -25,7 +26,7 @@ export default function ArtistsFilter({ onClose, filters: mediums }) {
     setFilters(defaultFilters);
   }, [mediums]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // console.log(data);
     console.log(filters);
     // TODO: submit filters here
