@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Swipe from "react-easy-swipe";
-import { useEffect } from "react";
-import Image from 'next/image';
+import Image from "next/image";
 
 type Props = {
   data: string;
@@ -13,12 +12,13 @@ export default function Carousel({ data, className }: Props) {
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    setInterval(() => {
+    const i = setInterval(() => {
       if (!paused) {
         let newSlide = currentSlide === data.length - 1 ? 0 : currentSlide + 1;
         setCurrentSlide(newSlide);
       }
     }, 3000);
+    return () => clearInterval(i);
   }, []);
 
   const nextSlide = () => {
@@ -42,7 +42,7 @@ export default function Carousel({ data, className }: Props) {
         <Swipe onSwipeLeft={nextSlide} onSwipeRight={prevSlide}>
           {data.map((slide, index) => {
             return (
-                // TODO: USE NEXT IMAGE HERE
+              // TODO: USE NEXT IMAGE HERE
               <Image
                 src={slide.link}
                 layout="fill"
