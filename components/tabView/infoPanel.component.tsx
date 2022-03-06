@@ -1,83 +1,96 @@
-import { useState } from "react";
-import Artist from "../data/artist";
-import { Button } from '../button/button.component';
-import { useRouter } from "next/router";
-import { useUser } from "../../lib/useUser";
-import Link from 'next/link';
+import React from 'react'
+import Artist from '../data/artist'
+import { Button } from '../button/button.component'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 interface Props {
   artist: Artist;
   className?: string;
   includeContact?: boolean;
 }
+const ARTISTS_LINKS = {
+  Web: 'https://google.com',
+  IG: 'https://google.com',
+}
 
+// TODO: move this into /pages/artists/[name]
 export const InfoPanel = ({
   artist,
   className,
   includeContact = true,
 }: Props) => {
-  const user = useUser();
-  const router = useRouter();
+  const router = useRouter()
+
+  console.log(artist)
 
   return (
-    <div className={`${className} relative mt-2 mx-5 min-h-184`} id="infoPanel">
-      <div id="info">
-        <div className="w-full pt-5 pr-3 pb-12 pl-6 border-box whitespace-pre-wrap">
-          {artist.bio}
-        </div>
-        <div className="relative inline-block pt-4 pl-7 pb-0 pr-6 h-160 my-0 mx-auto content-box">
-          <div className="block absolute h-160 w-160 z-0 top-0 left-62 rounded-full border-1 border-dashed"></div>
-          {artist.mediums.length == 0 ? (
-            <div className="relative w-122 min-h-36" />
-          ) : (
-            <div className="relative w-122 min-h-36">
-              Mediums:
+    <div
+      className={`${className} relative min-h-184 grid text-base p-3`}
+      id="infoPanel">
+      <div
+        id="bio"
+        className="w-full mb-8 border-box whitespace-pre-wrap uppercase">
+        {artist.bio}
+      </div>
+
+      <div
+        id="mediums"
+        className="relative uppercase inline-block h-36 w-9/12 mb-16 mx-auto content-box ">
+        <img src="/dashedCircle.svg" className="absolute ml-4" />
+        <div className="flex flex-col justify-between mt-4 h-full">
+          {artist.mediums.length !== 0 && (
+            <div className="relative">
+              <b>Mediums:</b>
               <br />
-              {artist.mediums.join(", ")}
+              {artist.mediums.join(', ')}
             </div>
           )}
-          <div className="relative w-160 min-h-36 mt-12 pr-0 pb-0 pl-18">
-            {artist.mediumsOfInterest.length !== 0 && (
-              <>
-                Mediums Of Interest:
-                <br />
-                {artist.mediumsOfInterest.join(", ")}
-              </>
-            )}
-          </div>
+          {artist.mediumsOfInterest.length !== 0 && (
+            <div className="relative self-end">
+              <b>Mediums Of Interest:</b>
+              <br />
+              {artist.mediumsOfInterest.join(', ')}
+            </div>
+          )}
         </div>
-        <div className="grid pt-80 px-0 pb-50 grid-cols-1">
-          {artist.links.map((e, i) => {
-            return (
-              <div
-                key={"link_" + i}
-                className="h-40 flex items-center justify-start py-0 px-16">
-                <a
-                  href={e.link}
-                  className="relative block pr-29 after:content-[''] after:inline-block after:h-17 after: w-17 after:absolute after:right-0 after:top-1 after:bg-[url('/extarrow.png')]">
-                  {e.title}
-                </a>
-              </div>
-            );
-          })}
-        </div>
-        <div className={`flex justify-end w-full py-0 px-61 mb-68`}>
-          {/* TODO: add referred by */}
-          {/* <div className="text-left">
-            Referred By:<br/>
-            <a href={"../artists/"+artist.referredBy.handle}>{artist.referredBy.name}</a>
-          </div> */}
-        </div>
-        {includeContact && user ? (
-          <Link href={`${router.asPath}/contact`}>
-            <Button>
-              contact
-            </Button>
-          </Link>
-        ) : (
-          ""
-        )}
       </div>
+
+      <div id="artistLinks" className="relative mb-10 h-32">
+        <img src="/dashedEllipses4.svg" className="absolute" />
+        <div className="absolute flex flex-col space-y-4 mt-4">
+          {artist.links.map(({ title, link }) => (
+            <a
+              key={link}
+              href={link}
+              target="_blank"
+              rel="noreferrer"
+              className="uppercase flex space-x-2 items-center">
+              <span>{title}</span>
+              <img src="/externalLinkIcon.svg" />
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <div id="artistReference" className={'flex justify-end relative w-full h-20 mb-20'}>
+        {/* TODO: add referred by */}
+        <img src="/dashedEllipses2.svg" className="absolute" />
+        <div className="absolute uppercase mt-2 mr-8">
+          Referred By:
+          <br />
+          <a className="underline glow-highlight">Clay Brick</a>
+          {/* <a href={"../artists/"+artist.referredBy.handle}>{artist.referredBy.name}</a> */}
+        </div>
+      </div>
+
+      {includeContact && (
+        <Link href={`${router.asPath}/contact`} passHref>
+          <a>
+            <Button className="mb-8 w-7/12 text-lg">contact</Button>
+          </a>
+        </Link>
+      )}
     </div>
-  );
-};
+  )
+}

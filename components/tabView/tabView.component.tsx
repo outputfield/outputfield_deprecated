@@ -1,6 +1,6 @@
-import React from "react";
-import parse from "html-react-parser";
-import { useEffect } from "react";
+import React from 'react'
+import parse from 'html-react-parser'
+import { useEffect } from 'react'
 
 interface Props {
   headers?: string[];
@@ -9,7 +9,7 @@ interface Props {
 }
 
 const Tabs = ({ color, headers, children }) => {
-  const [openTab, setOpenTab] = React.useState(0);
+  const [openTab, setOpenTab] = React.useState(0)
 
   if (
     Array.isArray(headers) &&
@@ -17,10 +17,10 @@ const Tabs = ({ color, headers, children }) => {
     headers.length != children.length
   ) {
     return (
-      <div style={{ backgroundColor: "#fcc" }}>
+      <div style={{ backgroundColor: '#fcc' }}>
         error: number of headers does not match number of tab panes
       </div>
-    );
+    )
   }
 
   return (
@@ -28,7 +28,7 @@ const Tabs = ({ color, headers, children }) => {
       <div className="w-full">
         {/* TAB HEADER */}
         <ul
-          className="flex mb-0 list-none flex-wrap pt-3 pb-4 flex-row"
+          className="flex mb-0 ml-6 ml-list-none flex-wrap pt-10 pb-4 flex-row"
           role="tablist">
           {headers.map((header, index) => (
             <li
@@ -36,14 +36,14 @@ const Tabs = ({ color, headers, children }) => {
               className="-mb-px mr-2 last:mr-0 flex-auto text-left">
               <a
                 className={
-                  "text-s font-bold uppercase px-5 py-3 block leading-normal underline-offset-4 decoration-blue-600 decoration-2 " +
+                  'text-s font-bold uppercase px-5 py-3 block leading-normal underline-offset-4 decoration-blue-600 decoration-2 ' +
                   (openTab === index
-                    ? "underline text-blue-600"
-                    : "no-underline")
+                    ? 'underline text-blue'
+                    : 'no-underline')
                 }
                 onClick={(e) => {
-                  e.preventDefault();
-                  setOpenTab(index);
+                  e.preventDefault()
+                  setOpenTab(index)
                 }}
                 data-toggle="tab"
                 href={`#${header}`}
@@ -56,25 +56,23 @@ const Tabs = ({ color, headers, children }) => {
         {/* TAB HEADERS END */}
 
         {/* TAB PANELS */}
-        <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
-          <div className="px-4 py-5 flex-auto">
-            <div className="tab-content tab-space">
-              {children.map((panel, index) => (
-                <div
-                  className={openTab === index ? "block" : "hidden"}
-                  id={`${headers[index]}`}>
-                  {panel}
-                </div>
-              ))}
+        <div className="relative flex flex-col break-words w-full px-4 pb-5">
+          {children.map((panel, index) => (
+            <div
+              className={`m-2 glow-red-lg shadow-lg ${openTab === index ? 'block' : 'hidden'}`}
+              id={`${headers[index]}`}
+              key={index}
+            >
+              {panel}
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Tabs;
+export default Tabs
 
 // export const TabView = ({
 //   headers,

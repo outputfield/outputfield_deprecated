@@ -1,9 +1,10 @@
-import React from "react";
-export default function Overlay({ children }) {
+import React from 'react'
+
+export default function Overlay({ className, children }) {
   return (
     <div
       id="filter"
-      className="fixed z-50 inset-0 overflow-y-auto"
+      className={`fixed z-50 inset-0 overflow-y-auto ${className}`}
       aria-labelledby="filters-modal"
       role="dialog"
       aria-modal="true">
@@ -20,11 +21,11 @@ export default function Overlay({ children }) {
             --> */}
 
         <div className="block align-bottom bg-white opacity-100 overflow-hidden transform transition-all w-full">
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div className="bg-white pt-5 pb-4 sm:pb-4">
             <div className="sm:flex sm:items-start">{children}</div>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

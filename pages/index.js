@@ -1,33 +1,12 @@
-import { useUser } from "../lib/useUser";
+import React from 'react'
+import Layout from '../components/layout'
+import { useUser } from '../lib/useUser'
 
 const Home = () => {
-  const user = useUser();
-
-// const handleSubmit = async (e) => {
-//     e.preventDefault();
-//       const res = await fetch("/api/sendgrid", {
-//         // body: JSON.stringify({
-//         //   email: email,
-//         //   fullname: fullname,
-//         //   subject: subject,
-//         //   message: message,
-//         // }),
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         method: "POST",
-//       });
-
-//       const { error } = await res.json();
-//       if (error) {
-//         console.log(error);
-//         return;
-//       }
-//     // console.log(fullname, email, subject, message);
-//   };
+  const user = useUser()
 
   return (
-    <>
+    <Layout>
       <h1 className="text-3xl font-bold underline">Home</h1>
 
       <p>Steps to test this authentication example:</p>
@@ -45,7 +24,7 @@ const Home = () => {
       </ol>
 
       <p>
-        To learn more about Magic, visit their{" "}
+        To learn more about Magic, visit their{' '}
         <a
           href="https://docs.magic.link/"
           target="_blank"
@@ -71,8 +50,8 @@ const Home = () => {
           word-wrap: break-word;
         }
       `}</style>
-    </>
-  );
-};
+    </Layout>
+  )
+}
 
-export default Home;
+export default Home

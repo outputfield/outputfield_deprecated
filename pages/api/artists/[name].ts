@@ -18,6 +18,7 @@ export default async function (
           links: true
         },
       })
+      console.log(artist)
       if (!artist) {
         return res.status(404)
       } else {

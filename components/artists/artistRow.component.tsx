@@ -1,23 +1,26 @@
-import Image from "next/image";
-import Artist from "../data/artist";
+import React from 'react'
+import Image from 'next/image'
+import Artist from '../data/artist'
+
+import Link from 'next/link'
 
 interface Props {
   artist: Artist;
-  type: "list" | "detail";
+  type: 'list' | 'detail';
   onClick?: (event: any) => any;
 }
 
 export const ArtistRow = ({ artist, type, onClick = null }: Props) => {
-  const { name, title = "painter", location, pronouns, medium } = artist;
+  const { name, title = 'painter', location, pronouns, medium } = artist
+  const uri = `/artists/${encodeURIComponent(artist.handle)}`
 
-  return (
+  const row = (
     <div
-      onClick={type === "list" ? () => onClick() : undefined}
-      className={`${type === "detail" ? "border-y" : ""} ${
-        type === "list" ? "border-b last-of-type:border-0" : ""
-      } border-black border-dashed w-full h-min flex flex-col relative px-2 py-3`}>
+      className={`${type === 'detail' ? 'border-y' : ''} ${
+        type === 'list' ? 'border-t' : ''
+      } border-black border-dashed w-full flex flex-col relative pt-[11px] pl-[13px] pb-[8px] pr-[11px]`}>
       <div className="grow relative flex justify-center self-start items-center">
-        <div className="mr-3">
+        <div className="mx-[10px] my-[24px]">
           <Image
             alt="Artist profile pic"
             src="https://via.placeholder.com/100"
@@ -26,27 +29,30 @@ export const ArtistRow = ({ artist, type, onClick = null }: Props) => {
             width={100}
             className="rounded-full"
           />
-          {type == "detail" && <div className="text-center">{pronouns}</div>}
+          {type == 'detail' && <div className="text-center font-serif">{pronouns}</div>}
         </div>
-        <div className="py-auto">
-          {name}
-          <br />
-          <span className="italic">{title}</span>
+        <div className="ml-3 py-auto text-lg">
+          <p className="text-[18px]">{name}</p>
+          <span className="italic lowercase font-serif">{`'${title}'`}</span>
           {title && location && (
             <span className="text-3xl font-light mx-1 align-sub">&#9702;</span>
           )}
           <span>{location}</span>
         </div>
       </div>
-      <div className="text-right uppercase absolute right-0 bottom-3">
+      <span className="text-right text-lg uppercase absolute right-[13px] bottom-[8px]">
         {medium}
-      </div>
+      </span>
     </div>
-  );
-
-  // if (type == "detail") {
-  //   return row;
-  // } else {
-  //   return <a onClick={onClick}>{row}</a>;
-  // }
-};
+  )
+  if (type === 'list') {
+    return (<Link
+      href={`/artists/${encodeURIComponent(artist.handle)}`}
+      className="last-of-type:border last-of-type:border-black last-of-type:border-dashed"
+    >
+      {row}
+    </Link>)
+  } else if (type === 'detail') {
+    return row
+  }
+}

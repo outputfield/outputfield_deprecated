@@ -39,7 +39,7 @@ model Artist {
 
   work              Work[]
   links             Link[]
-  //referredBy        Artist[]
+  referredBy        Artist[]
 
   // Relation fields
   //tokens    Token[]

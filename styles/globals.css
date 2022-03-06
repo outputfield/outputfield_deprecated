@@ -13,14 +13,18 @@
   -webkit-filter: blur(1px);
 }
 
-.glow {
-  /* Primaries/Blue */
+@layer utilities {
+  .glow-blue {
+    /* Shadows/Text */
+    text-shadow: 0px 0px 2px theme('colors.blue');  
+  }
 
-  color: #001aff;
-
-  /* Shadows/Text */
-
-  text-shadow: 0px 0px 2px #001aff;
+  .glow-highlight {  
+    text-shadow: 0px 0px 2px theme('colors.highlight');
+  }
+  .glow-red-lg {
+    box-shadow: 0px 4px 8px rgba(255, 0, 15, 0.2), 0px 5px 8px rgba(255, 0, 31, 0.6);
+  }
 }
 
 input:checked + div {

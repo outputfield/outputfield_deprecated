@@ -1,72 +1,85 @@
-import Link from "next/link";
-import { useUser } from "../lib/useUser";
+import React, {useMemo} from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useUser } from '../lib/useUser'
+
+const LINKS = [
+  {
+    href: '/login',
+    label: 'Login'
+  }, {
+    href: '/artists',
+    label: 'Artists'
+  }, {
+    href: '/profile',
+    label: 'Account'
+  }, {
+    href: 'api/logout',
+    label: 'Logout'
+  }
+]
 
 const Header = () => {
-  const user = useUser();
+  const user = useUser()
+  const router = useRouter()
+
+  const currentPage = useMemo(() => {
+    console.log(router.pathname)
+    const [{ label: page = '' }] = LINKS.filter(({href}) => router.pathname === href)
+    return page
+  }, [router.pathname])
 
   return (
     <header>
-      <nav>
-        <ul>
-          <li>
-            <Link href="/">
-              <a>Home</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/artists">
-              <a>Artists</a>
-            </Link>
-          </li>
-          {user ? (
-            <>
+      <div className="p-4">
+        <div className="group relative">
+          <button className="w-full border border-black drop-shadow text-black px-4 h-10 flex justify-between items-center">
+            <p>{currentPage}</p>
+            <img
+              src="/selectArrow.svg"
+              alt="select arrow"
+              className="justify-self-end"
+            />
+          </button>
+          <nav
+            tabIndex="0"
+            className="z-50 border border-black bg-white invisible w-full absolute left-0 top-full transition-all opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-1">
+            <ul className="py-1">
               <li>
-                <Link href="/profile">
-                  <a>Profile</a>
+                <Link href="/artists">
+                  <a className="block px-4 py-2 hover:bg-gray">Artists</a>
                 </Link>
               </li>
-              <li>
-                <a href="/api/logout">Logout</a>
-              </li>
-            </>
-          ) : (
-            <li>
-              <Link href="/login">
-                <a>Login</a>
-              </Link>
-            </li>
-          )}
-        </ul>
-      </nav>
-      <style jsx>{`
-        nav {
-          max-width: 42rem;
-          margin: 0 auto;
-          padding: 0.2rem 1.25rem;
-        }
-        ul {
-          display: flex;
-          list-style: none;
-          margin-left: 0;
-          padding-left: 0;
-        }
-        li {
-          margin-right: 1rem;
-        }
-        li:first-child {
-          margin-left: auto;
-        }
-        a {
-          color: #fff;
-          text-decoration: none;
-        }
-        header {
-          color: #fff;
-          background-color: #333;
-        }
-      `}</style>
+              {user ? (
+                <>
+                  <li>
+                    <Link href="/profile" passHref>
+                      <a className="block px-4 py-2 hover:bg-gray">
+                        Profile
+                      </a>
+                    </Link>
+                  </li>
+                  <li>
+                    <a
+                      href="/api/logout"
+                      className="block px-4 py-2 hover:bg-gray">
+                      Logout
+                    </a>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Link href="/login" passHref>
+                    <a className="block px-4 py-2 hover:bg-gray">Login</a>
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </nav>
+        </div>
+      </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

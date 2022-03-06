@@ -46,7 +46,7 @@ const Login = () => {
   }
 
   return (
-    <>
+    <Layout>
       <div className="login">
         <Form errorMessage={errorMsg} onSubmit={handleSubmit} />
       </div>
@@ -59,7 +59,7 @@ const Login = () => {
           border-radius: 4px;
         }
       `}</style>
-    </>
+    </Layout>
   )
 }
 
