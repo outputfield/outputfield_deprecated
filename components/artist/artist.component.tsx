@@ -59,8 +59,8 @@ const ArtistPage = (
     )
   } else {
     return (
-      <div className={styles.root+(overlay?' '+styles.overlay:'')}>
-        <div className={styles.exit} onClick={overlay?exitFunction:closeArtist}/>
+      <div>
+        <div onClick={overlay?exitFunction:closeArtist}/>
         <ArtistRow artist={artist} type="detail"/>
         { contactTab?
           (

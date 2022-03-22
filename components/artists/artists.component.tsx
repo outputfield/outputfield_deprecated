@@ -1,57 +1,57 @@
-import { useEffect, useState, componentWillMount } from "react";
+import { useEffect, useState, componentWillMount } from 'react'
 import { NextPageContext } from 'next'
-import { ArtistRow } from "./artistRow.component";
-import artistdata from "../data/artist-data";
-import Artist from "../artist/artist.component";
+import { ArtistRow } from './artistRow.component'
+import artistdata from '../data/artist-data'
+import Artist from '../artist/artist.component'
 
-let data = artistdata.artists;
+const data = artistdata.artists
 
 const ArtistListPage = ({artists}) => {
 
-  const [overlay, setOverlay] = useState("");
+  const [overlay, setOverlay] = useState('')
 
   // save scroll position to return to original point in list after state change
-  let scroll = 0;
+  let scroll = 0
 
   function loadArtist(handle){
-    window.history.pushState({},'',"/artists/"+handle);
-    scroll = window.scrollY;
-    window.scrollTo(window.scrollX,0);
-    setOverlay(handle);
+    window.history.pushState({},'','/artists/'+handle)
+    scroll = window.scrollY
+    window.scrollTo(window.scrollX,0)
+    setOverlay(handle)
   }
 
   function closeOverlay(back=true){
-    setOverlay("");
-    if(back)window.history.go(-1);
-    window.scrollTo(window.scrollX,scroll);
+    setOverlay('')
+    if(back)window.history.go(-1)
+    window.scrollTo(window.scrollX,scroll)
   }
 
   return (
     <div>
       {
-        overlay==""?
-        (
-          <div className={styles.root}>
-            <div className={styles.header}>
-              <div className={styles.results}>
-                {data.length+" result"+(data.length==1?"":"s")}
+        overlay==''?
+          (
+            <div>
+              <div>
+                <div>
+                  {data.length+' result'+(data.length==1?'':'s')}
+                </div>
+              </div>
+              <div>
+                {
+                  data.map((e,i)=>{
+                    return ( <ArtistRow artist={e} onClick={()=>{loadArtist(e.handle)}} type="list"/> )
+                  })
+                }
               </div>
             </div>
-            <div className={styles.artistList}>
-            {
-              data.map((e,i)=>{
-                return ( <ArtistRow artist={e} onClick={()=>{loadArtist(e.handle)}} type="list"/> )
-              })
-            }
-            </div>
-          </div>
-        ):
-        (
-          <Artist overlay={true} artistid={overlay} exitFunction={closeOverlay}/>
-        )
+          ):
+          (
+            <Artist overlay={true} artistid={overlay} exitFunction={closeOverlay}/>
+          )
       }
     </div>
-  );
-};
+  )
+}
 
-export default ArtistListPage;
+export default ArtistListPage
