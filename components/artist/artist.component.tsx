@@ -19,13 +19,12 @@ const ArtistPage = (
     artistid,
     exitFunction,
   }:Props,
-  props
 ) => {
   // renders contact section as a third tab in main view instead of accessible through info
   const contactTab = false
 
   const router = useRouter()
-  let artist = props.test
+  let artist
 
   if (router.query.hasOwnProperty('artistid')){
     artist = artistdata.get(router.query['artistid'])
