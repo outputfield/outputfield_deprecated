@@ -1,5 +1,4 @@
-import { useEffect, useState, componentWillMount } from 'react'
-import { NextPageContext } from 'next'
+import React, { useState } from 'react'
 import { ArtistRow } from './artistRow.component'
 import artistdata from '../data/artist-data'
 import Artist from '../artist/artist.component'
