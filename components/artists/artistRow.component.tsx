@@ -1,17 +1,18 @@
-import Artist from "../data/artist";
+import React from 'react'
+import Artist from '../data/artist'
 
 interface Props {
   artist: Artist;
-  type: "list" | "detail";
+  type: 'list' | 'detail';
   onClick?: (event: any) => any;
 }
 
 export const ArtistRow = ({
   artist,
   type,
-  onClick = null,
+  onClick,
 }:Props) => {
-  let row = (
+  const row = (
     <div>
       <div/>
       <div>
@@ -25,12 +26,12 @@ export const ArtistRow = ({
         <div>
           {artist.location}
         </div><br/>
-        {type == "detail" ?
+        {type == 'detail' ?
           (
             <div>
               {artist.pronouns}
             </div>
-          ):""
+          ):''
         }
       </div>
       <div>
@@ -39,8 +40,8 @@ export const ArtistRow = ({
     </div>
   )
 
-  if(type=="detail"){
-    return row;
+  if(type=='detail'){
+    return row
   } else {
     return (
       <a onClick={onClick}>
