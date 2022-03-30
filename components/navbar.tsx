@@ -1,12 +1,10 @@
 import React, { useState, useContext } from "react";
 import Router from 'next/router'
 import Link from "next/link";
-import useAuth from "../hooks/useAuth";
 import { UserContext } from '../lib/UserContext';
 import magic from '../lib/magic'
 
 export const Navbar = ({}) => {
-  // const { user, loading } = useAuth();
   const [user, setUser] = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -21,8 +19,6 @@ export const Navbar = ({}) => {
     console.log("closing nav");
     setIsOpen(false);
   }
-
-
 
   return (
     <div className="relative inline-block text-left w-full m-2">

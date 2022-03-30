@@ -37,15 +37,15 @@ sound
 class artistlist{
   artists: Artist[];
 
-  constructor(artists : Artist[] = null){
+  constructor(artists : Artist[]){
     this.artists = artists;
   }
 
-  push(artist){
+  push(artist: Artist){
     this.artists[this.artists.length] = artist;
   }
 
-  get(handle){
+  get(handle: any){
     let found = false;
     for(let i=0; i<this.artists.length; i++){
       if(!found && this.artists[i].handle==handle){
@@ -84,7 +84,8 @@ const artistdata = new artistlist(
         new Link("web","https://art.com"),
         new Link("ig","https://instagram.com"),
         new Link("twitter","https://twitter.com")
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "Sofia Wheeler",
@@ -106,7 +107,8 @@ const artistdata = new artistlist(
       [
         new Link("web","https://art.com"),
         new Link("ig","https://instagram.com"),
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "Connor Garrison",
@@ -128,7 +130,8 @@ const artistdata = new artistlist(
       [
         new Link("web","https://art.com"),
         new Link("ig","https://instagram.com"),
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "renderghost",
@@ -147,7 +150,8 @@ const artistdata = new artistlist(
       "I am nowhere, my art does not exist, I am nowhere, my dream doesn't exist. Please, stop. I find that the world has been stolen and that some of my stories must be told in order to keep this world's secrets intact in order to keep this whole universe intact and to keep this whole universe alive.",
       ["3d","design"],
       [],
-      []
+      [],
+      "referrer"
     ),
     new Artist(
       "Selima Khalil",
@@ -169,7 +173,8 @@ const artistdata = new artistlist(
       [
         new Link("web","https://art.com"),
         new Link("ig","https://instagram.com"),
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "Lily Liu",
@@ -190,7 +195,8 @@ const artistdata = new artistlist(
       ["tattoo","movement","performance","3d","design","sound"],
       [
         new Link("web","https://art.com"),
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "Melissa Villanueva",
@@ -212,7 +218,8 @@ const artistdata = new artistlist(
       [
         new Link("web","https://art.com"),
         new Link("ig","https://instagram.com"),
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "Hank Knight",
@@ -234,7 +241,8 @@ const artistdata = new artistlist(
       [
         new Link("web","https://art.com"),
         new Link("ig","https://instagram.com"),
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "harsh pokes",
@@ -256,7 +264,8 @@ const artistdata = new artistlist(
       [
         new Link("web","https://art.com"),
         new Link("ig","https://instagram.com"),
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "dj partybb",
@@ -279,7 +288,8 @@ const artistdata = new artistlist(
         new Link("ig","https://instagram.com"),
         new Link("soundcloud","https://soundcloud.com"),
         new Link("bandcamp","https://bandcamp.com"),
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "Emmanuel Amadi",
@@ -299,7 +309,8 @@ const artistdata = new artistlist(
         new Link("web","https://art.com"),
         new Link("ig","https://instagram.com"),
         new Link("vimeo","https://vimeo.com"),
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "Rachelle Fornier",
@@ -321,7 +332,8 @@ const artistdata = new artistlist(
       [
         new Link("web","https://art.com"),
         new Link("ig","https://instagram.com"),
-      ]
+      ],
+      "referrer"
     ),
     new Artist(
       "Cat Antioch",
@@ -343,7 +355,8 @@ const artistdata = new artistlist(
       [
         new Link("web","https://art.com"),
         new Link("ig","https://instagram.com"),
-      ]
+      ],
+      "referrer"
     ),
   ]
 );

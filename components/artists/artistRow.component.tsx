@@ -1,7 +1,7 @@
 import React from 'react'
 import Artist from '../data/artist'
 
-interface Props {
+export interface ArtistRowProps {
   artist: Artist;
   type: 'list' | 'detail';
   onClick?: (event: any) => any;
@@ -11,7 +11,7 @@ export const ArtistRow = ({
   artist,
   type,
   onClick,
-}:Props) => {
+}:ArtistRowProps) => {
   const row = (
     <div>
       <div/>
