@@ -21,7 +21,7 @@ export const ContactPanel = ({
 
   const [error, setError] = useState("");
 
-  function selectTopic(event){
+  function selectTopic(event: any){
     let e = event.target;
     document.querySelectorAll("#topicSelector div").forEach(
       t => {if(t.classList!=undefined) t.classList.remove("active")}
@@ -38,11 +38,11 @@ export const ContactPanel = ({
     }
   }
 
-  function messageClick(event){
+  function messageClick(event: any){
     let i = document.querySelector("#contactSubject") as HTMLInputElement;
     if(i.disabled && event.target.type != undefined && event.target.type.includes("text")){
       setError("select a topic");
-      document.querySelector("#messageWrap").removeAttribute("onClick");
+      document.querySelector("#messageWrap")?.removeAttribute("onClick");
     }
   }
 
@@ -60,7 +60,7 @@ export const ContactPanel = ({
     } else {
       await sendMessage(
         artist.email,
-        top.textContent,
+        top?.textContent || '',
         sub.value,
         mes.value
       ).then((res)=>{

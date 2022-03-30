@@ -26,28 +26,28 @@ export const TabView = ({
     )
   }
 
-  function selectTab(i){
+  function selectTab(i: any){
     let t = document.querySelector("#tabHeader");
     let f = document.querySelector("#tabFrame");
-    t.querySelectorAll(".tabButton").forEach(
+    t?.querySelectorAll(".tabButton")?.forEach(
       tab => tab.classList.remove("active")
     );
-    f.querySelectorAll(".tabPanel").forEach(
+    f?.querySelectorAll(".tabPanel")?.forEach(
       frame => frame.classList.remove("active")
     );
-    t.querySelectorAll(".tabButton")[i].classList.add("active");
-    f.querySelectorAll(".tabPanel")[i].classList.add("active");
+    t?.querySelectorAll(".tabButton")[i]?.classList?.add("active");
+    f?.querySelectorAll(".tabPanel")[i]?.classList?.add("active");
   }
 
 
   let parsedText, updatedChildren = [];
   for(let i = 0; i < children.length; i++) {
     if(typeof children[i] == "string"){
-      parsedText = parse(children[i]);
+      // parsedText = parse(children[i]);
     } else {
       parsedText = children[i];
     }
-    let cN = `${parsedText.props.className || ""} tabPanel display-none active:display-block`;
+    let cN = `${parsedText?.props?.className || ""} tabPanel display-none active:display-block`;
     updatedChildren[i] = React.cloneElement(parsedText, {className : cN, key: "pane_"+i});
   }
   children = updatedChildren;

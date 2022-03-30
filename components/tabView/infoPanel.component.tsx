@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Artist from "../data/artist";
 import { ContactPanel } from "../tabView/contactPanel.component";
 import { Button } from "../button/button.component";
@@ -16,13 +16,13 @@ export const InfoPanel = ({
 }:Props) => {
   function openContact(){
     let t = document.querySelector("#infoPanel");
-    t.querySelector("#info").classList.remove("active");
-    t.querySelector("#contact").classList.add("active");
+    t?.querySelector("#info")?.classList?.remove("active");
+    t?.querySelector("#contact")?.classList?.add("active");
   }
   function closeContact(){
     let t = document.querySelector("#infoPanel");
-    t.querySelector("#contact").classList.remove("active");
-    t.querySelector("#info").classList.add("active");
+    t?.querySelector("#contact")?.classList?.remove("active");
+    t?.querySelector("#info")?.classList?.add("active");
   }
 
   return (
@@ -69,7 +69,7 @@ export const InfoPanel = ({
             })
           }
         </div>
-        <div className={`flex justify-end w-full py-0 px-61 mb-68 ${includeContact?"":" "+styles.noPad}`}>
+        <div className={`flex justify-end w-full py-0 px-61 mb-68`}>
           {/* <div className="text-left">
             Referred By:<br/>
             <a href={"../artists/"+artist.referredBy.handle}>{artist.referredBy.name}</a>

@@ -1,18 +1,20 @@
 import React, { useState, useContext } from "react";
 import Router from 'next/router'
 import Link from "next/link";
-import { UserContext } from '../lib/UserContext';
-import magic from '../lib/magic'
+import { useUser } from '../lib/hooks'
+import {magic} from '../lib/magic'
 
 export const Navbar = ({}) => {
-  const [user, setUser] = useContext(UserContext);
+  // const [user, setUser] = useContext(UserContext);
+  const user = useUser()
   const [isOpen, setIsOpen] = useState(false);
 
   const logout = () => {
-    magic.user.logout().then(() => {
-      setUser({ user: null });
-      Router.push('/login');
-    });
+    // magic.users.logout().then(() => {
+    //   setUser({ user: null });
+    //   Router.push('/login');
+    // });
+    console.log('logout')
   };
 
   function closeNavbar() {
@@ -65,15 +67,14 @@ export const Navbar = ({}) => {
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"
-        tabIndex="-1">
+      >
         <div className="py-1" role="none">
           {/* <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" --> */}
           <Link href="/artists" passHref>
             <a
               className="text-gray-700 block px-4 py-2 text-sm"
               role="menuitem"
-              tabIndex="-1"
-              id="menu-item-0">
+              id="menu-item-0">P
               Artists
             </a>
           </Link>
@@ -82,7 +83,6 @@ export const Navbar = ({}) => {
               <a
                 className="text-gray-700 block px-4 py-2 text-sm"
                 role="menuitem"
-                tabIndex="-1"
                 id="menu-item-0">
                 Account
               </a>
@@ -92,7 +92,6 @@ export const Navbar = ({}) => {
               <a
                 className="text-gray-700 block px-4 py-2 text-sm"
                 role="menuitem"
-                tabIndex="-1"
                 id="menu-item-1">
                 Login
               </a>
@@ -103,7 +102,6 @@ export const Navbar = ({}) => {
               onClick={logout}
               className="text-gray-700 block w-full text-left px-4 py-2 text-sm"
               role="menuitem"
-              tabIndex="-1"
               id="menu-item-3">
               Sign out
             </button>
