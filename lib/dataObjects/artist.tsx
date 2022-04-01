@@ -14,7 +14,7 @@ export default class Artist{
   mediums: string[];
   mediumsOfInterest: string[];
   links: Link[];
-  referredBy: Artist;
+  referredBy: string;
 
   constructor(
     name: string,
@@ -22,14 +22,14 @@ export default class Artist{
     iconColor: string,
     medium: string,
     location: string,
-    email: string = null,
-    pronouns: string = null,
-    works: Work[] = null,
-    bio: string = null,
-    mediums: string[] = null,
-    mediumsOfInterest: string[] = null,
-    links: Link[] = null,
-    referredBy: Artist = null,
+    email: string,
+    pronouns: string,
+    works: Work[],
+    bio: string,
+    mediums: string[],
+    mediumsOfInterest: string[],
+    links: Link[],
+    referredBy: string,
   ){
     this.name = name;
     this.handle = handle;

@@ -5,12 +5,16 @@ import { WorkPanel } from "../../components/tabView/workPanel.component";
 import { InfoPanel } from "../../components/tabView/infoPanel.component";
 import { ContactPanel } from "../../components/tabView/contactPanel.component";
 import { convertDataToSingleArtist } from '../../lib/misc'
+import { Artist } from '../../types'
+
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
+
 
 export const getStaticPaths = async () => {
   const res = await fetch('http://localhost:3000/api/artists');
   const data = await res.json();
 
-  const paths = data.map(artist => {
+  const paths = data.map((artist: Artist) => {
     return {
       params: { name: artist.handle}
     }
@@ -22,8 +26,8 @@ export const getStaticPaths = async () => {
   }
 }
 
-export const getStaticProps = async(context) => {
-  const name = context.params.name;
+export const getStaticProps: GetStaticProps = async(context) => {
+  const name: any = context?.params?.name;
   const res = await fetch('http://localhost:3000/api/artists/' + name);
   const data = await res.json();
 
@@ -32,10 +36,11 @@ export const getStaticProps = async(context) => {
   }
 }
 
-const ArtistPage = ({ overlay=false, artistdata }) => {
+const ArtistPage = ({ overlay=false, artistdata }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const contactTab = false;
 
   let artist = convertDataToSingleArtist(artistdata);
+  const exitFunction = () => console.log('exit')
 
   const router = useRouter();
   function closeArtist() {

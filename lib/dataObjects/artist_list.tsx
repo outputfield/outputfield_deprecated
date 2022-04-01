@@ -41,11 +41,11 @@ export default class Artistlist {
     this.artists = artists;
   }
 
-  push(artist) {
+  push(artist: Artist) {
     this.artists[this.artists.length] = artist;
   }
 
-  get(handle) {
+  get(handle: any) {
     let found = false;
     for (let i=0; i<this.artists.length; i++) {
       if (!found && this.artists[i].handle==handle) {

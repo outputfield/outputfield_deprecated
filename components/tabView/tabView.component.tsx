@@ -47,16 +47,16 @@ export const TabView = ({
     } else {
       parsedText = children[i];
     }
-    let cN = `${parsedText?.props?.className || ""} tabPanel display-none active:display-block`;
-    updatedChildren[i] = React.cloneElement(parsedText, {className : cN, key: "pane_"+i});
+    let cN = `tabPanel display-none active:display-block`;
+    // updatedChildren[i] = React.cloneElement(parsedText, {className : cN, key: "pane_"+i});
   }
-  children = updatedChildren;
+  // children = updatedChildren;
 
   return (
     <div>
       <div className={`grid grid-cols-${(Array.isArray(headers) && headers.length) || 1} box-border px-36 mr-28`} id="tabHeader">
         {
-          headers.map((t, i) => {
+          headers?.map((t, i) => {
             return (<div key={"tabWrap_"+i}><div key={"tabButton_"+i} className={`tabButton inline-block cursor-pointer border-solid border-2 border-sky-500 active:blue-500`} onClick={()=>selectTab(i)}>{t}</div></div>);
           })
         }

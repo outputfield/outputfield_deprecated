@@ -19,6 +19,7 @@
     "swr": "0.5.5"
   },
   "devDependencies": {
+    "@types/cookie": "^0.4.1",
     "@types/react": "^17.0.38",
     "autoprefixer": "^10.4.2",
     "html-react-parser": "^1.4.10",

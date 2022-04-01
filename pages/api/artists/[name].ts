@@ -7,11 +7,12 @@ export default async function (
 ){
   // if (req.method === 'POST') {
   // }
+  const { name }: { name?: string } = req.query;
   if (req.method === 'GET') {
     try {
       const artist = await prisma.artist.findUnique({
         where: {
-          handle:req.query.name
+          handle: name
         },
         include: {
           work: true,
