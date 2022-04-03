@@ -22,6 +22,7 @@
     "@types/cookie": "^0.4.1",
     "@types/react": "^17.0.38",
     "autoprefixer": "^10.4.2",
+    "eslint": "^8.12.0",
     "html-react-parser": "^1.4.10",
     "postcss": "^8.4.5",
     "prisma": "^3.8.1",

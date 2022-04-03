@@ -6,12 +6,12 @@ import { InfoPanel } from "../../components/tabView/infoPanel.component";
 import { ContactPanel } from "../../components/tabView/contactPanel.component";
 import { convertDataToSingleArtist } from '../../lib/misc'
 import { Artist } from '../../types'
+import { BASE_URL } from '../../lib/constants'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 
-
 export const getStaticPaths = async () => {
-  const res = await fetch('http://localhost:3000/api/artists');
+  const res = await fetch(`${BASE_URL}/artists`);
   const data = await res.json();
 
   const paths = data.map((artist: Artist) => {
