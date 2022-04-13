@@ -1,11 +1,9 @@
 import React from 'react'
 import {useRouter} from 'next/router'
-import Head from 'next/head'
-import {useState} from 'react'
 
 import {ArtistRow} from '../../components/artists/artistRow.component'
-import Link from 'next/link'
 import {convertDataToArtists} from '../../lib/misc'
+import { getArtists } from '../api/artists'
 
 const ArtistListPage = ({ artists }) => {
   const router = useRouter()
@@ -40,8 +38,9 @@ const ArtistListPage = ({ artists }) => {
 }
 
 ArtistListPage.getInitialProps = async function() {
-  const res = await fetch('http://localhost:3000/api/artists')
-  const artists = await res.json()
+  // const res = await fetch('http://localhost:3000/api/artists')
+  // const artists = await res.json()
+  const artists = getArtists()
   return {artists}
 }
 
