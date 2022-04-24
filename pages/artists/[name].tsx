@@ -17,7 +17,7 @@ export const getStaticPaths = async () => {
   const artists = await getArtists()
   console.log(artists)
 
-  const paths = artists?.map((artist) => {
+  const paths = artists?.map((artist: any) => {
     return {
       params: { name: artist.handle}
     }
