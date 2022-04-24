@@ -1,17 +1,17 @@
-import Artist from './dataObjects/artist';
-import Artistlist from './dataObjects/artist_list';
-import Work from './dataObjects/work';
-import Link from './dataObjects/link';
+import Artist from './dataObjects/artist'
+import Artistlist from './dataObjects/artist_list'
+import Work from './dataObjects/work'
+import Link from './dataObjects/link'
 
 /**
   Converting the raw data json objects into array full ob artist objects defined in './dataObjects/artist'
   */
 export function convertDataToArtists(obj: any) {
-  const artistdata = new Artistlist([]);
-  artistdata.artists = new Array();
+  const artistdata = new Artistlist([])
+  artistdata.artists = []
 
-  for (var i = 0; i < Object.keys(obj).length; i++) {
-    let singleArtist = convertDataToSingleArtist(obj[i])
+  for (let i = 0; i < Object.keys(obj).length; i++) {
+    const singleArtist = convertDataToSingleArtist(obj[i])
     artistdata.push(singleArtist)
   }
   return artistdata
@@ -22,22 +22,22 @@ export function convertDataToArtists(obj: any) {
   */
 export function convertDataToSingleArtist(obj: any) {
 
-  var linksample = new Array();
-  for (var m = 0; m < Object.keys(obj.links).length; m++) {
-    let singlelink = obj.links[m];
-    let linkobj = new Link(singlelink.type,
-      singlelink.link);
+  const linksample = []
+  for (let m = 0; m < Object.keys(obj.links).length; m++) {
+    const singlelink = obj.links[m]
+    const linkobj = new Link(singlelink.type,
+      singlelink.link)
 
-    linksample.push(linkobj);
+    linksample.push(linkobj)
   }
 
-  var worksample = new Array();
-  for (var k = 0; k < Object.keys(obj.work).length; k++) {
-    let singlework = obj.work[k];
-    let workobj = new Work(singlework.type,
-      singlework.link);
+  const worksample = []
+  for (let k = 0; k < Object.keys(obj.work).length; k++) {
+    const singlework = obj.work[k]
+    const workobj = new Work(singlework.type,
+      singlework.link)
 
-    worksample.push(workobj);
+    worksample.push(workobj)
   }
 
   return new Artist(

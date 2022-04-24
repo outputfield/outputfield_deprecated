@@ -1,3 +1,5 @@
+import React from 'react'
+
 const Form = ({ errorMessage, onSubmit }) => (
   <form onSubmit={onSubmit}>
     <label>

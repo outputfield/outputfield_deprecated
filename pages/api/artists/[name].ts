@@ -7,10 +7,10 @@ export default async function (
 ){
   // if (req.method === 'POST') {
   // }
-  const { name }: { name?: string } = req.query;
+  const { name }: { name?: string } = req.query
   if (req.method === 'GET') {
     try {
-      const artist = await prisma.artist.findUnique({
+      const artist = await prisma?.artist.findUnique({
         where: {
           handle: name
         },
@@ -22,11 +22,11 @@ export default async function (
       if (!artist) {
         return res.status(404)
       } else {
-        res.status(200).json(artist);
+        res.status(200).json(artist)
       }
     } catch (err) {
-      res.status(405);
-      res.end();
+      res.status(405)
+      res.end()
     }
   }
 }

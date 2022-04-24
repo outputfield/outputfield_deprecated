@@ -5,9 +5,7 @@ import { TabView } from '../../components/tabView/tabView.component'
 import { WorkPanel } from '../../components/tabView/workPanel.component'
 import { InfoPanel } from '../../components/tabView/infoPanel.component'
 import { ContactPanel } from '../../components/tabView/contactPanel.component'
-import { convertDataToSingleArtist } from '../../lib/misc'
-import { Artist } from '../../types'
-// import { BASE_URL } from '../../lib/constants'
+import { BASE_URL } from '../../lib/constants'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { getArtists } from '../api/artists'
@@ -19,7 +17,7 @@ export const getStaticPaths = async () => {
   const artists = await getArtists()
   console.log(artists)
 
-  const paths = artists.map((artist: Artist) => {
+  const paths = artists?.map((artist) => {
     return {
       params: { name: artist.handle}
     }
@@ -45,7 +43,9 @@ export const getStaticProps: GetStaticProps = async(context) => {
 const ArtistPage = ({ overlay=false, artistdata }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const contactTab = false
 
-  const artist = convertDataToSingleArtist(artistdata)
+  // const artist = convertDataToSingleArtist(artistdata)
+  console.log(artistdata)
+  const { artist } = artistdata
   const exitFunction = () => console.log('exit')
 
   const router = useRouter()
