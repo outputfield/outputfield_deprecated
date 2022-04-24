@@ -1,11 +1,10 @@
-import { useRouter } from 'next/router'
+import React, { useRouter } from 'next/router'
 import { ArtistRow } from '../artists/artistRow.component'
 import { TabView } from '../tabView/tabView.component'
 import { WorkPanel } from '../tabView/workPanel.component'
 import { InfoPanel } from '../tabView/infoPanel.component'
 import { ContactPanel } from '../tabView/contactPanel.component'
 import artistdata from '../data/artist-data'
-import Artist from '../data/artist'
 
 interface Props{
   overlay?: boolean;

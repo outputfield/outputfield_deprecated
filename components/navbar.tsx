@@ -1,13 +1,11 @@
-import React, { useState, useContext } from "react";
-import Router from 'next/router'
-import Link from "next/link";
+import React, { useState } from 'react'
+import Link from 'next/link'
 import { useUser } from '../lib/hooks'
-import {magic} from '../lib/magic'
 
-export const Navbar = ({}) => {
+export const Navbar = () => {
   // const [user, setUser] = useContext(UserContext);
   const user = useUser()
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const logout = () => {
     // magic.users.logout().then(() => {
@@ -15,11 +13,11 @@ export const Navbar = ({}) => {
     //   Router.push('/login');
     // });
     console.log('logout')
-  };
+  }
 
   function closeNavbar() {
-    console.log("closing nav");
-    setIsOpen(false);
+    console.log('closing nav')
+    setIsOpen(false)
   }
 
   return (
@@ -62,7 +60,7 @@ export const Navbar = ({}) => {
       <div
         onBlur={closeNavbar}
         className={`origin-top-right ${
-          isOpen ? "absolute" : "hidden"
+          isOpen ? 'absolute' : 'hidden'
         } right-0 mt-2 w-56 rounded-none shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none`}
         role="menu"
         aria-orientation="vertical"
@@ -97,16 +95,16 @@ export const Navbar = ({}) => {
               </a>
             </Link>
           )}
-            <button
-              // type="submit"
-              onClick={logout}
-              className="text-gray-700 block w-full text-left px-4 py-2 text-sm"
-              role="menuitem"
-              id="menu-item-3">
+          <button
+            // type="submit"
+            onClick={logout}
+            className="text-gray-700 block w-full text-left px-4 py-2 text-sm"
+            role="menuitem"
+            id="menu-item-3">
               Sign out
-            </button>
+          </button>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

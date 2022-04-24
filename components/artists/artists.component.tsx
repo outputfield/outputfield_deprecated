@@ -38,8 +38,8 @@ const ArtistListPage = ({artists} :any) => {
               </div>
               <div>
                 {
-                  data.map((e,i)=>{
-                    return ( <ArtistRow artist={e} onClick={()=>{loadArtist(e.handle)}} type="list"/> )
+                  data.map((e)=>{
+                    return ( <ArtistRow key={e.handle} artist={e} onClick={()=>{loadArtist(e.handle)}} type="list"/> )
                   })
                 }
               </div>
