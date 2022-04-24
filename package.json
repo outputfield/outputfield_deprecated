@@ -19,6 +19,7 @@
     "swr": "0.5.5"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^12.1.5",
     "@types/cookie": "^0.4.1",
     "@types/react": "^17.0.38",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
