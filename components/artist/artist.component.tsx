@@ -25,7 +25,7 @@ const ArtistPage = (
   const router = useRouter()
   let artist
 
-  if (router.query.hasOwnProperty('artistid')){
+  if (router.query.artistid){
     artist = artistdata.get(router.query['artistid'])
   } else if (artistid != undefined || artistid != '') {
     artist = artistdata.get(artistid)

@@ -2,7 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 import Header from './header'
 
-const Layout = (props) => (
+const Layout = ({ children }: any) => (
   <>
     <Head>
       <title>Magic</title>
@@ -12,7 +12,7 @@ const Layout = (props) => (
     <Header />
 
     <main>
-      <div className="container">{props.children}</div>
+      <div className="container">{children}</div>
     </main>
 
     <footer>
