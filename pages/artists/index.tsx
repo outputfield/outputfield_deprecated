@@ -1,10 +1,8 @@
 import React from 'react'
 import {useRouter} from 'next/router'
-import {NextPage, GetStaticProps} from 'next'
+import { GetStaticProps } from 'next'
 
 import {ArtistRow} from '../../components/artists/artistRow.component'
-import {convertDataToArtists} from '../../lib/misc'
-import { getArtists } from '../api/artists'
 import { BASE_URL } from '../../lib/constants'
 import { Prisma } from '@prisma/client'
 
@@ -49,18 +47,13 @@ const ArtistListPage = ({ artists }: any) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  // const res = await fetch('http://localhost:3000/api/artists')
-  // const artists = await res.json()
   // const artists = await getArtists()
-  const items = await fetch(`${BASE_URL}/api/artists`)
-  console.log(items)
+  const res = await fetch(`${BASE_URL}/api/artists`)
+  const items = await res.json()
 
-  // return {artists}
   return {
     props: { items }
   }
 }
-
-// ArtistListPage.getInitalProps = getInitialProps
 
 export default ArtistListPage
