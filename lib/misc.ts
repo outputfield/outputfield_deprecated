@@ -22,7 +22,7 @@ export function convertDataToArtists(obj: any) {
   */
 export function convertDataToSingleArtist(obj: any) {
 
-  const linksample = []
+  const linksample: Link[] = []
   for (let m = 0; m < Object.keys(obj.links).length; m++) {
     const singlelink = obj.links[m]
     const linkobj = new Link(singlelink.type,
@@ -31,7 +31,7 @@ export function convertDataToSingleArtist(obj: any) {
     linksample.push(linkobj)
   }
 
-  const worksample = []
+  const worksample: Work[] = []
   for (let k = 0; k < Object.keys(obj.work).length; k++) {
     const singlework = obj.work[k]
     const workobj = new Work(singlework.type,
