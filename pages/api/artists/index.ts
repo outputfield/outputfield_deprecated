@@ -2,7 +2,14 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma'
 
 const FILTERABLE_ARTIST_FIELDS = ['name', 'medium', 'location', 'handle', 'bio']
-
+export const getArtists = () => {
+  return prisma?.artist.findMany({
+    include: {
+      work: true,
+      links: true
+    },
+  })
+}
 // FIXME: This is being called by /artists/[name] page
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   console.log('hitting /api/artists with: ', req.query, req.params)

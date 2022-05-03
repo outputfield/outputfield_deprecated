@@ -1,4 +1,6 @@
-const Form = ({ errorMessage, onSubmit }) => (
+import React from 'react'
+
+const Form = ({ errorMessage, onSubmit }: any) => (
   <form onSubmit={onSubmit}>
     <label>
       <span>Email</span>

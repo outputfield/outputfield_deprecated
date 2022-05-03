@@ -4,7 +4,7 @@ import Artist from '../data/artist'
 
 import Link from 'next/link'
 
-interface Props {
+export interface ArtistRowProps {
   artist: Artist;
   type: 'list' | 'detail';
   onClick?: (event: any) => any;

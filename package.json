@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hapi/iron": "6.0.0",
@@ -25,15 +26,19 @@
     "swr": "0.5.5"
   },
   "devDependencies": {
-    "@types/react": "^17.0.38",
-    "@typescript-eslint/eslint-plugin": "^5.12.0",
-    "@typescript-eslint/parser": "^5.12.0",
+    "@next/eslint-plugin-next": "^12.1.5",
+    "@prisma/client": "^3.13.0",
+    "@types/cookie": "^0.4.1",
+    "@types/node": "^17.0.30",
+    "@types/react": "^17.0.44",
+    "@typescript-eslint/eslint-plugin": "^5.18.0",
+    "@typescript-eslint/parser": "^5.18.0",
     "autoprefixer": "^10.4.2",
-    "eslint": "^8.9.0",
-    "eslint-plugin-react": "^7.28.0",
+    "eslint": "^8.13.0",
+    "eslint-plugin-react": "^7.29.4",
     "postcss": "^8.4.5",
-    "prisma": "^3.8.1",
+    "prisma": "^3.13.0",
     "tailwindcss": "^3.0.18",
-    "typescript": "^4.5.5"
+    "typescript": "^4.6.3"
   }
 }

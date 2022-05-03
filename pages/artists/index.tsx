@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 
-import ArtistsList from './artistsList.tsx'
-import ArtistsFilter from './artistsFilter.tsx'
+import ArtistsList from './artistsList'
+import ArtistsFilter from './artistsFilter'
 import prisma from '../../lib/prisma'
 import { usePaginatedArtists } from '../../lib/usePaginatedArtists'
 import Layout from '../../components/layout'
 
-const ArtistListPage = ({ mediums }) => {
+const ArtistListPage = ({ mediums }: any) => {
   const [filterOpen, setFilterOpen] = useState(false)
   const router = useRouter()
 
