@@ -33,11 +33,8 @@ export const getStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async(context) => {
   const name: any = context?.params?.name
   const data = await getArtist(name)
-  if (data) {
-    data.dateCreatedAt = data.createdAt.toString()
-  }
   return {
-    props: { artistdata : data }
+    props: { artistdata : JSON.parse(JSON.stringify(data)) }
   }
 }
 

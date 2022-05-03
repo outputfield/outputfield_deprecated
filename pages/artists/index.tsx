@@ -49,11 +49,8 @@ const ArtistListPage = ({ artists }: any) => {
 
 export const getStaticProps: GetStaticProps = async () => {
   const items = await getArtists()
-  for (const a of items) {
-    a.dateCreatedAt = a.createdAt.toString()
-  }
   return {
-    props: { items }
+    props: { artists: JSON.parse(JSON.stringify(items)) }
   }
 }
 
