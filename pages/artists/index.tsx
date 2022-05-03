@@ -50,9 +50,6 @@ const ArtistListPage = ({ artists }: any) => {
 export const getStaticProps: GetStaticProps = async () => {
   const items = await getArtists()
   console.log(items)
-  // const res = await fetch(`${BASE_URL}/api/artists`)
-  // const items = await res.json()
-
   return {
     props: { items }
   }

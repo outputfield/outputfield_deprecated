@@ -9,7 +9,6 @@ interface Props {
 export const TabView = ({
   headers,
   children,
-  activeTab = 0,
 }:Props) => {
   if(!Array.isArray(children)){
     const a = []

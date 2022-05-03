@@ -9,6 +9,7 @@ import { BASE_URL } from '../../lib/constants'
 
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { getArtists } from '../api/artists'
+import { getArtist } from '../api/artists/[name]'
 
 export const getStaticPaths = async () => {
   // need to refactor this so it doesn't hit an api
@@ -31,10 +32,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async(context) => {
   const name: any = context?.params?.name
-  const res = await fetch(`${BASE_URL}/api/artists/${name}`)
-  // const res = await fetch('http://localhost:3000/api/artists/' + name);
-  const data = await res.json()
-
+  const data = await getArtist(name)
   return {
     props: { artistdata : data }
   }
