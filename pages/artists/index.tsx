@@ -3,6 +3,7 @@ import {useRouter} from 'next/router'
 import { GetStaticProps } from 'next'
 
 import {ArtistRow} from '../../components/artists/artistRow.component'
+import { getArtists } from '../api/artists'
 import { BASE_URL } from '../../lib/constants'
 import { Prisma } from '@prisma/client'
 
@@ -47,9 +48,10 @@ const ArtistListPage = ({ artists }: any) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  // const artists = await getArtists()
-  const res = await fetch(`${BASE_URL}/api/artists`)
-  const items = await res.json()
+  const items = await getArtists()
+  console.log(items)
+  // const res = await fetch(`${BASE_URL}/api/artists`)
+  // const items = await res.json()
 
   return {
     props: { items }
