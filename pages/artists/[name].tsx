@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps = async(context) => {
   const name: any = context?.params?.name
   const data = await getArtist(name)
   if (data) {
-    data.createdAt = data.createdAt.toString()
+    data.dateCreatedAt = data.createdAt.toString()
   }
   return {
     props: { artistdata : data }
