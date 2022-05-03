@@ -1,8 +1,8 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 
 interface Props {
   headers?: string[];
-  children?: React.ReactNode[];
+  children: React.ReactNode[];
   activeTab?: number;
 }
 
@@ -10,11 +10,11 @@ export const TabView = ({
   headers,
   children,
 }:Props) => {
-  if(!Array.isArray(children)){
-    const a = []
-    a.push(children)
-    children = a as React.ReactNode[]
-  }
+  // if(!Array.isArray(children)){
+  //   const a = []
+  //   a.push(children)
+  //   children = a as React.ReactNode[]
+  // }
 
   if(Array.isArray(headers) && Array.isArray(children) && headers.length != children.length){
     return (
@@ -39,7 +39,7 @@ export const TabView = ({
 
 
   let parsedText: any = []
-  for(let i = 0; i < children.length; i++) {
+  for(let i = 0; i < children?.length; i++) {
     if(typeof children[i] == 'string'){
       // parsedText = parse(children[i]);
     } else {
