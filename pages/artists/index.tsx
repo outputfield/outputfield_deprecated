@@ -165,17 +165,19 @@ const ArtistListPage = ({ mediums }: any) => {
 export async function getStaticProps() {
   const artistsRes = await prisma.artist.findMany({
     include: {
+      user: true,
       work: true,
       links: true,
     },
   })
   const uniqueMediumsRes = await prisma.artist.findMany({
-    distinct: 'medium',
+    distinct: 'mediums',
     select: {
-      medium: true,
+      mediums: true,
     },
   })
   const artists = JSON.parse(JSON.stringify(artistsRes))
+  // TODO: Sort by name
   const mediums = JSON.parse(JSON.stringify(uniqueMediumsRes))
   return {
     props: {

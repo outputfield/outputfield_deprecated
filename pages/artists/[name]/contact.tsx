@@ -35,9 +35,8 @@ export async function getStaticProps(context) {
     where: {
       handle: name,
     },
-    select: {
-      email: true,
-      name: true,
+    include: {
+      user: true
     },
   })
   const artistdata = JSON.parse(JSON.stringify(res))

@@ -6,11 +6,10 @@ import Tabs from '../../../components/tabView/tabView.component'
 import { WorkPanel } from '../../../components/tabView/workPanel.component'
 import { InfoPanel } from '../../../components/tabView/infoPanel.component'
 import { convertDataToSingleArtist } from '../../../lib/misc'
+import artists, { getArtists } from '../../api/artists'
 
 export const getStaticPaths = async () => {
-  const res = await fetch('http://localhost:3000/api/artists')
-  console.log(res)
-  const data = await res.json()
+  const data = await getArtists()
 
   const paths = data.map((artist) => {
     return {
@@ -31,6 +30,7 @@ export async function getStaticProps(context) {
       handle: name,
     },
     include: {
+      user: true,
       work: true,
       links: true,
     },
@@ -44,7 +44,9 @@ export async function getStaticProps(context) {
 }
 
 const ArtistPage = ({ artistdata }) => {
-  const artist = convertDataToSingleArtist(artistdata)
+  console.log('artistdata', artistdata)
+  // const artist = convertDataToSingleArtist(artistdata)
+  const artist = artistdata
   const router = useRouter()
 
   const closeArtist = () => {
@@ -72,7 +74,7 @@ const ArtistPage = ({ artistdata }) => {
         </div>
         <ArtistRow artist={artist} type="detail" />
         <Tabs color="pink" headers={['Work', 'Info']}>
-          <WorkPanel works={artist.works} />
+          <WorkPanel works={artist.work} />
           <InfoPanel artist={artist} />
         </Tabs>
       </div>

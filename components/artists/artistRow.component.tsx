@@ -1,7 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
 import Artist from '../data/artist'
-
 import Link from 'next/link'
 
 export interface ArtistRowProps {
@@ -10,8 +9,9 @@ export interface ArtistRowProps {
   onClick?: (event: any) => any;
 }
 
-export const ArtistRow = ({ artist, type, onClick = null }: Props) => {
-  const { name, title = 'painter', location, pronouns, medium } = artist
+export const ArtistRow = ({ artist, type, onClick = null }: ArtistRowProps) => {
+  const { user:{name} ,title = 'painter', location, pronouns, medium } = artist
+  
   const uri = `/artists/${encodeURIComponent(artist.handle)}`
 
   const row = (

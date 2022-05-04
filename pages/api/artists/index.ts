@@ -1,10 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '../../../lib/prisma'
 
-const FILTERABLE_ARTIST_FIELDS = ['name', 'medium', 'location', 'handle', 'bio']
+const FILTERABLE_ARTIST_FIELDS = ['title', 'location', 'handle', 'bio']
 export const getArtists = () => {
   return prisma?.artist.findMany({
     include: {
+      user: true,
       work: true,
       links: true
     },
@@ -18,27 +19,36 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     try {
       const take = _limit && parseInt(_limit)
       const skip = _page && _limit && parseInt(_limit) * (parseInt(_page) - 1)
-      const prismsQuery = {
+      const prismaQuery = {
         take,
         skip,
         include: {
+          user: true,
           work: true,
           links: true,
         },
         where: {
           mediums: filters && JSON.parse(filters).length ? { hasSome: JSON.parse(filters) } : undefined,
           OR: search
-            ? FILTERABLE_ARTIST_FIELDS.map((a) => ({
-              [a]: { contains: search, mode: 'insensitive' },
-            }))
+            ? [
+              ...FILTERABLE_ARTIST_FIELDS.map((a) => ({
+                [a]: { contains: search, mode: 'insensitive' },
+              })),
+              {mediums: {
+                has: search
+              }},
+              {user: {
+                name: { contains: search, mode: 'insensitive' }
+              }}
+            ]
             : undefined,
         },
-        orderBy: {
-          name: 'asc', // TODO: sort title
-        },
+        // orderBy: {
+        //   name: 'asc', // TODO: sort title
+        // },
       }
-      console.log(JSON.stringify(prismsQuery, null, 2))
-      const data = await prisma.artist.findMany(prismsQuery)
+      console.log(JSON.stringify(prismaQuery, null, 2))
+      const data = await prisma.artist.findMany(prismaQuery)
 
       if (!data) {
         return res.status(404)

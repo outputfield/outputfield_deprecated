@@ -33,7 +33,7 @@
     "@types/react": "^17.0.44",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
-    "autoprefixer": "^10.4.2",
+    "autoprefixer": "10.4.5",
     "eslint": "^8.13.0",
     "eslint-plugin-react": "^7.29.4",
     "postcss": "^8.4.5",
