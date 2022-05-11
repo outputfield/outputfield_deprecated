@@ -8,6 +8,7 @@ export const getArtist = (artistName: any) => {
       handle: artistName
     },
     include: {
+      user: true,
       work: true,
       links: true
     },

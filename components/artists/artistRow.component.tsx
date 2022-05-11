@@ -10,9 +10,7 @@ export interface ArtistRowProps {
 }
 
 export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
-  const { user:{ name } ,title, handle, location, pronoun, medium } = artist
-  
-  const uri = `/artists/${encodeURIComponent(handle)}`
+  const uri = `/artists/${encodeURIComponent(artist?.handle || '')}`
 
   const row = (
     <div
@@ -29,19 +27,19 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
             width={100}
             className="rounded-full"
           />
-          {type == 'detail' && <div className="text-center font-serif">{pronoun}</div>}
+          {type == 'detail' && <div className="text-center font-serif">{artist?.pronoun}</div>}
         </div>
         <div className="ml-3 py-auto text-lg">
-          <p className="text-[18px]">{name}</p>
-          <span className="italic lowercase font-serif">{`'${title}'`}</span>
-          {title && location && (
+          <p className="text-[18px]">{artist?.user.name}</p>
+          <span className="italic lowercase font-serif">{`'${artist?.title}'`}</span>
+          {artist?.title && artist?.location && (
             <span className="text-3xl font-light mx-1 align-sub">&#9702;</span>
           )}
-          <span>{location}</span>
+          <span>{artist?.location}</span>
         </div>
       </div>
       <span className="text-right text-lg uppercase absolute right-[13px] bottom-[8px]">
-        {medium}
+        {artist?.mediums}
       </span>
     </div>
   )

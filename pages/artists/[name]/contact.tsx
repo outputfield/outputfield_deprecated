@@ -5,13 +5,15 @@ import { Button } from '../../../components/button/button.component'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useUser } from '../../../lib/useUser'
+import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
+import { ParsedUrlQuery } from 'querystring'
 
-interface Props {
-  artist: Artist;
-  separateTab?: boolean;
-  className?: string;
-  onClick?: (event: any) => any;
-}
+// interface Props {
+//   artist: Artist;
+//   separateTab?: boolean;
+//   className?: string;
+//   onClick?: (event: any) => any;
+// }
 
 const TOPICS = ['Collab', 'Business', 'Other']
 
@@ -29,8 +31,13 @@ export const getStaticPaths = async () => {
   }
 }
 
-export async function getStaticProps(context) {
-  const { name } = context.params
+
+interface IParams extends ParsedUrlQuery {
+  name: string
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const { name } = context.params as IParams
   const res = await prisma.artist.findUnique({
     where: {
       handle: name,
@@ -47,7 +54,7 @@ export async function getStaticProps(context) {
   }
 }
 
-const Contact = ({ artistdata }: Props) => {
+const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {
     register,
     handleSubmit,
@@ -61,20 +68,20 @@ const Contact = ({ artistdata }: Props) => {
   const router = useRouter()
   const user = useUser()
 
-  function selectTopic(event) {
+  function selectTopic(event: any) {
     const { value } = event.target
     setTopic(value)
     clearErrors()
   }
 
-  function messageClick(event) {
+  function messageClick() {
     if (topic === null) {
       setError('topic', { type: 'manual', message: 'Select a topic' })
-      document.querySelector('#messageWrap').removeAttribute('onClick')
+      document?.querySelector('#messageWrap')?.removeAttribute('onClick')
     }
   }
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     trigger()
     const { email: senderEmail } = user
     const { name: recipientName, email: recipientEmail } = artistdata

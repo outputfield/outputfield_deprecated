@@ -1,35 +1,39 @@
-import React, { useState, useEffect } from "react";
-import Swipe from "react-easy-swipe";
-import Image from "next/image";
+import React, { useState, useEffect } from 'react'
+import Swipe from 'react-easy-swipe'
+import Image from 'next/image'
+
+interface Slide {
+  link: string;
+}
 
 type Props = {
-  data: string;
+  data: Slide[];
   className: string;
 };
 
-export default function Carousel({ data, className }: Props) {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [paused, setPaused] = useState(false);
+const Carousel: React.FC<Props> = ({ data, className }) => {
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const [paused, setPaused] = useState(false)
 
   useEffect(() => {
     const i = setInterval(() => {
       if (!paused) {
-        let newSlide = currentSlide === data.length - 1 ? 0 : currentSlide + 1;
-        setCurrentSlide(newSlide);
+        const newSlide = currentSlide === data.length - 1 ? 0 : currentSlide + 1
+        setCurrentSlide(newSlide)
       }
-    }, 3000);
-    return () => clearInterval(i);
-  }, []);
+    }, 3000)
+    return () => clearInterval(i)
+  }, [])
 
   const nextSlide = () => {
-    let newSlide = currentSlide === data.length - 1 ? 0 : currentSlide + 1;
-    setCurrentSlide(newSlide);
-  };
+    const newSlide = currentSlide === data.length - 1 ? 0 : currentSlide + 1
+    setCurrentSlide(newSlide)
+  }
 
   const prevSlide = () => {
-    let newSlide = currentSlide === 0 ? data.length - 1 : currentSlide - 1;
-    setCurrentSlide(newSlide);
-  };
+    const newSlide = currentSlide === 0 ? data.length - 1 : currentSlide - 1
+    setCurrentSlide(newSlide)
+  }
 
   return (
     <div className={`mt-8 ${className}`}>
@@ -42,7 +46,6 @@ export default function Carousel({ data, className }: Props) {
         <Swipe onSwipeLeft={nextSlide} onSwipeRight={prevSlide}>
           {data.map((slide, index) => {
             return (
-              // TODO: USE NEXT IMAGE HERE
               <Image
                 src={slide.link}
                 layout="fill"
@@ -50,13 +53,13 @@ export default function Carousel({ data, className }: Props) {
                 key={index}
                 className={
                   index === currentSlide
-                    ? "block w-full h-auto object-cover"
-                    : "hidden"
+                    ? 'block w-full h-auto object-cover'
+                    : 'hidden'
                 }
                 onMouseEnter={() => setPaused(true)}
                 onMouseLeave={() => setPaused(false)}
               />
-            );
+            )
           })}
         </Swipe>
 
@@ -66,12 +69,12 @@ export default function Carousel({ data, className }: Props) {
               <div
                 className={
                   index === currentSlide
-                    ? "h-2 w-2 bg-blue-700 rounded-full mx-2 mb-2 cursor-pointer"
-                    : "h-2 w-2 bg-white rounded-full mx-2 mb-2 cursor-pointer"
+                    ? 'h-2 w-2 bg-blue-700 rounded-full mx-2 mb-2 cursor-pointer'
+                    : 'h-2 w-2 bg-white rounded-full mx-2 mb-2 cursor-pointer'
                 }
                 key={index}
                 onClick={() => setCurrentSlide(index)}></div>
-            );
+            )
           })}
         </div>
 
@@ -81,5 +84,7 @@ export default function Carousel({ data, className }: Props) {
         />
       </div>
     </div>
-  );
+  )
 }
+
+export default Carousel

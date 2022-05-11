@@ -5,13 +5,14 @@ type Props = {
   name: string;
   value: boolean;
   label: string;
+  onChange: (name: string, checked: boolean) => void;
   defaultChecked: boolean;
 };
 
 const Checkbox = ({ value, name, label, onChange, defaultChecked }: Props) => {
   const [checked, setChecked] = React.useState(defaultChecked || false)
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(name, e.target.checked)
     setChecked(!checked)
   }
@@ -27,7 +28,6 @@ const Checkbox = ({ value, name, label, onChange, defaultChecked }: Props) => {
         id={name}
         name={name}
         className="opacity-0 absolute peer"
-        value={true}
         onChange={handleChange}
         checked={checked}
       />

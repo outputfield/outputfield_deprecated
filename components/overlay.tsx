@@ -1,6 +1,11 @@
 import React from 'react'
 
-export default function Overlay({ className, children }) {
+type Props = {
+  className?: string;
+  children?: React.ReactNode;
+}
+
+const Overlay: React.FC<Props> = ({ className, children })  => {
   return (
     <div
       id="filter"
@@ -11,7 +16,7 @@ export default function Overlay({ className, children }) {
       <div className="flex justify-center min-h-screen text-center sm:block sm:p-0">
         {/* <!--
                 Modal panel, show/hide based on modal state.
-
+                TODO: 
                 Entering: "ease-out duration-300"
                   From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                   To: "opacity-100 translate-y-0 sm:scale-100"
@@ -29,3 +34,5 @@ export default function Overlay({ className, children }) {
     </div>
   )
 }
+
+export default Overlay
