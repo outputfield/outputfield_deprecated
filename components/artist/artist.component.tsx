@@ -1,9 +1,9 @@
 import React, { useRouter } from 'next/router'
 import { ArtistRow } from '../artists/artistRow.component'
-import { TabView } from '../tabView/tabView.component'
+import TabView from '../tabView/tabView.component'
 import { WorkPanel } from '../tabView/workPanel.component'
 import { InfoPanel } from '../tabView/infoPanel.component'
-import { ContactPanel } from '../tabView/contactPanel.component'
+// import { ContactPanel } from '../tabView/contactPanel.component'
 import artistdata from '../data/artist-data'
 
 interface Props{
@@ -66,7 +66,7 @@ const ArtistPage = (
             <TabView headers={['work','info','contact']} activeTab={0}>
               <WorkPanel works={artist.works}/>
               <InfoPanel artist={artist} includeContact={false} />
-              <ContactPanel artist={artist} separateTab={true}/>
+              {/* <ContactPanel artist={artist} separateTab={true}/> */}
             </TabView>
           ) :
           (

@@ -12,7 +12,7 @@ interface Props {
 }
 
 function ArtistsList({
-  artists, 
+  artists,
   fetchMore, 
   isLoadingMore,
   isReachingEnd

@@ -25,7 +25,7 @@ export default function ArtistsFilter({
   useEffect(() => {
     const defaultFilters = {}
     console.log(selectedFilters)
-    mediums.forEach(({ medium }) => {
+    mediums.forEach(( medium ) => {
       defaultFilters[medium] = selectedFilters.includes(medium)
     })
     setFilters(defaultFilters)
@@ -74,7 +74,7 @@ export default function ArtistsFilter({
       </div>
       <div className="my-5 text-center">
         <form className="mx-auto max-w-fit">
-          {mediums.map(({ medium, i }) => {
+          {mediums.map(( medium ) => {
             const n = `filters[${medium}]`
             return (
               <Checkbox

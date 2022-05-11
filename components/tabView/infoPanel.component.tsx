@@ -9,17 +9,12 @@ interface Props {
   className?: string;
   includeContact?: boolean;
 }
-const ARTISTS_LINKS = {
-  Web: 'https://google.com',
-  IG: 'https://google.com',
-}
 
-// TODO: move this into /pages/artists/[name]
-export const InfoPanel = ({
+export const InfoPanel: React.FC<Props> = ({
   artist,
   className,
   includeContact = true,
-}: Props) => {
+}) => {
   const router = useRouter()
 
   console.log(artist)
@@ -79,8 +74,12 @@ export const InfoPanel = ({
         <div className="absolute uppercase mt-2 mr-8">
           Referred By:
           <br />
-          <a className="underline glow-highlight">Clay Brick</a>
-          {/* <a href={"../artists/"+artist.referredBy.handle}>{artist.referredBy.name}</a> */}
+          <a
+            className="underline glow-highlight"
+            href={'/artists/'+artist.referredBy.handle}
+          >
+            {artist.referredBy.user.name}
+          </a>
         </div>
       </div>
 

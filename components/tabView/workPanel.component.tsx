@@ -1,6 +1,6 @@
-import React from "react";
-import Work from "../data/work";
-import Carousel from '../carousel';
+import React from 'react'
+import Work from '../data/work'
+import Carousel from '../carousel'
 
 interface Props {
   works: Work[];

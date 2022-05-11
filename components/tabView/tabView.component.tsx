@@ -6,7 +6,7 @@ interface Props {
   activeTab?: number;
 }
 
-const Tabs = ({ headers, children }: Props) => {
+const TabView: React.FC<Props> = ({ headers, children }) => {
   const [openTab, setOpenTab] = React.useState(0)
 
   if (
@@ -58,7 +58,7 @@ const Tabs = ({ headers, children }: Props) => {
           {children.map((panel, index) => (
             <div
               className={`m-2 glow-red-lg shadow-lg ${openTab === index ? 'block' : 'hidden'}`}
-              id={`${headers?.index}`}
+              id={'index'}
               key={index}
             >
               {panel}
@@ -70,4 +70,4 @@ const Tabs = ({ headers, children }: Props) => {
   )
 }
 
-export default Tabs
+export default TabView

@@ -7,13 +7,13 @@ interface Props {
   className: string;
 }
 
-export const Button = ({
+export const Button: React.FC<Props> = ({
   children,
   onClick,
   id,
   className,
   ...props
-}: Props) => {
+}) => {
   return (
     <button
       className={`my-0px px-2 mx-auto flex items-center justify-center min-w-fit h-16 bg-black text-white border-box uppercase shadow-sm disabled:bg-gray disabled:shadow-none ${className}`}

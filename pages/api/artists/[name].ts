@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { Prisma } from '@prisma/client'
 import prisma from '../../../lib/prisma'
 
 export const getArtist = (artistName: any) => {
@@ -12,6 +13,8 @@ export const getArtist = (artistName: any) => {
     },
   })
 }
+
+export type ArtistWithWorkAndLinks = Prisma.PromiseReturnType<typeof getArtist>
 
 export default async function (
   req: NextApiRequest,

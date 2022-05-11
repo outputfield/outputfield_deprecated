@@ -1,18 +1,18 @@
 import React from 'react'
 import Image from 'next/image'
-import Artist from '../data/artist'
 import Link from 'next/link'
+import { ArtistWithWorkAndLinks } from '../../pages/api/artists/[name]'
 
 export interface ArtistRowProps {
-  artist: Artist;
+  artist: ArtistWithWorkAndLinks;
   type: 'list' | 'detail';
-  onClick?: (event: any) => any;
+  className?: string;
 }
 
-export const ArtistRow = ({ artist, type, onClick = null }: ArtistRowProps) => {
-  const { user:{name} ,title = 'painter', location, pronouns, medium } = artist
+export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
+  const { user:{ name } ,title, handle, location, pronoun, medium } = artist
   
-  const uri = `/artists/${encodeURIComponent(artist.handle)}`
+  const uri = `/artists/${encodeURIComponent(handle)}`
 
   const row = (
     <div
@@ -29,7 +29,7 @@ export const ArtistRow = ({ artist, type, onClick = null }: ArtistRowProps) => {
             width={100}
             className="rounded-full"
           />
-          {type == 'detail' && <div className="text-center font-serif">{pronouns}</div>}
+          {type == 'detail' && <div className="text-center font-serif">{pronoun}</div>}
         </div>
         <div className="ml-3 py-auto text-lg">
           <p className="text-[18px]">{name}</p>
@@ -47,12 +47,12 @@ export const ArtistRow = ({ artist, type, onClick = null }: ArtistRowProps) => {
   )
   if (type === 'list') {
     return (<Link
-      href={`/artists/${encodeURIComponent(artist.handle)}`}
+      href={uri}
       className="last-of-type:border last-of-type:border-black last-of-type:border-dashed"
     >
       {row}
     </Link>)
-  } else if (type === 'detail') {
-    return row
-  }
+  } 
+
+  return row
 }
