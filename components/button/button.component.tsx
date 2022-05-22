@@ -5,6 +5,8 @@ interface Props {
   onClick?: (event: any) => any;
   id?: string;
   className: string;
+  buttonType?: 'button' | 'submit' | 'reset' | undefined;
+  isDisabled?: boolean;
 }
 
 export const Button: React.FC<Props> = ({
@@ -12,6 +14,8 @@ export const Button: React.FC<Props> = ({
   onClick,
   id,
   className,
+  buttonType,
+  isDisabled,
   ...props
 }) => {
   return (
@@ -19,6 +23,8 @@ export const Button: React.FC<Props> = ({
       className={`my-0px px-2 mx-auto flex items-center justify-center min-w-fit h-16 bg-black text-white border-box uppercase shadow-sm disabled:bg-gray disabled:shadow-none ${className}`}
       onClick={onClick}
       id={id}
+      type={buttonType}
+      disabled={isDisabled}
       {...props}>
       {children}
     </button>

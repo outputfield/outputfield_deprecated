@@ -8,7 +8,7 @@ interface Slide {
 
 type Props = {
   data: Slide[];
-  className: string;
+  className?: string;
 };
 
 const Carousel: React.FC<Props> = ({ data, className }) => {

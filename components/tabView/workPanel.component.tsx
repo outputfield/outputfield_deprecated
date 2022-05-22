@@ -9,9 +9,8 @@ interface Props {
 
 export const WorkPanel = ({
   works,
-  className,
 }:Props) => {
   return (
-    <Carousel data={works} className={className} />
+    <Carousel data={works} />
   )
 }

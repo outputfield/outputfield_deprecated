@@ -1,24 +1,23 @@
-import React, { useRef } from 'react'
+import React, { useState, useRef } from 'react'
 
-import Artist from '../data/artist'
 import { ArtistRow } from '../../components/artists/artistRow.component'
-import { useState } from 'react'
+import { ArtistsWithWorksAndLinks } from '../api/artists'
 
 interface Props {
-  artists: Artist;
-  fetchMore: (event: any) => any;
+  artists: ArtistsWithWorksAndLinks;
+  fetchMore: () => any;
   isLoadingMore: boolean;
   isReachingEnd: boolean;
 }
 
-function ArtistsList({
+const ArtistsList: React.FC<Props> = ({
   artists,
   fetchMore, 
   isLoadingMore,
   isReachingEnd
-}: Props) {
+}) => {
   const [lockScroll, setLockScroll] = useState(false)
-  const listInnerRef = useRef()
+  const listInnerRef = useRef<HTMLDivElement>(null)
 
   const onScroll = () => {
     if (listInnerRef.current) {

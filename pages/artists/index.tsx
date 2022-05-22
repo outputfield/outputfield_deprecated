@@ -48,7 +48,7 @@ const ArtistListPage = ({ mediums }: any) => {
     unfreezeDocument()
   }
 
-  const submitFilters = (filters) => {
+  const submitFilters = (filters: string[]) => {
     setFilters(filters)
     closeFilters()
   }
@@ -150,7 +150,7 @@ const ArtistListPage = ({ mediums }: any) => {
       </div>
 
       <ArtistsFilter
-        filters={mediums}
+        filterOptions={mediums}
         onClose={closeFilters}
         onSubmit={submitFilters}
         onUnmount={unfreezeDocument}
@@ -169,10 +169,10 @@ export async function getStaticProps() {
     },
   })
   const data = JSON.parse(JSON.stringify(uniqueMediumsRes))
-  const mediums = data.reduce((a, c) => {
+  const mediums = data.reduce((a: any, c: any) => {
     return [...a, ...c['mediums']]
   }, [])
-  const uniqueMediums = mediums.filter((v, i, a) => a.indexOf(v) === i);
+  const uniqueMediums = mediums.filter((v: any, i: any, a: any) => a.indexOf(v) === i)
   return {
     props: {
       mediums: uniqueMediums,

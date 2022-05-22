@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 type Props = {
@@ -6,18 +6,20 @@ type Props = {
   value: boolean;
   label: string;
   onChange: (name: string, checked: boolean) => void;
-  defaultChecked: boolean;
+  defaultChecked?: boolean;
 };
 
-const Checkbox = ({ value, name, label, onChange, defaultChecked }: Props) => {
-  const [checked, setChecked] = React.useState(defaultChecked || false)
+const Checkbox: React.FC<Props> = ({
+  value, name, label, onChange, defaultChecked = false
+}) => {
+  const [checked, setChecked] = useState(defaultChecked)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(name, e.target.checked)
     setChecked(!checked)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     setChecked(value)
   }, [value])
 

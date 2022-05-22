@@ -1,9 +1,10 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 import sgClient from '../../../lib/sendgridClient'
 
 /**
-    Artist to Artist Contact
+  Artist to Artist Contact
  */
-export default async function sendArtistEmail(req, res) {
+export default async function sendArtistEmail(req: NextApiRequest, res: NextApiResponse) {
   try {
     const {
       senderName = '',
@@ -12,6 +13,9 @@ export default async function sendArtistEmail(req, res) {
       recipientEmail,
       topic,
       subject,
+      title,
+      location,
+      mediums,
       message,
     } = req.body
     // console.log("REQ.BODY", req.body);
@@ -25,14 +29,14 @@ export default async function sendArtistEmail(req, res) {
         subject : `[${topic}]: ${subject}`,
         title,
         location,
-        medium,
+        mediums,
         message,
         recipientName,
         senderEmail,
       },
     }
     await sgClient.send(msg)
-  } catch (error) {
+  } catch (error: any) {
     // console.log(error);
     return res.status(error.statusCode || 500).json({ error: error.message })
   }

@@ -1,25 +1,17 @@
 import React, { useState } from 'react'
 import { ErrorMessage } from '@hookform/error-message'
-import Artist from '../../..components/data/artist'
 import { Button } from '../../../components/button/button.component'
-import { useForm } from 'react-hook-form'
+import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useUser } from '../../../lib/useUser'
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-
-// interface Props {
-//   artist: Artist;
-//   separateTab?: boolean;
-//   className?: string;
-//   onClick?: (event: any) => any;
-// }
+import { getArtists } from '../../api/artists'
 
 const TOPICS = ['Collab', 'Business', 'Other']
 
 export const getStaticPaths = async () => {
-  const res = await fetch('http://localhost:3000/api/artists')
-  const data = await res.json()
+  const data = await getArtists()
   const paths = data.map((artist) => {
     return {
       params: { name: artist.handle },
@@ -30,7 +22,6 @@ export const getStaticPaths = async () => {
     fallback: false,
   }
 }
-
 
 interface IParams extends ParsedUrlQuery {
   name: string
@@ -62,7 +53,7 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
     clearErrors,
     trigger,
     getFieldState,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors },
   } = useForm()
   const [topic, setTopic] = useState(null)
   const router = useRouter()
@@ -81,10 +72,10 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
     }
   }
 
-  const onSubmit = async (data: any) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     trigger()
     const { email: senderEmail } = user
-    const { name: recipientName, email: recipientEmail } = artistdata
+    const { name: recipientName, email: recipientEmail, title, mediums } = artistdata
     const { subject, message } = data
 
     const senderName = 'Buddy'  // TODO: grab sender's name inside of this component...
@@ -97,7 +88,7 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
       subject,
       title,
       location,
-      medium,
+      mediums,
       message,
       senderEmail,
     }
@@ -111,7 +102,7 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
     })
   }
 
-  const onError = (errors, e) => console.log(errors, e)
+  const onError:SubmitErrorHandler<FieldErrors> = (errors, e) => console.log(errors, e)
 
   return (
     <form
@@ -178,7 +169,7 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
         <ErrorMessage errors={errors} name="subject" as="p" />
         <ErrorMessage errors={errors} name="message" as="p" />
       </div>
-      <Button className="mb-8 w-7/12 text-lg" type="submit">contact</Button>
+      <Button className="mb-8 w-7/12 text-lg" buttonType="submit">contact</Button>
     </form>
   )
 }

@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useSWRInfinite } from 'swr'
 
-const fetcher = (url) => fetch(url).then((res) => res.json())
+const fetcher = (url: any) => fetch(url).then((res) => res.json())
 
 // Based on // https://www.ibrahima-ndaw.com/blog/data-fetching-in-nextjs-using-useswr/#paginating-the-data-with-useswrinfinite
-export const usePaginatedArtists = (path) => {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filters, setFilters] = useState([])
+export const usePaginatedArtists = (path: any) => {
+  const [searchTerm, setSearchTerm] = useState<string>('')
+  const [filters, setFilters] = useState<string[]>([])
   if (!path) {
     throw new Error('Path is required')
   }
@@ -26,13 +26,13 @@ export const usePaginatedArtists = (path) => {
 
   const artists = data ? [].concat(...data) : []
 
-  const isLoadingInitialData = !data && !error
-  const isLoadingMore =
+  const isLoadingInitialData: boolean = !data && !error
+  const isLoadingMore: boolean =
     isLoadingInitialData ||
-    (size > 0 && data && typeof data[size - 1] === 'undefined')
-  const isEmpty = data?.[0]?.length === 0
-  const isReachingEnd =
-    isEmpty || (data && data[data.length - 1]?.length < PAGE_LIMIT)
+      Boolean(size > 0 && data && typeof data[size - 1] === 'undefined')
+  const isEmpty: boolean = data?.[0]?.length === 0
+  const isReachingEnd: boolean =
+    isEmpty || Boolean(data && data[data.length - 1]?.length < PAGE_LIMIT)
 
   return {
     artists,

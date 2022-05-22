@@ -1,57 +1,68 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useReducer } from 'react'
 import Overlay from '../../components/overlay'
 import Checkbox from '../../components/checkbox'
 import { Button } from '../../components/button/button.component'
 
-export default function ArtistsFilter({
+interface Props {
+  onClose: () => void;
+  onSubmit: (filters: string[]) => void;
+  onUnmount: () => void;
+  filterOptions: string[];
+  selectedFilters: string[];
+  className?: string;
+}
+
+type FilterAction = ({ type: 'UPDATE', filterName: string }) | {type: 'CLEAR'}
+
+interface FilterState {
+  [x: string]: boolean;
+}
+
+const ArtistsFilter: React.FC<Props> = ({
   onClose,
   onSubmit,
   onUnmount,
-  filters: mediums,
+  filterOptions,
   selectedFilters,
   className,
-}) {
-  const [filters, setFilters] = useState(null)
+}) => {
+  const [state, dispatch] = useReducer(
+    (state: FilterState, action: FilterAction) => {
+      const _state = {...state}
+      switch(action.type) {
+      case 'UPDATE':
+        return { [action.filterName]: !_state[action.filterName], ...state }
+      case 'CLEAR':
+        return Object.keys(_state).reduce((acc, curr) => ({[curr]: false, ...acc }), {})
+      }
+      
+    },
+    filterOptions.reduce((acc, curr) => ({[curr]: selectedFilters.includes(curr), ...acc}), {})
+  )
 
   const filtersCount = useMemo(() => {
-    if (filters && Object.values(filters).some((f) => f === true)) {
-      return Object.values(filters).filter((f) => f === true).length
+    if (state && Object.values(state).some((f) => f === true)) {
+      return Object.values(state).filter((f) => f === true).length
     } else {
       return 0
     }
-  }, [filters])
-
-  // Set default filters on mount
-  useEffect(() => {
-    const defaultFilters = {}
-    console.log(selectedFilters)
-    mediums.forEach(( medium ) => {
-      defaultFilters[medium] = selectedFilters.includes(medium)
-    })
-    setFilters(defaultFilters)
-  }, [mediums])
+  }, [state])
 
   // Unfreeze scrolling on unmount
   useEffect(() => {
     return (() => onUnmount())
   }, [])
 
-  const onCheckChange = (name, value) => {
-    const _filters = { ...filters }
-    _filters[name] = value
-    setFilters(_filters)
+  const onCheckChange = (name: string) => {
+    dispatch({ type: 'UPDATE', filterName: name })
   }
 
-  const clearFilters = () => {
-    const _filters = { ...filters }
-    Object.keys(_filters).forEach((k) => (_filters[k] = false))
-    setFilters(_filters)
-  }
+  const clearFilters = () => dispatch({ type: 'CLEAR' })
 
   const handleSubmit = () => {
     // convert filters to list
-    const filtersList = Object.keys(filters).reduce(
-      (a, c) => (filters[c] ? [...a, c] : a),
+    const filtersList = Object.keys(state).reduce<string[]>(
+      (a, c) => (state[c] ? [...a, c] : a),
       []
     )
     onSubmit(filtersList)
@@ -74,14 +85,14 @@ export default function ArtistsFilter({
       </div>
       <div className="my-5 text-center">
         <form className="mx-auto max-w-fit">
-          {mediums.map(( medium ) => {
+          {filterOptions.map(( medium ) => {
             const n = `filters[${medium}]`
             return (
               <Checkbox
                 key={medium}
                 name={medium}
                 label={medium}
-                value={filters ? filters[medium] : false}
+                value={state ? state[medium] : false}
                 onChange={onCheckChange}
               />
             )
@@ -92,7 +103,7 @@ export default function ArtistsFilter({
           <Button
             onClick={handleSubmit}
             className="absolute w-48 inline-flex justify-center"
-            disabled={filtersCount === 0}>
+            isDisabled={filtersCount === 0}>
             Filter <span className="glow-highlight text-highlight ml-1">{`(${filtersCount})`}</span>
           </Button>
         </div>
@@ -100,3 +111,5 @@ export default function ArtistsFilter({
     </Overlay>
   )
 }
+
+export default ArtistsFilter
