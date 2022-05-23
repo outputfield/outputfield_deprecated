@@ -10,7 +10,7 @@ export default async function handle (
   if (request.method === 'GET') {
     try {
       const allUsers = await prisma.user.findMany({
-        include: { projects: true }
+        // include: { projects: true }
       })
       if (!allUsers) {
         return res.status(404)

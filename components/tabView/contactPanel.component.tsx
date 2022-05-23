@@ -1,9 +1,9 @@
 // TODO: Consolidate colors into theme
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-import Artist from "../data/artist";
-import { Button } from "../button/button.component";
-import { sendMessage } from "../../pages/api/sendMessage";
+import Artist from '../data/artist'
+import { Button } from '../button/button.component'
+import { sendMessage } from '../../pages/api/sendMessage'
 
 interface Props {
   artist: Artist;
@@ -19,60 +19,60 @@ export const ContactPanel = ({
   onClick,
 }:Props) => {
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('')
 
-  function selectTopic(event){
-    let e = event.target;
-    document.querySelectorAll("#topicSelector div").forEach(
-      t => {if(t.classList!=undefined) t.classList.remove("active")}
-    );
-    e.classList.add("active");
+  function selectTopic(event: any){
+    const e = event.target
+    document.querySelectorAll('#topicSelector div').forEach(
+      t => {if(t.classList!=undefined) t.classList.remove('active')}
+    )
+    e.classList.add('active')
 
-    let i = document.querySelector("#contactSubject") as HTMLInputElement;
+    const i = document.querySelector('#contactSubject') as HTMLInputElement
     if(i.disabled){
-      setError("");
-      let c = document.getElementById("contactSubject") as HTMLInputElement;
-      c.disabled = false;
-      c = document.getElementById("contactMessage") as HTMLInputElement;
-      c.disabled = false;
+      setError('')
+      let c = document.getElementById('contactSubject') as HTMLInputElement
+      c.disabled = false
+      c = document.getElementById('contactMessage') as HTMLInputElement
+      c.disabled = false
     }
   }
 
-  function messageClick(event){
-    let i = document.querySelector("#contactSubject") as HTMLInputElement;
-    if(i.disabled && event.target.type != undefined && event.target.type.includes("text")){
-      setError("select a topic");
-      document.querySelector("#messageWrap").removeAttribute("onClick");
+  function messageClick(event: any){
+    const i = document.querySelector('#contactSubject') as HTMLInputElement
+    if(i.disabled && event.target.type != undefined && event.target.type.includes('text')){
+      setError('select a topic')
+      document.querySelector('#messageWrap')?.removeAttribute('onClick')
     }
   }
 
   async function prepMessage(){
-    let top = document.querySelector("#topicSelector div.active");
-    let sub = document.querySelector("#contactSubject") as HTMLInputElement;
-    let mes = document.querySelector("#contactMessage") as HTMLInputElement;
-    if((sub.value == undefined || sub.value == "") &&
-       (mes.value == undefined || mes.value == "")){
-      setError("subject and message can't be blank");
-    }else if(sub.value == undefined || sub.value == ""){
-      setError("subject can't be blank");
-    }else if(mes.value == undefined || mes.value == ""){
-      setError("message can't be blank");
+    const top = document.querySelector('#topicSelector div.active')
+    const sub = document.querySelector('#contactSubject') as HTMLInputElement
+    const mes = document.querySelector('#contactMessage') as HTMLInputElement
+    if((sub.value == undefined || sub.value == '') &&
+       (mes.value == undefined || mes.value == '')){
+      setError('subject and message can\'t be blank')
+    }else if(sub.value == undefined || sub.value == ''){
+      setError('subject can\'t be blank')
+    }else if(mes.value == undefined || mes.value == ''){
+      setError('message can\'t be blank')
     } else {
       await sendMessage(
         artist.email,
-        top.textContent,
+        top?.textContent || '',
         sub.value,
         mes.value
       ).then((res)=>{
         if(!res){
-          (document.querySelector("#contactButton") as HTMLButtonElement).innerHTML = "EMAIL NOT SET UP"
+          (document.querySelector('#contactButton') as HTMLButtonElement).innerHTML = 'EMAIL NOT SET UP'
         }
-      });
+      })
     }
   }
 
   return (
-    <div className={`${className} block text-center pt-0 px-0 pb-8 ${separateTab? "relative bg-white mt-3 mx-6 mb-0 text-center w-10/12 min-h-184 pt-0 px-0 pb-16" : ""}`}>
+    <div className={`${className} block text-center pt-0 px-0 pb-8 ${separateTab? 'relative bg-white mt-3 mx-6 mb-0 text-center w-10/12 min-h-184 pt-0 px-0 pb-16' : ''}`}>
       <div className="block pt-20 px-16 pb-16">
         Select a message topic:
       </div>
@@ -88,21 +88,21 @@ export const ContactPanel = ({
       </div>
       <div className="text-center text-red-500 h-7 mb-6">
         {
-          error==undefined||error==""?
-          "":
-          "Error: "+error
+          error==undefined||error==''?
+            '':
+            'Error: '+error
         }
       </div>
       <Button onClick={prepMessage} id="contactButton">
         contact
       </Button>
       { separateTab?
-        ""
+        ''
         :
         (
           <div className="inline-block mt-16 mx-auto mb-0 before:content-[''] before:bg-[url('/extarrow.png')] before:h-3 before:w-16 before:mr-4 before:bg-center before:bg-auto before:bg-no-repeat" onClick={onClick}>Back to artist info</div>
         )
       }
     </div>
-  );
+  )
 }

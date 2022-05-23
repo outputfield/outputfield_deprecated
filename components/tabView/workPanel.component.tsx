@@ -1,5 +1,5 @@
-import React from "react";
-import Work from "../data/work";
+import React from 'react'
+import Work from '../data/work'
 
 interface Props {
   works: Work[];
@@ -15,13 +15,13 @@ export const WorkPanel = ({
       {/*<div className={styles.reminder}>need to add scroll/carousel/lightbox</div>*/}
       {
         works.map((e,i)=>{
-          if(e.type=="image"){
-            return (<img key={"work_"+i} src={e.link}/>)
+          if(e.type=='image'){
+            return (<img key={'work_'+i} src={e.link}/>)
           } else {
-            return (<div key={"work_"+i}>* still need to implement widget for {e.type} *</div>)
+            return (<div key={'work_'+i}>* still need to implement widget for {e.type} *</div>)
           }
         })
       }
     </div>
-  );
+  )
 }

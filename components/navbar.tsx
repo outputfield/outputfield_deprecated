@@ -1,28 +1,24 @@
-import React, { useState, useContext } from "react";
-import Router from 'next/router'
-import Link from "next/link";
-import useAuth from "../hooks/useAuth";
-import { UserContext } from '../lib/UserContext';
-import magic from '../lib/magic'
+import React, { useState } from 'react'
+import Link from 'next/link'
+import { useUser } from '../lib/hooks'
 
-export const Navbar = ({}) => {
-  // const { user, loading } = useAuth();
-  const [user, setUser] = useContext(UserContext);
-  const [isOpen, setIsOpen] = useState(false);
+export const Navbar = () => {
+  // const [user, setUser] = useContext(UserContext);
+  const user = useUser()
+  const [isOpen, setIsOpen] = useState(false)
 
   const logout = () => {
-    magic.user.logout().then(() => {
-      setUser({ user: null });
-      Router.push('/login');
-    });
-  };
-
-  function closeNavbar() {
-    console.log("closing nav");
-    setIsOpen(false);
+    // magic.users.logout().then(() => {
+    //   setUser({ user: null });
+    //   Router.push('/login');
+    // });
+    console.log('logout')
   }
 
-
+  function closeNavbar() {
+    console.log('closing nav')
+    setIsOpen(false)
+  }
 
   return (
     <div className="relative inline-block text-left w-full m-2">
@@ -64,20 +60,19 @@ export const Navbar = ({}) => {
       <div
         onBlur={closeNavbar}
         className={`origin-top-right ${
-          isOpen ? "absolute" : "hidden"
+          isOpen ? 'absolute' : 'hidden'
         } right-0 mt-2 w-56 rounded-none shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none`}
         role="menu"
         aria-orientation="vertical"
         aria-labelledby="menu-button"
-        tabIndex="-1">
+      >
         <div className="py-1" role="none">
           {/* <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" --> */}
           <Link href="/artists" passHref>
             <a
               className="text-gray-700 block px-4 py-2 text-sm"
               role="menuitem"
-              tabIndex="-1"
-              id="menu-item-0">
+              id="menu-item-0">P
               Artists
             </a>
           </Link>
@@ -86,7 +81,6 @@ export const Navbar = ({}) => {
               <a
                 className="text-gray-700 block px-4 py-2 text-sm"
                 role="menuitem"
-                tabIndex="-1"
                 id="menu-item-0">
                 Account
               </a>
@@ -96,23 +90,21 @@ export const Navbar = ({}) => {
               <a
                 className="text-gray-700 block px-4 py-2 text-sm"
                 role="menuitem"
-                tabIndex="-1"
                 id="menu-item-1">
                 Login
               </a>
             </Link>
           )}
-            <button
-              // type="submit"
-              onClick={logout}
-              className="text-gray-700 block w-full text-left px-4 py-2 text-sm"
-              role="menuitem"
-              tabIndex="-1"
-              id="menu-item-3">
+          <button
+            // type="submit"
+            onClick={logout}
+            className="text-gray-700 block w-full text-left px-4 py-2 text-sm"
+            role="menuitem"
+            id="menu-item-3">
               Sign out
-            </button>
+          </button>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
