@@ -6,12 +6,12 @@ import { useRouter } from 'next/router'
 import { useUser } from '../../../lib/useUser'
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-import { getArtists } from '../../api/artists'
+import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
 
 const TOPICS = ['Collab', 'Business', 'Other']
 
 export const getStaticPaths = async () => {
-  const data = await getArtists()
+  const data = await getArtistsWithUserAndWorkAndLinks()
   const paths = data.map((artist) => {
     return {
       params: { name: artist.handle },

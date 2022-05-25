@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { Prisma } from '@prisma/client'
 import prisma from '../../../lib/prisma'
 
-export const getArtist = (artistName: any) => {
+export const getArtistWithUserAndWorkAndLinks = (artistName: any) => {
   return prisma?.artist.findUnique({
     where: {
       handle: artistName
@@ -10,12 +10,32 @@ export const getArtist = (artistName: any) => {
     include: {
       user: true,
       work: true,
-      links: true
+      links: true,
     },
   })
 }
 
-export type ArtistWithWorkAndLinks = Prisma.PromiseReturnType<typeof getArtist>
+export type ArtistWithWorkAndLinks = Prisma.PromiseReturnType<typeof getArtistWithUserAndWorkAndLinks>
+
+export const getArtistWithUserAndReferredByAndWorkAndLinks = (name: string) => {
+  return prisma?.artist.findUnique({
+    where: {
+      handle: name,
+    },
+    include: {
+      user: true,
+      referredBy: {
+        include: {
+          user: true
+        }
+      },
+      work: true,
+      links: true,
+    },
+  })
+}
+
+export type ArtistWithUserAndReferredByAndWorkAndLinks = Prisma.PromiseReturnType<typeof getArtistWithUserAndReferredByAndWorkAndLinks>
 
 export default async function (
   req: NextApiRequest,
@@ -26,7 +46,7 @@ export default async function (
   const { name }: { name?: string } = req.query
   if (req.method === 'GET') {
     try {
-      const artist = await getArtist(name)
+      const artist = await getArtistWithUserAndWorkAndLinks(name)
       if (!artist) {
         return res.status(404)
       } else {

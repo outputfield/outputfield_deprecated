@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react'
 
 import { ArtistRow } from '../../components/artists/artistRow.component'
-import { ArtistsWithWorksAndLinks } from '../api/artists'
+import { ArtistsWithUserAndWorkAndLinks } from '../api/artists'
 
 interface Props {
-  artists: ArtistsWithWorksAndLinks;
+  artists: ArtistsWithUserAndWorkAndLinks;
   fetchMore: () => any;
   isLoadingMore: boolean;
   isReachingEnd: boolean;

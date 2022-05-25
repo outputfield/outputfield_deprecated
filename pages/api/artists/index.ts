@@ -3,7 +3,8 @@ import { Prisma } from '@prisma/client'
 import prisma from '../../../lib/prisma'
 
 const FILTERABLE_ARTIST_FIELDS = ['title', 'location', 'handle', 'bio']
-export const getArtists = () => {
+
+export const getArtistsWithUserAndWorkAndLinks = () => {
   return prisma?.artist.findMany({
     include: {
       user: true,
@@ -13,8 +14,7 @@ export const getArtists = () => {
   })
 }
 
-export type ArtistsWithWorksAndLinks = Prisma.PromiseReturnType<typeof getArtists>
-
+export type ArtistsWithUserAndWorkAndLinks = Prisma.PromiseReturnType<typeof getArtistsWithUserAndWorkAndLinks>
 
 const findArtists = (page: string, limit: string, search: string, filters: any) => {
   const take: number = limit ? parseInt(limit) : 0

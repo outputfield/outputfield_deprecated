@@ -5,12 +5,12 @@ import { ParsedUrlQuery } from 'querystring'
 
 import { ArtistRow } from '../../../components/artists/artistRow.component'
 import Tabs from '../../../components/tabView/tabView.component'
-import { WorkPanel } from '../../../components/tabView/workPanel.component'
+import WorkPanel from '../../../components/tabView/workPanel.component'
 import { InfoPanel } from '../../../components/tabView/infoPanel.component'
-import { getArtists } from '../../api/artists'
+import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
 
 export const getStaticPaths = async () => {
-  const data = await getArtists()
+  const data = await getArtistsWithUserAndWorkAndLinks()
   const paths = data.map((artist) => {
     return {
       params: { name: artist.handle },
