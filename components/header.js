@@ -25,8 +25,8 @@ const Header = () => {
 
   const currentPage = useMemo(() => {
     console.log(router.pathname)
-    const [{ label: page = '' }] = LINKS.filter(({href}) => router.pathname === href)
-    return page
+    const [{ label = '' }] = LINKS.filter(({href}) => router.pathname === href)
+    return label
   }, [router.pathname])
 
   return (
