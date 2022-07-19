@@ -1,14 +1,6 @@
-import '../styles/globals.scss'
+import React from 'react'
+import '../styles/globals.css'
 
-declare module 'csstype' {
-  interface Properties {
-    '--iconcolor'?: any;
-    '--col'?: any;
-  }
-}
-
-function MyApp({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps }: any) {
   return <Component {...pageProps} />
 }
-
-export default MyApp

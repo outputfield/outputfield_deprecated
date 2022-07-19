@@ -1,9 +1,11 @@
 export default class Work{
-  type: string;
-  link: string;
+  id: number
+  type: string
+  link: string
 
-  constructor(type: string, link: string){
-    this.type = type;
-    this.link = link;
+  constructor(id: number, type: string, link: string){
+    this.id = id
+    this.type = type
+    this.link = link
   }
 }

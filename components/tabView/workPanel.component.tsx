@@ -1,28 +1,45 @@
-import * as React from "react";
-import styles from "./workPanel.module.scss";
-import Work from "../data/work";
+import React from 'react'
+import Work from '../data/work'
+import { Pagination, A11y } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import Image from 'next/image'
+
+import 'swiper/css'
+import 'swiper/css/pagination'
 
 interface Props {
   works: Work[];
   className?: string;
 }
 
-export const WorkPanel = ({
+const WorkPanel: React.FC<Props> = ({
   works,
-  className,
-}:Props) => {
+}) => {
   return (
-    <div className={className+" "+styles.root}>
-      {/*<div className={styles.reminder}>need to add scroll/carousel/lightbox</div>*/}
-      {
-        works.map((e,i)=>{
-          if(e.type=="image"){
-            return (<img key={"work_"+i} src={e.link}/>)
-          } else {
-            return (<div key={"work_"+i} className={styles.unimplemented}>* still need to implement widget for {e.type} *</div>)
-          }
+    <Swiper
+      modules={[Pagination, A11y]}
+      pagination={{clickable: true}}
+      spaceBetween={0}
+      slidesPerView={1}
+      onSlideChange={() => console.log('slide change')}
+      onSwiper={swiper => console.log(swiper)}
+      className='h-72'>
+      {works ? 
+        works.map((work) => {
+          return (
+            <SwiperSlide key={work.id}>
+              <Image
+                src={work.link}
+                layout="fill"
+                alt="This is a carousel slide"
+                className='block w-full h-auto object-cover'
+              />
+            </SwiperSlide>
+          )
         })
-      }
-    </div>
-  );
+        : 'No works found'}
+    </Swiper>
+  )
 }
+
+export default WorkPanel

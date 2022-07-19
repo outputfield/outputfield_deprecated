@@ -18,6 +18,7 @@
 # misc
 .DS_Store
 *.pem
+sendgrid.env
 
 # debug
 npm-debug.log*
@@ -25,6 +26,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env.local
 .env.development.local
 .env.test.local
@@ -33,6 +35,4 @@ yarn-error.log*
 # vercel
 .vercel
 
-.env
-
-private.txt
+sendgrid.env

@@ -1,52 +1,56 @@
-import styles from "./artists.module.scss";
-import Artist from "../data/artist";
+import React from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ArtistWithWorkAndLinks } from '../../pages/api/artists/[name]'
 
-interface Props {
-  artist: Artist;
-  type: "list" | "detail";
-  onClick?: (event: any) => any;
+export interface ArtistRowProps {
+  artist: ArtistWithWorkAndLinks;
+  type: 'list' | 'detail';
+  className?: string;
 }
 
-export const ArtistRow = ({
-  artist,
-  type,
-  onClick = null,
-}:Props) => {
-  let row = (
-    <div className={styles.artistHeader +" "+ styles[type]}>
-      <div className={styles.icon} style={{"--iconcolor": artist.iconColor}}/>
-      <div className={styles.info}>
-        <h1 className={styles.name}>
-          {artist.name}
-        </h1><br/>
-        <div className={styles.handle}>
-          {artist.handle}
+export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
+  const uri = `/artists/${encodeURIComponent(artist?.handle || '')}`
+
+  const row = (
+    <div
+      className={`${type === 'detail' ? 'border-y' : ''} ${
+        type === 'list' ? 'border-t' : ''
+      } border-black border-dashed w-full flex flex-col relative pt-[11px] pl-[13px] pb-[8px] pr-[11px]`}>
+      <div className="grow relative flex justify-center self-start items-center">
+        <div className="mx-[10px] my-[24px]">
+          <Image
+            alt="Artist profile pic"
+            src="https://via.placeholder.com/100"
+            // layout="fill"
+            height={100}
+            width={100}
+            className="rounded-full"
+          />
+          {type == 'detail' && <div className="text-center font-serif">{artist?.pronoun}</div>}
         </div>
-        <div className={styles.separator}/>
-        <div className={styles.location}>
-          {artist.location}
-        </div><br/>
-        {type=="detail"?
-          (
-            <div className={styles.pronouns}>
-              {artist.pronouns}
-            </div>
-          ):""
-        }
+        <div className="ml-3 py-auto text-lg">
+          <p className="text-[18px]">{artist?.user.name}</p>
+          <span className="italic lowercase font-serif">{`'${artist?.title}'`}</span>
+          {artist?.title && artist?.location && (
+            <span className="text-3xl font-light mx-1 align-sub">&#9702;</span>
+          )}
+          <span>{artist?.location}</span>
+        </div>
       </div>
-      <div className={styles.medium}>
-        {artist.medium}
-      </div>
+      <span className="text-right text-lg uppercase absolute right-[13px] bottom-[8px]">
+        {artist?.mediums}
+      </span>
     </div>
   )
+  if (type === 'list') {
+    return (<Link
+      href={uri}
+      className="last-of-type:border last-of-type:border-black last-of-type:border-dashed"
+    >
+      {row}
+    </Link>)
+  } 
 
-  if(type=="detail"){
-    return row;
-  } else {
-    return (
-      <a onClick={onClick}>
-        {row}
-      </a>
-    )
-  }
+  return row
 }

@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.blurred {
+  /* Any browser which supports CSS3 */
+  filter: blur(1px);
+
+  /* Firefox version 34 and earlier */
+  filter: url("../assets/blur.svg#gaussian_blur");
+
+  /* Webkit in Chrome 52, Safari 9, Opera 39, and earlier */
+  -webkit-filter: blur(1px);
+}
+
+@layer utilities {
+  .glow-blue {
+    /* Shadows/Text */
+    text-shadow: 0px 0px 2px theme('colors.blue');  
+  }
+
+  .glow-highlight {  
+    text-shadow: 0px 0px 2px theme('colors.highlight');
+  }
+  .glow-red-lg {
+    box-shadow: 0px 4px 8px rgba(255, 0, 15, 0.2), 0px 5px 8px rgba(255, 0, 31, 0.6);
+  }
+}
+
+input:checked + div {
+  @apply border-blue;
+}
+input:checked + div svg {
+  @apply block;
+}
