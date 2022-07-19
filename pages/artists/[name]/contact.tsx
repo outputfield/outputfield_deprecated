@@ -7,6 +7,7 @@ import { useUser } from '../../../lib/useUser'
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
+import prisma from '../../../lib/prisma'
 
 const TOPICS = ['Collab', 'Business', 'Other']
 

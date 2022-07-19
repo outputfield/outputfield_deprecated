@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 
-import ArtistsList from './artistsList'
-import ArtistsFilter from './artistsFilter'
+import ArtistsList from '../../components/artists/artistsList'
+import ArtistsFilter from '../../components/artists/artistsFilter'
 import prisma from '../../lib/prisma'
 import { usePaginatedArtists } from '../../lib/usePaginatedArtists'
 import Layout from '../../components/layout'

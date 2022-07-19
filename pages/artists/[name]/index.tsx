@@ -8,7 +8,7 @@ import Tabs from '../../../components/tabView/tabView.component'
 import WorkPanel from '../../../components/tabView/workPanel.component'
 import { InfoPanel } from '../../../components/tabView/infoPanel.component'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
-
+import prisma from '../../../lib/prisma'
 export const getStaticPaths = async () => {
   const data = await getArtistsWithUserAndWorkAndLinks()
   const paths = data.map((artist) => {
@@ -52,7 +52,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 }
 
 const ArtistPage = ({ artist }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  console.log(artist)
   const router = useRouter()
 
   const closeArtist = () => {

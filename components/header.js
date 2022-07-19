@@ -5,6 +5,10 @@ import { useUser } from '../lib/useUser'
 
 const LINKS = [
   {
+    href: '/',
+    label: 'Home'
+  },
+  {
     href: '/login',
     label: 'Login'
   }, {

@@ -18,8 +18,6 @@ export const InfoPanel: React.FC<Props> = ({
 }) => {
   const router = useRouter()
 
-  console.log(artist)
-
   return (
     <div
       className={`${className} relative min-h-184 grid text-base p-3`}

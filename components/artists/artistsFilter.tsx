@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useReducer } from 'react'
-import Overlay from '../../components/overlay'
-import Checkbox from '../../components/checkbox'
-import { Button } from '../../components/button/button.component'
+import Overlay from '../overlay'
+import Checkbox from '../checkbox'
+import { Button } from '../button/button.component'
 
 interface Props {
   onClose: () => void;

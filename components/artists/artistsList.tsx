@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 
-import { ArtistRow } from '../../components/artists/artistRow.component'
-import { ArtistsWithUserAndWorkAndLinks } from '../api/artists'
+import { ArtistRow } from './artistRow.component'
+import { ArtistsWithUserAndWorkAndLinks } from '../../pages/api/artists'
 
 interface Props {
   artists: ArtistsWithUserAndWorkAndLinks;
@@ -21,7 +21,7 @@ const ArtistsList: React.FC<Props> = ({
 
   const onScroll = () => {
     if (listInnerRef.current) {
-      console.log(listInnerRef.current)
+      // console.log(listInnerRef.current)
       const { scrollTop, scrollHeight, clientHeight } = listInnerRef.current
       const isBottom = Math.floor(scrollTop + clientHeight) === scrollHeight
       const isTop = scrollTop === 0

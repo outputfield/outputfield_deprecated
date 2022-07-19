@@ -19,7 +19,6 @@ export type ArtistsWithUserAndWorkAndLinks = Prisma.PromiseReturnType<typeof get
 const findArtists = (page: string, limit: string, search: string, filters: any) => {
   const take: number = limit ? parseInt(limit) : 0
   const skip: number = (page && limit) ? parseInt(limit) * (parseInt(page) - 1) : 0
-  // console.log(JSON.stringify(prismaQuery, null, 2))
   return prisma.artist.findMany({
     take,
     skip,
