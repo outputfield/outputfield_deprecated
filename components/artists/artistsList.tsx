@@ -50,7 +50,7 @@ const ArtistsList: React.FC<Props> = ({
         {isLoadingMore
           ? 'Loading...'
           : isReachingEnd
-            ? 'End'
+            ? 'End of results'
             : ''}
       </button>
     </div>

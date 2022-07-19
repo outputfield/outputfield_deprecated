@@ -31,17 +31,16 @@ const ArtistsFilter: React.FC<Props> = ({
       const _state = {...state}
       switch(action.type) {
       case 'UPDATE':
-        return { [action.filterName]: !_state[action.filterName], ...state }
+        return { ..._state, [action.filterName]: !_state[action.filterName] }
       case 'CLEAR':
         return Object.keys(_state).reduce((acc, curr) => ({[curr]: false, ...acc }), {})
       }
-      
     },
     filterOptions.reduce((acc, curr) => ({[curr]: selectedFilters.includes(curr), ...acc}), {})
   )
 
   const filtersCount = useMemo(() => {
-    if (state && Object.values(state).some((f) => f === true)) {
+    if (state) {
       return Object.values(state).filter((f) => f === true).length
     } else {
       return 0
