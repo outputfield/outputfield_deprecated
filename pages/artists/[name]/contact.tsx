@@ -76,7 +76,9 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     trigger()
     const { email: senderEmail } = user
-    const { name: recipientName, email: recipientEmail, title, mediums } = artistdata
+    // TODO: remove
+    console.log(artistdata)
+    const { user: { name: recipientName, email: recipientEmail}, title, mediums, location } = artistdata
     const { subject, message } = data
 
     const senderName = 'Buddy'  // TODO: grab sender's name inside of this component...
