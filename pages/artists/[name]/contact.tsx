@@ -9,7 +9,38 @@ import { ParsedUrlQuery } from 'querystring'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
 import prisma from '../../../lib/prisma'
 
-const TOPICS = ['Collab', 'Business', 'Other']
+const TOPICS = [
+  {
+    label: 'Collab',
+    text: '',
+    authenticated: true,
+  },
+  {
+    label: 'Business',
+    text: '',
+    authenticated: true,
+  },
+  {
+    label: 'Other',
+    text: '',
+    authenticated: true,
+  },
+  {
+    label: 'Invite',
+    text: '',
+    authenticated: false,
+  },
+  {
+    label: 'Commission',
+    text: '',
+    authenticated: false,
+  },
+  {
+    label: 'Inquiry',
+    text: '',
+    authenticated: false,
+  },
+]
 
 export const getStaticPaths = async () => {
   const data = await getArtistsWithUserAndWorkAndLinks()
@@ -50,6 +81,7 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
   const {
     register,
     handleSubmit,
+    setValue,
     setError,
     clearErrors,
     trigger,
@@ -64,6 +96,12 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
     const { value } = event.target
     setTopic(value)
     clearErrors()
+
+    // TODO: side effect, set message text
+    const message = `${"aaa"} Here's their message:
+To reply, email them at ${"aaa"}
+    `
+    setValue('message', message)
   }
 
   function messageClick() {
@@ -76,8 +114,6 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     trigger()
     const { email: senderEmail } = user
-    // TODO: remove
-    console.log(artistdata)
     const { user: { name: recipientName, email: recipientEmail}, title, mediums, location } = artistdata
     const { subject, message } = data
 
@@ -122,22 +158,19 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
       <div
         id="topicSelector"
         className={'relative flex flex-row text-center py-8 px-4 mx-auto border-box'}>
-        {TOPICS.map((t) => (
-
-          <button
-            key={t}
-            value={t}
-            className={`px-3 py-1 mx-2 border rounded-full basis-1/${TOPICS.length} ${
-              t === topic ? 'border-blue' : 'border-black'
-            }`}
-            onClick={selectTopic}>
-            {t}
-          </button>
-
-        ))}
-        {/* {Array(TOPICS.length).fill(1).map((a,key) => (
-          <div key={key} className={`basis-1/${TOPICS.length} border border-black`}>{key}</div>
-        ))} */}
+        {TOPICS
+          .filter(({ authenticated }) => Boolean(user) === authenticated)
+          .map(({ label }) => (
+            <button
+              key={label}
+              value={label}
+              className={`px-3 py-1 mx-2 border rounded-full basis-1/${TOPICS.filter(({ authenticated }) => Boolean(user) === authenticated).length} ${
+                label === topic ? 'border-blue' : 'border-black'
+              }`}
+              onClick={selectTopic}>
+              {label}
+            </button>
+          ))}
       </div>
 
       <div id="messageWrap" className="m-6" onClick={messageClick}>
