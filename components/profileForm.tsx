@@ -1,7 +1,8 @@
-import React from "react";
-import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
-import Input from "./input";
-import { Button } from './button/button.component';
+import React, { useCallback, useReducer } from 'react'
+import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
+import Input from './input'
+import { Button } from './button/button.component'
+import DropzoneComponent from './dropzoneComponent'
 
 type ProfileLink = {
   url: string;
@@ -16,27 +17,52 @@ type ISignUpInputs = {
 };
 
 interface Props {
-  onSubmit: (data: ISignUpInputs) => void;
+  onSubmit: (data: ISignUpInputs, e, files) => void;
+  isSubmitting: boolean;
   profile: ISignUpInputs;
 }
 
-export default function ProfileForm({ onSubmit, profile }: Props) {
+type File = {
+  type: string,
+  name: string
+}
+
+type FilesAction = {
+  type: 'UPDATE', 
+  key: number, 
+  file: File 
+}
+
+interface FilesState {
+  [x: number]: File;
+}
+
+export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) {
   const {
     register,
     handleSubmit,
     control,
-    watch,
+    // watch,
     formState: { errors },
-  } = useForm<ISignUpInputs>();
+  } = useForm<ISignUpInputs>()
   const { fields, append, remove } = useFieldArray({
-    name: "links",
+    name: 'links',
     control,
-  });
+  })
 
-  console.log(watch("Name")); // watch input value by passing the name of it
+  const [state, dispatch] = useReducer(
+    (state: FilesState, action: FilesAction) => {
+      const _state = {...state}
+      switch(action.type) {
+      case 'UPDATE':
+        return { ..._state, [action.key]: action.file }
+      }
+    },
+    {} // TODO: reduce existing files into {}
+  )
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg">
+    <form onSubmit={handleSubmit((data, e) => onSubmit(data, e, Object.values(state)))} className="w-full max-w-lg">
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <Input
@@ -46,7 +72,7 @@ export default function ProfileForm({ onSubmit, profile }: Props) {
             type="text"
             required
           />
-          {errors["Name"] && (
+          {errors['Name'] && (
             <p className="text-red-500 text-xs italic">
               Please fill out this field.
             </p>
@@ -85,7 +111,7 @@ export default function ProfileForm({ onSubmit, profile }: Props) {
         <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
           {fields.map((field, index) => (
             <div className="py-6 grid grid-cols-2" key={field.id}>
-            {/* TODO: change these to Input component, add new "noLabel" prop to Input */}
+              {/* TODO: change these to Input component, add new "noLabel" prop to Input */}
               <input
                 className="appearance-none col-span-2 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-3"
                 id="grid-website-url"
@@ -110,7 +136,7 @@ export default function ProfileForm({ onSubmit, profile }: Props) {
           <button
             className="uppercase"
             onClick={() =>
-              append({ url: "", label: "" }, { shouldFocus: true })
+              append({ url: '', label: '' }, { shouldFocus: true })
             }>
             + Add
           </button>
@@ -119,17 +145,18 @@ export default function ProfileForm({ onSubmit, profile }: Props) {
 
       <div className="flex flex-wrap -mx-3 mb-2">
         <h2>++Upload Work++</h2>
-        <p className="text-red-500 text-xs italic">
-              TODO: Upload component & flow
-            </p>
         <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
           <div className="py-6 grid grid-cols-2">
             {[...Array(6).keys()].map((key) => (
-              <div className={`cols-span-${key}`}>
+              <div key={key} className={`cols-span-${key}`}>
                 <button
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
                   id={`grid-upload-work-${key}`}
-                  onClick={() => console.log("redirect to /upload")}></button>
+                  onClick={() => console.log('redirect to /upload')}>
+                    {/* https://stackoverflow.com/a/47465615 */}
+                    {/* https://carterbancroft.com/uploading-directly-to-digital-ocean-spaces-from-your-dang-browser/ */}
+                  <DropzoneComponent handleDrop={(file) => dispatch({ type: 'UPDATE', key, file})} />
+                </button>
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor={`grid-upload-work-${key}`}>
@@ -140,9 +167,9 @@ export default function ProfileForm({ onSubmit, profile }: Props) {
           </div>
         </div>
       </div>
-      <Button role="submit">
+      <Button role="submit" disabled={isSubmitting}>
         Save Changes
       </Button>
     </form>
-  );
+  )
 }
