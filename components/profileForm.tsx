@@ -13,13 +13,14 @@ type ISignUpInputs = {
   Name: string;
   Title: string;
   Pronouns: string;
+  Location: string;
   links: ProfileLink[];
 };
 
 interface Props {
-  onSubmit: (data: ISignUpInputs, e, files) => void;
+  onSubmit: (data: ISignUpInputs, files: File[]) => void;
   isSubmitting: boolean;
-  profile: ISignUpInputs;
+  profile?: ISignUpInputs | undefined;
 }
 
 type File = {
@@ -61,16 +62,20 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
     {} // TODO: reduce existing files into {}
   )
 
+  const onFormSubmit: SubmitHandler<ISignUpInputs> = (data, event) => {
+    event?.preventDefault()
+    onSubmit(data, Object.values(state))
+  }
+
   return (
-    <form onSubmit={handleSubmit((data, e) => onSubmit(data, e, Object.values(state)))} className="w-full max-w-lg">
+    <form onSubmit={handleSubmit(onFormSubmit)} className="w-full max-w-lg">
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <Input
             label="Name"
-            register={register}
             placeholder="Enter your name"
-            type="text"
             required
+            {...register('Name', {required: true})}
           />
           {errors['Name'] && (
             <p className="text-red-500 text-xs italic">
@@ -83,25 +88,22 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         <div className="w-full px-3">
           <Input
             label="Title"
-            register={register}
             placeholder="ie. suavepainter"
-            type="text"
+            {...register('Title')}
           />
         </div>
         <div className="w-full px-3">
           <Input
             label="Pronouns"
-            type="text"
             placeholder="ie. they/them"
-            register={register}
+            {...register('Pronouns')}
           />
         </div>
         <div className="w-full px-3">
           <Input
             label="Location"
-            type="text"
             placeholder="ie. Berlin, Shanghai, etc."
-            register={register}
+            {...register('Location')}
           />
         </div>
       </div>
@@ -147,15 +149,15 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         <h2>++Upload Work++</h2>
         <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
           <div className="py-6 grid grid-cols-2">
-            {[...Array(6).keys()].map((key) => (
+            {Array(6).map((key:any) => (
               <div key={key} className={`cols-span-${key}`}>
                 <button
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
                   id={`grid-upload-work-${key}`}
                   onClick={() => console.log('redirect to /upload')}>
-                    {/* https://stackoverflow.com/a/47465615 */}
-                    {/* https://carterbancroft.com/uploading-directly-to-digital-ocean-spaces-from-your-dang-browser/ */}
-                  <DropzoneComponent handleDrop={(file) => dispatch({ type: 'UPDATE', key, file})} />
+                  {/* https://stackoverflow.com/a/47465615 */}
+                  {/* https://carterbancroft.com/uploading-directly-to-digital-ocean-spaces-from-your-dang-browser/ */}
+                  <DropzoneComponent handleDrop={(file: File) => dispatch({ type: 'UPDATE', key, file})} />
                 </button>
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"

@@ -1,9 +1,10 @@
+import Image from 'next/image'
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 
 const baseStyle = {
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'column' as const,
   alignItems: 'center',
   padding: '20px',
   borderWidth: 2,
@@ -27,16 +28,23 @@ const rejectStyle = {
   borderColor: '#ff1744'
 }
 
+interface FilePlus extends File {
+  preview: string
+}
+
+// FIXME: this should only store ONE file, not 'files'
 // TODO: pass function which puts uploaded file to allFiles[props.key] in ProfileForm state
-function DropzoneComponent({ handleDrop }) {
+function DropzoneComponent({ handleDrop }: any) {
+  // TODO: Hoist this 'files' state to where it's being duplicated, higher up
   const [files, setFiles] = useState([])
   console.log('files', files)
   
   const onDrop = useCallback(acceptedFiles => {
-    setFiles(acceptedFiles.map(file => Object.assign(file, {
+    setFiles(acceptedFiles.map((file: File) => Object.assign(file, {
       preview: URL.createObjectURL(file)
     })))
-    acceptedFiles.forEach((f) => handleDrop(f))
+    
+    acceptedFiles.forEach((f: File) => handleDrop(f))
   }, [])
 
   const {
@@ -61,9 +69,9 @@ function DropzoneComponent({ handleDrop }) {
     isDragAccept
   ])
 
-  const thumbs = files.map(file => (
+  const thumbs = files.map((file: FilePlus) => (
     <div key={file.name}>
-      <img
+      <Image
         src={file.preview}
         alt={file.name}
       />
@@ -72,7 +80,7 @@ function DropzoneComponent({ handleDrop }) {
 
   // clean up
   useEffect(() => () => {
-    files.forEach(file => URL.revokeObjectURL(file.preview))
+    files.forEach((file: FilePlus) => URL.revokeObjectURL(file.preview))
   }, [files])
 
   return (

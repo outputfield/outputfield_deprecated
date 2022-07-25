@@ -1,25 +1,31 @@
 import React from 'react'
-import { Path, UseFormRegister } from 'react-hook-form'
-
-interface IFormValues {
-  'First Name': string;
-  Age: number;
-}
+import { ChangeHandler, Path, UseFormRegister } from 'react-hook-form'
 
 type InputProps = {
-  label: Path<IFormValues>;
-  register: UseFormRegister<IFormValues>;
+  label: Path<string>;
+  register: UseFormRegister<any>;
   required: boolean;
   className: string;
 };
 
-export default function Input({
+type Props = {
+  label: string;
+  name: string;
+  placeholder: string;
+  onChange: ChangeHandler;
+  onBlur: ChangeHandler;
+  ref: any;
+  className?: string
+}
+
+export default function Input ({
   label,
-  register,
-  required,
-  className,
-  ...restProps
-}: InputProps) {
+  name,
+  placeholder,
+  onChange,
+  onBlur,
+  ref,
+}: Props) {
   return (
     <>
       <label
@@ -28,10 +34,12 @@ export default function Input({
         {label}
       </label>
       <input
-        id={label}
+        name={name}
         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-black rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-        {...restProps}
-        {...register(label, { required })}
+        placeholder={placeholder}
+        onChange={onChange}
+        onBlur={onBlur}
+        ref={ref}
       />
     </>
   )

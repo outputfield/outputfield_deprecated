@@ -1,6 +1,7 @@
+import { NextApiRequest, NextApiResponse } from 'next/dist/shared/lib/utils'
 import spaces from '../../lib/doSpaces'
 
-export default async function presignedUrl(req, res) {
+export default async function presignedUrl(req: NextApiRequest, res: NextApiResponse) {
   try {
     const body = req.body
       
@@ -12,11 +13,16 @@ export default async function presignedUrl(req, res) {
       ACL: 'public-read', // Remove this to make the file private
     }
       
-    const signedUrl = await spaces.getSignedUrl('putObject', params)
+    const signedUrl = spaces.getSignedUrl('putObject', params)
       
     res.json({signedUrl})
       
   } catch (error) {
-    res.status(error.status || 500).end(error.message)
+    let errorMessage = 'Failed to get presigned URL :('
+    if (error instanceof Error) {
+      errorMessage = error.message
+      res.status(500).end(error.message)
+    }
+    console.log(errorMessage)
   }
 }
