@@ -149,7 +149,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         <h2>++Upload Work++</h2>
         <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
           <div className="py-6 grid grid-cols-2">
-            {Array(6).map((key:any) => (
+            {Array.from(Array(6)).map((undef, key) => (
               <div key={key} className={`cols-span-${key}`}>
                 <button
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
