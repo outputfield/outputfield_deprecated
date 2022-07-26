@@ -12,19 +12,19 @@ const Login = () => {
   async function handleSubmit(e) {
     e.preventDefault()
     if (errorMsg) setErrorMsg('')
+    const { currentTarget: { email: { value: email } } }  = e
 
     // Query db for user on submit. If user not found, redirect to "sign-up" flow.
     try {
-      const { currentTarget: { email: { value: email } } }  = e;
       const result = await fetch('/api/user', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email }),
-        });
-      const { userExists } = await result.json();
-      console.log('user exists? ', user)
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+      const { userExists } = await result.json()
+      console.log('user exists? ', userExists)
       if (!userExists) {
         Router.push('/sign-up')
       }
