@@ -1,12 +1,7 @@
 import React from 'react'
-import { ChangeHandler, Path, UseFormRegister } from 'react-hook-form'
+import { ChangeHandler } from 'react-hook-form'
 
-type InputProps = {
-  label: Path<string>;
-  register: UseFormRegister<any>;
-  required: boolean;
-  className: string;
-};
+export type Ref = HTMLInputElement
 
 type Props = {
   label: string;
@@ -14,18 +9,14 @@ type Props = {
   placeholder: string;
   onChange: ChangeHandler;
   onBlur: ChangeHandler;
-  ref: any;
   className?: string
 }
 
-export default function Input ({
-  label,
+const Input = React.forwardRef<Ref, Props>(({label,
   name,
   placeholder,
   onChange,
-  onBlur,
-  ref,
-}: Props) {
+  onBlur }, ref) => {
   return (
     <>
       <label
@@ -41,6 +32,9 @@ export default function Input ({
         onBlur={onBlur}
         ref={ref}
       />
-    </>
-  )
-}
+    </>)
+})
+
+Input.displayName = 'Input'
+
+export default Input

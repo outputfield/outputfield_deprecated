@@ -6,7 +6,7 @@ export default function SignUp() {
 
   const handleSubmit = async (data: any, files: any) => {
     console.log('sign-up handleSubmit', data, files)
-    setIsSubmitting(true)
+    // setIsSubmitting(true)
     try {
       // 1. create user
       await fetch('/api/signUp', {
@@ -17,7 +17,9 @@ export default function SignUp() {
         body: JSON.stringify(data)
       })
 
+      // 2. PUT each file
       files.forEach(async(f: File) => {
+        console.log(f)
         const signedUrlRes = await fetch('/api/presignedUrl', {
           method: 'POST',
           body: JSON.stringify({
@@ -29,6 +31,8 @@ export default function SignUp() {
           },
         })
         const { signedUrl } = await signedUrlRes.json()
+
+        console.log(signedUrl)
 
         await fetch(signedUrl,  {
           method: 'PUT',
