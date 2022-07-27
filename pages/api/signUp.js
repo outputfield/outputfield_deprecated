@@ -6,6 +6,7 @@ export async function signUp({
   }, referrerId }) 
 {
   try {
+    console.log('signUp')
     // 1. Create user in DB
     const user = await prisma.user.create({
       data: {
@@ -32,6 +33,8 @@ export async function signUp({
     })
     // 2. Create connection to nominating user (referrerId)
     const { email: nomineeEmail } = user
+
+    return user
 
   } catch (error) {
     console.log(error)

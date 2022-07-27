@@ -1,5 +1,5 @@
 import React, { useCallback, useReducer } from 'react'
-import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
+import { useForm, useFieldArray, SubmitHandler, SubmitErrorHandler } from 'react-hook-form'
 import Input from './input'
 import { Button } from './button/button.component'
 import DropzoneComponent from './dropzoneComponent'
@@ -21,11 +21,6 @@ interface Props {
   onSubmit: (data: ISignUpInputs, files: File[]) => void;
   isSubmitting: boolean;
   profile?: ISignUpInputs | undefined;
-}
-
-type File = {
-  type: string,
-  name: string
 }
 
 type FilesAction = {
@@ -63,18 +58,22 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
   )
 
   const onFormSubmit: SubmitHandler<ISignUpInputs> = (data, event) => {
+    console.log('onFOrmSubmit')
     event?.preventDefault()
     onSubmit(data, Object.values(state))
   }
 
+  const onError: SubmitErrorHandler<ISignUpInputs> = (errors, e) => console.log('BADD', errors, e)
+
   return (
-    <form onSubmit={handleSubmit(onFormSubmit)} className="w-full max-w-lg">
+    <form
+      onSubmit={handleSubmit(onFormSubmit, onError)}
+      className="w-full max-w-lg">
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <Input
             label="Name"
             placeholder="Enter your name"
-            required
             {...register('Name', {required: true})}
           />
           {errors['Name'] && (
@@ -169,7 +168,10 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
           </div>
         </div>
       </div>
-      <Button role="submit" disabled={isSubmitting}>
+      <Button
+        type="submit"
+        // disabled={isSubmitting}
+      >
         Save Changes
       </Button>
     </form>
