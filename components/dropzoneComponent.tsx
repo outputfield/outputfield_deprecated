@@ -75,7 +75,7 @@ function DropzoneComponent({ handleDrop }: any) {
         src={file.preview}
         alt={file.name}
         height="10"
-        width={"10"}
+        width="10"
       />
     </div>
   ))
