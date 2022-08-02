@@ -4,6 +4,7 @@ import ProfileForm from '../components/profileForm'
 export default function SignUp() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
 
+  // Pass submit handler fn into ProfileForm
   const handleSubmit = async (data: any, files: any) => {
     console.log('sign-up handleSubmit', data, files)
     // setIsSubmitting(true)
@@ -17,7 +18,7 @@ export default function SignUp() {
         body: JSON.stringify(data)
       })
 
-      // 2. PUT each file
+      // 2. PUT request for each file
       files.forEach(async(f: File) => {
         console.log(f)
         const signedUrlRes = await fetch('/api/presignedUrl', {
@@ -32,8 +33,7 @@ export default function SignUp() {
         })
         const { signedUrl } = await signedUrlRes.json()
 
-        console.log(signedUrl)
-
+        // FIXME: failing here
         await fetch(signedUrl,  {
           method: 'PUT',
           body: f,
