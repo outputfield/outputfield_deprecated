@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import { SubmitHandler } from 'react-hook-form'
 import ProfileForm from '../components/profileForm'
 
 export default function SignUp() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
 
-  const handleSubmit: SubmitHandler<ISignUpInputs> = async (data, e, files) => {
-    e.preventDefault()
+  // Pass submit handler fn into ProfileForm
+  const handleSubmit = async (data: any, files: any) => {
     console.log('sign-up handleSubmit', data, files)
     setIsSubmitting(true)
     try {
@@ -19,6 +18,7 @@ export default function SignUp() {
         body: JSON.stringify(data)
       })
 
+      // 2. PUT request for each file
       files.forEach(async(f: File) => {
         const signedUrlRes = await fetch('/api/presignedUrl', {
           method: 'POST',
@@ -32,6 +32,7 @@ export default function SignUp() {
         })
         const { signedUrl } = await signedUrlRes.json()
 
+        // FIXME: failing here
         await fetch(signedUrl,  {
           method: 'PUT',
           body: f,

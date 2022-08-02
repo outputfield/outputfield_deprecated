@@ -6,7 +6,7 @@ export async function signUp({
   }, referrerId }) 
 {
   try {
-    // 1. Create user in DB
+    // 1. Create user in DB (as an Artist), along with artist's Works, and Links. Return user's email
     const user = await prisma.user.create({
       data: {
         name,
@@ -30,7 +30,8 @@ export async function signUp({
         email: true
       }
     })
-    // 2. Create connection to nominating user (referrerId)
+    
+    // 2. (TODO:) Using, returned user obj, create connection to nominating user (referrerId)
     const { email: nomineeEmail } = user
 
   } catch (error) {

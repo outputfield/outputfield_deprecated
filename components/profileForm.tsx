@@ -19,7 +19,7 @@ type ISignUpInputs = {
 interface Props {
   onSubmit: (data: ISignUpInputs, e, files) => void;
   isSubmitting: boolean;
-  profile: ISignUpInputs;
+  profile?: ISignUpInputs;
 }
 
 type File = {
