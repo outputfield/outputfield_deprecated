@@ -34,7 +34,7 @@ export default function SignUp() {
         const { signedUrl } = await signedUrlRes.json()
 
         // FIXME: failing here
-        await fetch(signedUrl,  {
+        const res = await fetch(signedUrl,  {
           method: 'PUT',
           body: f,
           headers: {
@@ -42,6 +42,8 @@ export default function SignUp() {
             'x-amz-acl': 'public-read'
           }
         })
+
+        return res
       })
     } catch (error) {
       console.log(error)
