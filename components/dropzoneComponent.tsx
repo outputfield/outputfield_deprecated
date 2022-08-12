@@ -32,18 +32,18 @@ interface FilePlus extends File {
   preview: string
 }
 
-// FIXME: this should only store ONE file, not 'files'
-// TODO: pass function which puts uploaded file to allFiles[props.key] in ProfileForm state
 function DropzoneComponent({ handleDrop }: any) {
-  // TODO: Hoist this 'files' state to where it's being duplicated, higher up
+  // FIXME: this state should only store ONE file, not 'files'
   const [files, setFiles] = useState([])
   console.log('files', files)
   
   const onDrop = useCallback(acceptedFiles => {
+    // 1. set state locally, for file preview purposes.
     setFiles(acceptedFiles.map((file: File) => Object.assign(file, {
       preview: URL.createObjectURL(file)
     })))
     
+    // 2. set state in ProfileForm, for form data collection
     acceptedFiles.forEach((f: File) => handleDrop(f))
   }, [])
 

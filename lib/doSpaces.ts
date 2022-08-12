@@ -1,5 +1,8 @@
 import aws from 'aws-sdk'
 
+/**
+ * Create connection to DigitalOcean 'outputfield' Space
+ */
 const spaces = new aws.S3({
   endpoint: new aws.Endpoint(process.env.SPACES_ENDPOINT_URL || ''),
   accessKeyId: process.env.SPACES_ACCESS_ID,

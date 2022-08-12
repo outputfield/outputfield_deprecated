@@ -54,7 +54,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         return { ..._state, [action.key]: action.file }
       }
     },
-    {} // TODO: reduce existing files into {}
+    {} // TODO: reduce existing files into {} as initialState
   )
 
   const onFormSubmit: SubmitHandler<ISignUpInputs> = (data, event) => {

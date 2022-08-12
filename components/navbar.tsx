@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { useUser } from '../lib/hooks'
+import { useUser } from '../lib/useUser'
 
 export const Navbar = () => {
   // const [user, setUser] = useContext(UserContext);

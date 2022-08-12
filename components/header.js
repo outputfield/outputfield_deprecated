@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { useUser } from '../lib/hooks'
+import { useUser } from '../lib/useUser'
 
 const Header = () => {
   const user = useUser()
