@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 import ProfileForm from '../components/profileForm'
+import spaces from '../lib/doSpaces'
+import { PutObjectCommand } from '@aws-sdk/client-s3'
+
 
 export default function SignUp() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
@@ -21,29 +24,37 @@ export default function SignUp() {
       // 2. PUT request for each file
       files.forEach(async(f: File) => {
         console.log(f)
-        const signedUrlRes = await fetch('/api/presignedUrl', {
-          method: 'POST',
-          body: JSON.stringify({
-            fileName: f.name,
-            fileType: f.type
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        })
-        const { signedUrl } = await signedUrlRes.json()
+
+        // const signedUrlRes = await fetch('/api/presignedUrl', {
+        //   method: 'POST',
+        //   body: JSON.stringify({
+        //     fileName: f.name,
+        //     fileType: f.type
+        //   }),
+        //   headers: {
+        //     'Content-Type': 'application/json'
+        //   },
+        // })
+        // const { signedUrl } = await signedUrlRes.json()
 
         // FIXME: failing here
-        const res = await fetch(signedUrl,  {
-          method: 'PUT',
-          body: f,
-          headers: {
-            'Content-Type': f.type,
-            'x-amz-acl': 'public-read'
-          }
-        })
+        // const res = await fetch(signedUrl,  {
+        //   method: 'PUT',
+        //   body: f,
+        //   headers: {
+        //     'Content-Type': f.type,
+        //     'x-amz-acl': 'public-read'
+        //   }
+        // })
+        // Specifies a path within your Space and the file to upload.
+        const bucketParams = {
+          Bucket: 'outputfieldartworks',
+          Key: f.name,
+          Body: f
+        }
+        const data = await spaces.send(new PutObjectCommand(bucketParams))
 
-        return res
+        return data
       })
     } catch (error) {
       console.log(error)
