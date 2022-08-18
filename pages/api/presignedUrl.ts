@@ -13,9 +13,9 @@ export default async function presignedUrl(req: NextApiRequest, res: NextApiResp
       ACL: 'public-read', // Remove this to make the file private
     }
       
-    const signedUrl = spaces.getSignedUrl('putObject', params)
-      
-    res.json({signedUrl})
+    // const signedUrl = spaces.getSignedUrl('putObject', params)
+    
+    // res.json({signedUrl})
       
   } catch (error) {
     let errorMessage = 'Failed to get presigned URL :('
