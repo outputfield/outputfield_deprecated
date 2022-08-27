@@ -1,0 +1,25 @@
+import { ListObjectsCommand, PutObjectCommand } from '@aws-sdk/client-s3'
+import { NextApiRequest, NextApiResponse } from 'next'
+import spaces from '../../lib/doSpaces'
+
+export default async function uploadFile(req: NextApiRequest, res: NextApiResponse) {
+  const { file } = req.body
+  try {
+    // TODO: move this into an API route. Then try removing "NEXT_PUBLIC_..." in ENV variables. 
+    const d = await spaces.send(new ListObjectsCommand({ Bucket: 'outputfieldartworks'}))
+    console.log('Success', d)
+    // Specifies a path within your Space and the file to upload.
+    const bucketParams = {
+      Bucket: 'outputfieldartworks',
+      Key: file.name,
+      Body: file,
+      ACL: 'public-read'
+    }
+    const data = await spaces.send(new PutObjectCommand(bucketParams))
+
+    return data
+
+  } catch (error) {
+    console.log(error)
+  }
+}

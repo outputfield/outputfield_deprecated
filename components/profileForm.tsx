@@ -3,6 +3,7 @@ import { useForm, useFieldArray, SubmitHandler, SubmitErrorHandler } from 'react
 import Input from './input'
 import { Button } from './button/button.component'
 import DropzoneComponent from './dropzoneComponent'
+import { useRouter } from 'next/router'
 
 type ProfileLink = {
   url: string;
@@ -12,6 +13,10 @@ type ProfileLink = {
 type ISignUpInputs = {
   Name: string;
   Title: string;
+  Handle: string;
+  Bio: string;
+  Mediums: string[];
+  'Mediums Of Interest': string[];
   Pronouns: string;
   Location: string;
   links: ProfileLink[];
@@ -58,7 +63,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
   )
 
   const onFormSubmit: SubmitHandler<ISignUpInputs> = (data, event) => {
-    console.log('onFOrmSubmit')
+    console.log('onFOrmSubmit', event)
     event?.preventDefault()
     onSubmit(data, Object.values(state))
   }
@@ -93,9 +98,30 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         </div>
         <div className="w-full px-3">
           <Input
+            label="Handle"
+            placeholder="ie. suavepainter"
+            {...register('Handle')}
+          />
+        </div>
+        <div className="w-full px-3">
+          <Input
             label="Pronouns"
             placeholder="ie. they/them"
             {...register('Pronouns')}
+          />
+        </div>
+        <div className="w-full px-3">
+          <Input
+            label="Mediums"
+            placeholder="ie. they/them"
+            {...register('Mediums')}
+          />
+        </div>
+        <div className="w-full px-3">
+          <Input
+            label="Mediums of Interest"
+            placeholder="ie. they/them"
+            {...register('Mediums of Interest')}
           />
         </div>
         <div className="w-full px-3">
@@ -150,14 +176,14 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
           <div className="py-6 grid grid-cols-2">
             {Array.from(Array(6)).map((undef, key) => (
               <div key={key} className={`cols-span-${key}`}>
-                <button
+                <div
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
                   id={`grid-upload-work-${key}`}
-                  onClick={() => console.log('redirect to /upload')}>
+                >
                   {/* https://stackoverflow.com/a/47465615 */}
                   {/* https://carterbancroft.com/uploading-directly-to-digital-ocean-spaces-from-your-dang-browser/ */}
                   <DropzoneComponent handleDrop={(file: File) => dispatch({ type: 'UPDATE', key, file})} />
-                </button>
+                </div>
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                   htmlFor={`grid-upload-work-${key}`}>
@@ -170,7 +196,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
       </div>
       <Button
         type="submit"
-        // disabled={isSubmitting}
+        disabled={isSubmitting}
       >
         Save Changes
       </Button>
