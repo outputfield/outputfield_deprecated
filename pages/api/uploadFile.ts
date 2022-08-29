@@ -18,7 +18,6 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
     const data = await spaces.send(new PutObjectCommand(bucketParams))
 
     return data
-
   } catch (error) {
     console.log(error)
   }

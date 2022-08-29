@@ -16,7 +16,7 @@ type ISignUpInputs = {
   Handle: string;
   Bio: string;
   Mediums: string[];
-  'Mediums Of Interest': string[];
+  'Mediums of Interest': string[];
   Pronouns: string;
   Location: string;
   links: ProfileLink[];
