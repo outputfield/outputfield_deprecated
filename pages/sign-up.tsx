@@ -30,7 +30,7 @@ export default function SignUp() {
     } catch (error) {
       console.error(`Failed to fetch: ${error}`)
     }
-    debugger
+    // debugger
 
     // 2. create user
     try {
