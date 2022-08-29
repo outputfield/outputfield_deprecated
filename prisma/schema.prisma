@@ -38,14 +38,12 @@ model Artist {
   work              Work[]
   links             Link[]
 
-  referrerId        Int?      
+  referrerId        Int?      @unique
   referredBy        Artist?   @relation("ArtistReference", fields: [referrerId], references: [id])
-  referred          Artist?  @relation("ArtistReference")
+  referred          Artist?   @relation("ArtistReference")
 
-  //tokens    Token[]
-  //projects  Project[]
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int
+  user              User      @relation(fields: [userId], references: [id])
+  userId            Int       @unique
 }
 
 // TODO:

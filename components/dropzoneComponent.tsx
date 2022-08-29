@@ -37,7 +37,8 @@ function DropzoneComponent({ handleDrop }: any) {
   const [files, setFiles] = useState([])
   console.log('files', files)
   
-  const onDrop = useCallback(acceptedFiles => {
+  const onDrop = useCallback((acceptedFiles, event) => {
+    console.log(event)
     // 1. set state locally, for file preview purposes.
     setFiles(acceptedFiles.map((file: File) => Object.assign(file, {
       preview: URL.createObjectURL(file)
@@ -55,7 +56,8 @@ function DropzoneComponent({ handleDrop }: any) {
     isDragReject
   } = useDropzone({
     onDrop,
-    accept: 'image/jpeg, image/png'
+    accept: 'image/jpeg, image/png',
+    noDragEventsBubbling: true 
   })
 
   const style = useMemo(() => ({
@@ -87,9 +89,9 @@ function DropzoneComponent({ handleDrop }: any) {
 
   return (
     <section>
-      <div {...getRootProps({style})}>
-        <input {...getInputProps()} />
-        <div>+</div>
+      <div {...getRootProps({style, className: 'dropzone'})}>
+        <input {...getInputProps()}/>
+        <p>+</p>
       </div>
       <aside>
         {thumbs}
