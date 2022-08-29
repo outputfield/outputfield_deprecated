@@ -16,7 +16,7 @@ export default function SignUp() {
     const _referrerId = '123456'
 
     // Returns name and UID (or url?) of each work, as a parameter to /api/signUp
-    let workUIDs
+    let uploadResObject
     try {
       const uploadPromises = files.map((f: File) => fetch(
         'api/uploadFile', 
@@ -26,7 +26,8 @@ export default function SignUp() {
         })
       )
       // TODO: get each Work { type: string?, link: string }
-      workUIDs = await Promise.all(uploadPromises)
+      uploadResObject = await Promise.all(uploadPromises)
+      console.log('uploadResObject', uploadResObject)
     } catch (error) {
       console.error(`Failed to fetch: ${error}`)
     }
@@ -42,7 +43,7 @@ export default function SignUp() {
         body: JSON.stringify({
           ...data,
           email: _email,
-          links: workUIDs,
+          links: uploadResObject,
           referrerId: _referrerId,
         })
       })
