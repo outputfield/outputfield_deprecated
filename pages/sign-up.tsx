@@ -29,9 +29,10 @@ export default function SignUp() {
       uploadResObject = await Promise.all(uploadPromises)
       console.log('uploadResObject', uploadResObject)
     } catch (error) {
-      console.error(`Failed to fetch: ${error}`)
+      console.error(`Failed to /uploadFile: ${error}`)
     }
     // debugger
+    console.log(uploadResObject)
 
     // 2. create user
     try {
@@ -48,7 +49,7 @@ export default function SignUp() {
         })
       })
     } catch (err) {
-      console.log(err)
+      console.error(`Failed to /uploadFile: ${err}`)
     }
 
 

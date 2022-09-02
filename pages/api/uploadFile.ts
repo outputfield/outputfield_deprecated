@@ -5,9 +5,6 @@ import spaces from '../../lib/doSpaces'
 export default async function uploadFile(req: NextApiRequest, res: NextApiResponse) {
   const { file } = req.body
   try {
-    // TODO: move this into an API route. Then try removing "NEXT_PUBLIC_..." in ENV variables. 
-    const d = await spaces.send(new ListObjectsCommand({ Bucket: 'outputfieldartworks'}))
-    console.log('Success', d)
     // Specifies a path within your Space and the file to upload.
     const bucketParams = {
       Bucket: 'outputfieldartworks',
@@ -20,5 +17,6 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
     return data
   } catch (error) {
     console.log(error)
+    throw error
   }
 }
