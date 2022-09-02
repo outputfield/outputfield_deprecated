@@ -59,5 +59,6 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
 
   } catch (error) {
     console.log(error)
+    throw error
   }
 }
