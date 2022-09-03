@@ -12,7 +12,6 @@ import { S3 } from '@aws-sdk/client-s3'
 //     secretAccessKey: process.env.SPACES_SECRET_ACCESS_KEY ||''
 //   }
 // })
-console.log(process.env.NEXT_PUBLIC_SPACES_ACCESS_ID, process.env.NEXT_PUBLIC_SPACES_SECRET_ACCESS_KEY)
 const spaces = new S3({
   endpoint: process.env.NEXT_PUBLIC_SPACES_ENDPOINT_URL || '',
   region: 'us-west-1',
