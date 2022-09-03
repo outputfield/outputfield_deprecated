@@ -30,6 +30,7 @@ export default function SignUp() {
       console.log('uploadResObject', uploadResObject)
     } catch (error) {
       console.error(`Failed to /uploadFile: ${error}`)
+      console.log(files.map((f: File) => JSON.stringify(f)))
     }
     // debugger
     console.log(uploadResObject)
