@@ -38,11 +38,13 @@ function DropzoneComponent({ handleDrop }: any) {
   console.log('files', files)
   
   const onDrop = useCallback((acceptedFiles, event) => {
-    console.log(event)
     // 1. set state locally, for file preview purposes.
-    setFiles(acceptedFiles.map((file: File) => Object.assign(file, {
-      preview: URL.createObjectURL(file)
-    })))
+    setFiles(
+      acceptedFiles.map((file: File) => {
+        console.log(file)
+        return Object.assign(file, {preview: URL.createObjectURL(file)})
+      })
+    )
     
     // 2. set state in ProfileForm, for form data collection
     acceptedFiles.forEach((f: File) => handleDrop(f))
