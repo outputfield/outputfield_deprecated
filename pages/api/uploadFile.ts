@@ -12,37 +12,39 @@ export const config = {
 }
 
 export default async function uploadFile(req: NextApiRequest, res: NextApiResponse) {
-  console.log('you have hit /uploadFile')
-  // parse request to readable form
-  const form = new formidable.IncomingForm()
-  form.parse(req, async (err:any, fields: any, files: any) => {
+  if (req.method === 'PUT') {  
+    // parse request to readable form
+    const form = new formidable.IncomingForm()
+    form.parse(req, async (err:any, fields: any, files: any) => {
     // Account for parsing errors
-    if (err) return res.status(500).send(`Error occured: ${err}`)
+      if (err) return res.status(500).send(`Error occured: ${err}`)
 
-    console.log('/uploadFile 21', files)
+      try {
+        // Read file
+        const file = fs.readFileSync(files.file.path) // Buffer
+        const bucketParams = {
+          Bucket: 'outputfieldartworks',
+          Key: files.file.name,
+          Body: file,
+          // ACL: 'public-read'
+        }
+        const data = await spaces.send(new PutObjectCommand(bucketParams))
+        console.log('after /uploadFile', data)
 
-    // Read file
-    const file = fs.readFileSync(files.file.path) // Buffer
-    console.log('/uploadFile file buffer', file)
-    try {
-      const bucketParams = {
-        Bucket: 'outputfieldartworks',
-        Key: files.file.name,
-        Body: file,
-        ACL: 'public-read'
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+        res.setHeader('Cache-Control', 'max-age=180000')
+        return res.end(JSON.stringify(data))
+      // res.send('data')
+      } catch (error) {
+        console.log('err', error)
+        // Unlink file
+        fs.unlinkSync(files.file.path)
+        return res.status(500).send(`Error occured: ${error}`)
       }
-      const data = await spaces.send(new PutObjectCommand(bucketParams))
-      console.log('after /uploadFile', data)
-
-      res.statusCode = 200
-      res.setHeader('Content-Type', 'application/json')
-      res.setHeader('Cache-Control', 'max-age=180000')
-      res.end(JSON.stringify(data))
-    } catch (error) {
-      console.log('err', error)
-      // Unlink file
-      fs.unlinkSync(files.file.path)
-      return res.status(500).send(`Error occured: ${error}`)
-    }
-  })
+    })
+  } else {
+    res.status(405)
+    res.end()
+  }
 }
