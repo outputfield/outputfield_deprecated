@@ -1,8 +1,6 @@
 import Image from 'next/image'
-import React, { useState, useCallback, useMemo, useEffect } from 'react'
+import React, { useState, useCallback, useMemo, useEffect, ChangeEvent } from 'react'
 import { useDropzone } from 'react-dropzone'
-
-// TODO: remove & uninstall react-dropzone
 
 const baseStyle = {
   display: 'flex',
@@ -35,20 +33,20 @@ interface FilePlus extends File {
 }
 
 function DropzoneComponent({ handleDrop }: any) {
-  const [file, setFile] = useState([])
+  const [file, setFile] = useState<FilePlus | undefined>()
   
-  const onDrop = useCallback((acceptedFiles, event) => {
-    console.log('onDrop acceptedFiles', acceptedFiles)
-    const f = acceptedFiles
-    // const fileWithPreview = Object.assign(f, {preview: URL.createObjectURL(f)})
-    
+  const onDrop = useCallback((acceptedFile) => {
+    console.log('onDrop acceptedFiles', acceptedFile)
+
     // 1. set state locally, for fileWithPreview preview purposes.
-    // setFile(fileWithPreview)
+    const fileWithPreview = {...acceptedFile, preview: URL.createObjectURL(acceptedFile)}
+    setFile(fileWithPreview)
   
     // 2. set state in ProfileForm, for form data collection
-    handleDrop(f)
+    handleDrop(acceptedFile)
   }, [])
 
+  // TODO: remove this & uninstall react-dropzone
   const {
     getRootProps,
     getInputProps,
@@ -61,6 +59,7 @@ function DropzoneComponent({ handleDrop }: any) {
     noDragEventsBubbling: true 
   })
 
+  // TODO: remove this & uninstall react-dropzone
   const style = useMemo(() => ({
     ...baseStyle,
     ...(isDragActive ? activeStyle : {}),
@@ -72,39 +71,42 @@ function DropzoneComponent({ handleDrop }: any) {
     isDragAccept
   ])
 
-  // const thumbs = files.map((file: FilePlus) => (
-  //   <div key={file.name}>
-  //     <Image
-  //       src={file.preview}
-  //       alt={file.name}
-  //       height="10"
-  //       width="10"
-  //     />
-  //   </div>
-  // ))
+  const thumbNail = (
+    <div key={file?.name}>
+      <Image
+        src={file?.preview || ''}
+        alt={file?.name}
+        height="10"
+        width="10"
+      />
+    </div>
+  )
 
   // clean up
   useEffect(() => () => {
-    URL.revokeObjectURL(file.preview)
+    URL.revokeObjectURL(file?.preview || '')
   }, [file])
 
-  async function handleProfileImageUpload(e) {
-    console.log('handleProfileImageUpload')
-    const file = e.target.files[0]
-    const formData = new FormData()
-    formData.append('file', file)
-    onDrop(formData, e)
+  async function handleImageUpload(e: ChangeEvent<HTMLInputElement>) {
+    console.log('handleImageUpload')
+    const el = e.target as HTMLInputElement
+    if (el.files != null) {
+      const file = el.files[0]
+      const formData = new FormData()
+      formData.append('file', file)
+      onDrop(formData)
+    }
   }
 
   return (
     <section>
       <label htmlFor="file-upload">
         <div>
-          {/* <img src={profileImage} className=""/> */}
+          {thumbNail}
           <div id="dashboard-image-hover" >Upload Image</div>
         </div>
       </label>
-      <input id="file-upload" type="file" onChange={handleProfileImageUpload}/>
+      <input id="file-upload" type="file" onChange={handleImageUpload}/>
     </section>
   )
 }

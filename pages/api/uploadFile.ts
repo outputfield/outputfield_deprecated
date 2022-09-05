@@ -15,9 +15,9 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
   console.log('you have hit /uploadFile')
   // parse request to readable form
   const form = new formidable.IncomingForm()
-  form.parse(req, async (err, fields, files) => {
+  form.parse(req, async (err:any, fields: any, files: any) => {
     // Account for parsing errors
-    // if (err) return res.status(500).send(`Error occured: ${err}`)
+    if (err) return res.status(500).send(`Error occured: ${err}`)
 
     console.log('/uploadFile 21', files)
 
@@ -38,12 +38,11 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
       res.setHeader('Content-Type', 'application/json')
       res.setHeader('Cache-Control', 'max-age=180000')
       res.end(JSON.stringify(data))
-      // return data
     } catch (error) {
       console.log('err', error)
       // Unlink file
       fs.unlinkSync(files.file.path)
-      return res.status(500).send(`Error occured: ${error}`);
+      return res.status(500).send(`Error occured: ${error}`)
     }
   })
 }
