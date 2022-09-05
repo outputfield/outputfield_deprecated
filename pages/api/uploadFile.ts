@@ -1,26 +1,49 @@
 import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { NextApiRequest, NextApiResponse } from 'next'
 import spaces from '../../lib/doSpaces'
+
 import fs from 'fs'
+import formidable from 'formidable-serverless'
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
 
 export default async function uploadFile(req: NextApiRequest, res: NextApiResponse) {
-  const { file } = req.body
-  const json = fs.readFileSync(file.path)
-  try {
-    // TODO: Specify type here?
-    // Specifies a path within your Space and the file to upload.
-    const bucketParams = {
-      Bucket: 'outputfieldartworks',
-      Key: file.name,
-      Body: JSON.stringify(json),
-      ACL: 'public-read'
+  console.log('you have hit /uploadFile')
+  // parse request to readable form
+  const form = new formidable.IncomingForm()
+  form.parse(req, async (err, fields, files) => {
+    // Account for parsing errors
+    // if (err) return res.status(500).send(`Error occured: ${err}`)
+
+    console.log('/uploadFile 21', files)
+
+    // Read file
+    const file = fs.readFileSync(files.file.path) // Buffer
+    console.log('/uploadFile file buffer', file)
+    try {
+      const bucketParams = {
+        Bucket: 'outputfieldartworks',
+        Key: files.file.name,
+        Body: file,
+        ACL: 'public-read'
+      }
+      const data = await spaces.send(new PutObjectCommand(bucketParams))
+      console.log('after /uploadFile', data)
+
+      res.statusCode = 200
+      res.setHeader('Content-Type', 'application/json')
+      res.setHeader('Cache-Control', 'max-age=180000')
+      res.end(JSON.stringify(data))
+      // return data
+    } catch (error) {
+      console.log('err', error)
+      // Unlink file
+      fs.unlinkSync(files.file.path)
+      return res.status(500).send(`Error occured: ${error}`);
     }
-    const data = await spaces.send(new PutObjectCommand(bucketParams))
-    return data
-  } catch (error) {
-    // Unlink file
-    fs.unlinkSync(file.path)
-    console.log(error)
-    throw error
-  }
+  })
 }

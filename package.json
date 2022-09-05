@@ -14,6 +14,7 @@
     "@magic-sdk/admin": "1.0.0",
     "aws-sdk": "^2.1181.0",
     "cookie": "0.4.0",
+    "formidable-serverless": "^1.1.1",
     "html-react-parser": "^1.4.6",
     "magic-sdk": "1.0.1",
     "next": "latest",

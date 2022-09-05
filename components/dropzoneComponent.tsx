@@ -2,6 +2,8 @@ import Image from 'next/image'
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 
+// TODO: remove & uninstall react-dropzone
+
 const baseStyle = {
   display: 'flex',
   flexDirection: 'column' as const,
@@ -33,21 +35,18 @@ interface FilePlus extends File {
 }
 
 function DropzoneComponent({ handleDrop }: any) {
-  // FIXME: this state should only store ONE file, not 'files'
-  const [files, setFiles] = useState([])
-  console.log('files', files)
+  const [file, setFile] = useState([])
   
   const onDrop = useCallback((acceptedFiles, event) => {
-    // 1. set state locally, for file preview purposes.
-    setFiles(
-      acceptedFiles.map((file: File) => {
-        console.log(file)
-        return Object.assign(file, {preview: URL.createObjectURL(file)})
-      })
-    )
+    console.log('onDrop acceptedFiles', acceptedFiles)
+    const f = acceptedFiles
+    // const fileWithPreview = Object.assign(f, {preview: URL.createObjectURL(f)})
     
+    // 1. set state locally, for fileWithPreview preview purposes.
+    // setFile(fileWithPreview)
+  
     // 2. set state in ProfileForm, for form data collection
-    acceptedFiles.forEach((f: File) => handleDrop(f))
+    handleDrop(f)
   }, [])
 
   const {
@@ -73,31 +72,39 @@ function DropzoneComponent({ handleDrop }: any) {
     isDragAccept
   ])
 
-  const thumbs = files.map((file: FilePlus) => (
-    <div key={file.name}>
-      <Image
-        src={file.preview}
-        alt={file.name}
-        height="10"
-        width="10"
-      />
-    </div>
-  ))
+  // const thumbs = files.map((file: FilePlus) => (
+  //   <div key={file.name}>
+  //     <Image
+  //       src={file.preview}
+  //       alt={file.name}
+  //       height="10"
+  //       width="10"
+  //     />
+  //   </div>
+  // ))
 
   // clean up
   useEffect(() => () => {
-    files.forEach((file: FilePlus) => URL.revokeObjectURL(file.preview))
-  }, [files])
+    URL.revokeObjectURL(file.preview)
+  }, [file])
+
+  async function handleProfileImageUpload(e) {
+    console.log('handleProfileImageUpload')
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('file', file)
+    onDrop(formData, e)
+  }
 
   return (
     <section>
-      <div {...getRootProps({style, className: 'dropzone'})}>
-        <input {...getInputProps()}/>
-        <p>+</p>
-      </div>
-      <aside>
-        {thumbs}
-      </aside>
+      <label htmlFor="file-upload">
+        <div>
+          {/* <img src={profileImage} className=""/> */}
+          <div id="dashboard-image-hover" >Upload Image</div>
+        </div>
+      </label>
+      <input id="file-upload" type="file" onChange={handleProfileImageUpload}/>
     </section>
   )
 }
