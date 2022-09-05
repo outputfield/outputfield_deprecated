@@ -56,6 +56,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
       const _state = {...state}
       switch(action.type) {
       case 'UPDATE':
+        console.log('dispatching... ', action.key, action.file)
         return { ..._state, [action.key]: action.file }
       }
     },

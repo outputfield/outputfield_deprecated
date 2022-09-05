@@ -7,7 +7,7 @@ export default function SignUp() {
   // Pass submit handler fn into ProfileForm
   const handleSubmit = async (data: any, files: any) => {
     console.log('sign-up handleSubmit', data, files)
-    setIsSubmitting(true)
+    // setIsSubmitting(true)
 
     // TODO: Grab new user email
     const _email = 'dummyemail@gmail.com'
@@ -18,12 +18,14 @@ export default function SignUp() {
     // Returns name and UID (or url?) of each work, as a parameter to /api/signUp
     let uploadResObject
     try {
-      const uploadPromises = files.map((f: File) => fetch(
-        'api/uploadFile', 
-        {
-          method: 'PUT',
-          body: f,
-        })
+      const uploadPromises = files.map((f: File) => {
+        console.log('enumerating uploadPromises', f)
+        return fetch(
+          'api/uploadFile', 
+          {
+            method: 'PUT',
+            body: f,
+          } )}
       )
       // TODO: get each Work { type: string?, link: string }
       uploadResObject = await Promise.all(uploadPromises)
@@ -32,26 +34,24 @@ export default function SignUp() {
       console.error(`Failed to /uploadFile: ${error}`)
       console.log(files.map((f: File) => JSON.stringify(f)))
     }
-    // debugger
-    console.log(uploadResObject)
 
     // 2. create user
-    try {
-      await fetch('/api/signUp', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...data,
-          email: _email,
-          links: uploadResObject,
-          referrerId: _referrerId,
-        })
-      })
-    } catch (err) {
-      console.error(`Failed to /uploadFile: ${err}`)
-    }
+    // try {
+    //   await fetch('/api/signUp', {
+    //     method: 'PUT',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       ...data,
+    //       email: _email,
+    //       links: uploadResObject,
+    //       referrerId: _referrerId,
+    //     })
+    //   })
+    // } catch (err) {
+    //   console.error(`Failed to /uploadFile: ${err}`)
+    // }
 
 
     //     // const signedUrlRes = await fetch('/api/presignedUrl', {

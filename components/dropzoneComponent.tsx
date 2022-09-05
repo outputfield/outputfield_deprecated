@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React, { useState, useCallback, useMemo, useEffect } from 'react'
+import React, { useState, useCallback, useMemo, useEffect, ChangeEvent } from 'react'
 import { useDropzone } from 'react-dropzone'
 
 const baseStyle = {
@@ -33,21 +33,20 @@ interface FilePlus extends File {
 }
 
 function DropzoneComponent({ handleDrop }: any) {
-  // FIXME: this state should only store ONE file, not 'files'
-  const [files, setFiles] = useState([])
-  console.log('files', files)
+  const [file, setFile] = useState<FilePlus | undefined>()
   
-  const onDrop = useCallback((acceptedFiles, event) => {
-    console.log(event)
-    // 1. set state locally, for file preview purposes.
-    setFiles(acceptedFiles.map((file: File) => Object.assign(file, {
-      preview: URL.createObjectURL(file)
-    })))
-    
+  const onDrop = useCallback((acceptedFile) => {
+    console.log('onDrop acceptedFiles', acceptedFile)
+
+    // 1. set state locally, for fileWithPreview preview purposes.
+    const fileWithPreview = {...acceptedFile, preview: URL.createObjectURL(acceptedFile)}
+    setFile(fileWithPreview)
+  
     // 2. set state in ProfileForm, for form data collection
-    acceptedFiles.forEach((f: File) => handleDrop(f))
+    handleDrop(acceptedFile)
   }, [])
 
+  // TODO: remove this & uninstall react-dropzone
   const {
     getRootProps,
     getInputProps,
@@ -60,6 +59,7 @@ function DropzoneComponent({ handleDrop }: any) {
     noDragEventsBubbling: true 
   })
 
+  // TODO: remove this & uninstall react-dropzone
   const style = useMemo(() => ({
     ...baseStyle,
     ...(isDragActive ? activeStyle : {}),
@@ -71,31 +71,42 @@ function DropzoneComponent({ handleDrop }: any) {
     isDragAccept
   ])
 
-  const thumbs = files.map((file: FilePlus) => (
-    <div key={file.name}>
+  const thumbNail = (
+    <div key={file?.name}>
       <Image
-        src={file.preview}
-        alt={file.name}
+        src={file?.preview || ''}
+        alt={file?.name}
         height="10"
         width="10"
       />
     </div>
-  ))
+  )
 
   // clean up
   useEffect(() => () => {
-    files.forEach((file: FilePlus) => URL.revokeObjectURL(file.preview))
-  }, [files])
+    URL.revokeObjectURL(file?.preview || '')
+  }, [file])
+
+  async function handleImageUpload(e: ChangeEvent<HTMLInputElement>) {
+    console.log('handleImageUpload')
+    const el = e.target as HTMLInputElement
+    if (el.files != null) {
+      const file = el.files[0]
+      const formData = new FormData()
+      formData.append('file', file)
+      onDrop(formData)
+    }
+  }
 
   return (
     <section>
-      <div {...getRootProps({style, className: 'dropzone'})}>
-        <input {...getInputProps()}/>
-        <p>+</p>
-      </div>
-      <aside>
-        {thumbs}
-      </aside>
+      <label htmlFor="file-upload">
+        <div>
+          {thumbNail}
+          <div id="dashboard-image-hover" >Upload Image</div>
+        </div>
+      </label>
+      <input id="file-upload" type="file" onChange={handleImageUpload}/>
     </section>
   )
 }
