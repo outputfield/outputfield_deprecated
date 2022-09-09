@@ -13,7 +13,6 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
     Mediums: mediums,
     'Mediums of Interest': mediumsOfInterest,
     links,
-    works,
     Bio: bio, 
     email,
     referrerId
@@ -33,18 +32,13 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
             handle,
             mediums,
             mediumsOfInterest,
-            work: {
-              createMany: {
-                data: works
-              }
-            },
             links: {
               createMany: {
                 data: links
               }
             },
-            referredBy: { connect: { referrerId } }
           },
+          // connect: { id: referrerId } //
         },
       },
       select: {

@@ -10,7 +10,7 @@ type ProfileLink = {
   label: string;
 };
 
-type ISignUpInputs = {
+export type ISignUpInputs = {
   Name: string;
   Title: string;
   Handle: string;
@@ -56,7 +56,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
       const _state = {...state}
       switch(action.type) {
       case 'UPDATE':
-        console.log('dispatching... ', action.key, action.file)
         return { ..._state, [action.key]: action.file }
       }
     },
@@ -181,8 +180,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
                   id={`grid-upload-work-${key}`}
                 >
-                  {/* https://stackoverflow.com/a/47465615 */}
-                  {/* https://carterbancroft.com/uploading-directly-to-digital-ocean-spaces-from-your-dang-browser/ */}
+                  {/* TODO: redirect to /upload/{key} */}
                   <DropzoneComponent handleDrop={(file: File) => dispatch({ type: 'UPDATE', key, file})} />
                 </div>
                 <label

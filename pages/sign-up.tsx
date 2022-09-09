@@ -1,81 +1,72 @@
 import React, { useState } from 'react'
-import ProfileForm from '../components/profileForm'
+import ProfileForm, { ISignUpInputs } from '../components/profileForm'
 
 export default function SignUp() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
 
-  // Pass submit handler fn into ProfileForm
-  const handleSubmit = async (data: any, files: any) => {
+  /**
+   * 1. Create user /signUp. Get userId back
+   * 2. Upload each file to DO, where key: `${userID}/${fileName}`
+   * 3. Update user's Works, where {
+   *      name: file.name,
+   *      url: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${userID}/${fileName}`
+   *    }
+   * @param data 
+   * @param files 
+   */
+  const handleSubmit = async (data: ISignUpInputs, files: File[]) => {
     console.log('sign-up handleSubmit', data, files)
-    // setIsSubmitting(true)
+    setIsSubmitting(true)
 
     // TODO: Grab new user email
     const _email = 'dummyemail@gmail.com'
 
     // TODO: get referrerId
-    const _referrerId = '123456'
+    const _referrerId = 1
 
-    // Returns name and UID (or url?) of each work, as a parameter to /api/signUp
-    let uploadResObject
+    // 1. create user
+    try {
+      const res = await fetch('/api/signUp', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...data,
+          email: _email,
+          referrerId: _referrerId,
+        })
+      })
+      const userID = await res.json()
+      console.log(userID)
+    } catch (err) {
+      console.error(`Failed to /uploadFile: ${err}`)
+    }
+
+    // 2. Upload files to DO
     try {
       const uploadPromises = files.map((f: File) => {
-        console.log('enumerating uploadPromises', f)
         return fetch(
-          'api/uploadFile', 
+          'api/uploadFile',
           {
             method: 'PUT',
             body: f,
           } )}
       )
       // TODO: get each Work { type: string?, link: string }
-      uploadResObject = await Promise.all(uploadPromises)
-      console.log('uploadResObject', uploadResObject)
+      await Promise.all(uploadPromises)
+      // console.log('uploadResObject', uploadResObject)
     } catch (error) {
       console.error(`Failed to /uploadFile: ${error}`)
       console.log(files.map((f: File) => JSON.stringify(f)))
     }
 
-    // 2. create user
-    // try {
-    //   await fetch('/api/signUp', {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       ...data,
-    //       email: _email,
-    //       links: uploadResObject,
-    //       referrerId: _referrerId,
-    //     })
-    //   })
-    // } catch (err) {
-    //   console.error(`Failed to /uploadFile: ${err}`)
-    // }
+    try {
+      // TODO: now update user with Works
+    } catch (error) {
+      console.error(`Failed to update user Works: ${error}`)
+    }
 
-
-    //     // const signedUrlRes = await fetch('/api/presignedUrl', {
-    //     //   method: 'POST',
-    //     //   body: JSON.stringify({
-    //     //     fileName: f.name,
-    //     //     fileType: f.type
-    //     //   }),
-    //     //   headers: {
-    //     //     'Content-Type': 'application/json'
-    //     //   },
-    //     // })
-    //     // const { signedUrl } = await signedUrlRes.json()
-
-    //     // const res = await fetch(signedUrl,  {
-    //     //   method: 'PUT',
-    //     //   body: f,
-    //     //   headers: {
-    //     //     'Content-Type': f.type,
-    //     //     'x-amz-acl': 'public-read'
-    //     //   }
-    //     // })        
-
-    //     return data
     setIsSubmitting(false)  
   }
 

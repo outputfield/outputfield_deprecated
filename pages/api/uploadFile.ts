@@ -15,6 +15,8 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
   if (req.method === 'PUT') {  
     // parse request to readable form
     const form = new formidable.IncomingForm()
+    form.uploadDir = './'
+    form.keepExtensions = true  
     form.parse(req, async (err:any, fields: any, files: any) => {
     // Account for parsing errors
       if (err) return res.status(500).send(`Error occured: ${err}`)
@@ -24,9 +26,9 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
         const file = fs.readFileSync(files.file.path) // Buffer
         const bucketParams = {
           Bucket: 'outputfieldartworks',
-          Key: files.file.name,
+          Key: `${fields.id}/${files.file.name}`, // Specify folder and file name
           Body: file,
-          // ACL: 'public-read'
+          ACL: 'public-read'
         }
         const data = await spaces.send(new PutObjectCommand(bucketParams))
         console.log('after /uploadFile', data)
