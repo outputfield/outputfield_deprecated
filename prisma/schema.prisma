@@ -10,7 +10,7 @@ datasource db {
 // TODO: update seed.ts in backend; notify allan of change
 model User {
   id        Int       @id @default(autoincrement())
-  name      String    @unique @db.VarChar(255)
+  name      String    @db.VarChar(255)
   password  String?
   email     String    @unique @db.VarChar(255)
   createdAt DateTime  @default(now()) @map(name: "created_at")
@@ -22,7 +22,7 @@ model User {
   // curator     Curator?
   // venue     Venue?
 
-  nominatorId        Int?      @unique
+  nominatorId        Int?
   nominatedBy        User?     @relation("NominatorReference", fields: [nominatorId], references: [id])
   nominees           User[]    @relation("NominatorReference")
 }
@@ -87,16 +87,16 @@ model Work {
   link      String    @default("")
 
   artist    Artist    @relation(fields: [artistID], references: [id])
-  artistID  Int
+  artistID  Int       
 }
 
 model Link {
-  id        Int    @id @default(autoincrement())
-  type      String?   @default("")
-  link      String    @default("")
+  id        Int       @id @default(autoincrement())
+  label     String?   @default("")
+  url       String    @default("")
 
-  artist    Artist @relation(fields: [artistID], references: [id])
-  artistID  Int
+  artist    Artist    @relation(fields: [artistID], references: [id])
+  artistID  Int       
 }
 
 // enum TokenType {

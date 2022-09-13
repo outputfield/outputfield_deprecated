@@ -3,7 +3,7 @@ import { useForm, useFieldArray, SubmitHandler, SubmitErrorHandler } from 'react
 import Input from './input'
 import { Button } from './button/button.component'
 import DropzoneComponent from './dropzoneComponent'
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 
 type ProfileLink = {
   url: string;
@@ -23,7 +23,7 @@ export type ISignUpInputs = {
 };
 
 interface Props {
-  onSubmit: (data: ISignUpInputs, files: File[]) => void;
+  onSubmit: (data: ISignUpInputs, files: FormData[]) => void;
   isSubmitting: boolean;
   profile?: ISignUpInputs | undefined;
 }
@@ -31,11 +31,11 @@ interface Props {
 type FilesAction = {
   type: 'UPDATE', 
   key: number, 
-  file: File 
+  file: FormData 
 }
 
 interface FilesState {
-  [x: number]: File;
+  [x: number]: FormData;
 }
 
 export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) {
@@ -162,9 +162,10 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
           ))}
           <button
             className="uppercase"
-            onClick={() =>
+            onClick={(e) =>{
+              e.preventDefault()
               append({ url: '', label: '' }, { shouldFocus: true })
-            }>
+            }}>
             + Add
           </button>
         </div>

@@ -15,7 +15,7 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
     links,
     Bio: bio, 
     email,
-    referrerId
+    nominatorId,
   } = req.body
   try {
     // 1. Create user in DB (as an Artist), along with artist's Works, and Links. Return user's email
@@ -23,6 +23,9 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
       data: {
         name,
         email,
+        nominatedBy: {
+          connect: { id: nominatorId }
+        },
         artist: {
           create: {
             title,
@@ -44,30 +47,10 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
         id: true
       }
     })
-
-    // 1.5. connect to referrerId 
-    await prisma.user.update({
-      where: {
-        id: newUser.id
-      },
-      data: {
-        artist: {
-    |      connect: {
-    |        id: referrerId
-    |      },
-        }
-      }
-    })
     
-    
-    // 2. (TODO:) Using, returned user obj, create connection to nominating user (referrerId)
-    const { email: nomineeEmail } = user
-
-    // TODO: THIS SHOULD RETURN userId as part of response
-    return user
-
+    return res.status(200).json(newUser)
   } catch (error) {
-    console.log(error)
+    console.log(`/api failed to create user: ${error}`)
     throw error
   }
 }

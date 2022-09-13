@@ -14,16 +14,27 @@ export default function SignUp() {
    * @param data 
    * @param files 
    */
-  const handleSubmit = async (data: ISignUpInputs, files: File[]) => {
+  const handleSubmit = async (data: ISignUpInputs, files: FormData[]) => {
     console.log('sign-up handleSubmit', data, files)
     setIsSubmitting(true)
 
     // TODO: Grab new user email
-    const _email = 'dummyemail@gmail.com'
+    function makeid(length: number) {
+      let result           = ''
+      const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      const charactersLength = characters.length
+      for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * 
+   charactersLength))
+      }
+      return result
+    }
+    const _email = `${makeid(6)}@gmail.com`
 
-    // TODO: get referrerId
-    const _referrerId = 1
+    // TODO: get nominatorId
+    const _nominatorId = 6
 
+    let newUser: any
     // 1. create user
     try {
       const res = await fetch('/api/signUp', {
@@ -34,18 +45,19 @@ export default function SignUp() {
         body: JSON.stringify({
           ...data,
           email: _email,
-          referrerId: _referrerId,
+          nominatorId: _nominatorId,
         })
       })
-      const userID = await res.json()
-      console.log(userID)
+      newUser = await res.json()
     } catch (err) {
-      console.error(`Failed to /uploadFile: ${err}`)
+      console.error(`Failed to /signUp: ${err}`)
     }
 
     // 2. Upload files to DO
+    let works
     try {
-      const uploadPromises = files.map((f: File) => {
+      const uploadPromises = files.map((f: FormData) => {
+        f.append('userId', newUser.id)
         return fetch(
           'api/uploadFile',
           {
@@ -53,16 +65,31 @@ export default function SignUp() {
             body: f,
           } )}
       )
-      // TODO: get each Work { type: string?, link: string }
-      await Promise.all(uploadPromises)
-      // console.log('uploadResObject', uploadResObject)
+      const uploadResObject = await Promise.all(uploadPromises)
+      console.log('uploadResObject', uploadResObject)
+      works = files.map((f: FormData) => {
+        const file = f.get('file') as File
+        return {
+          label: file.name,
+          // FIXME: make url dynamic
+          url: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${newUser.id}/${file.name}`
+        }
+      })
     } catch (error) {
       console.error(`Failed to /uploadFile: ${error}`)
-      console.log(files.map((f: File) => JSON.stringify(f)))
+      // console.log(files.map((f: File) => JSON.stringify(f)))
     }
 
     try {
-      // TODO: now update user with Works
+      // TODO: Write an api route to handle updating User with Works
+      // await prisma.user.update({
+      // where: {
+      //   id: newUser.id
+      // },
+      // works: {
+      //   create: works
+      // }
+      // })
     } catch (error) {
       console.error(`Failed to update user Works: ${error}`)
     }
