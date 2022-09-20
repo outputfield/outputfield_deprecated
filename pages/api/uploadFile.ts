@@ -12,29 +12,33 @@ export const config = {
 }
 
 export default async function uploadFile(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'PUT') {  
+  if (req.method === 'PUT') {
     // parse request to readable form
     const form = new formidable.IncomingForm()
-    // form.uploadDir = './'
-    form.keepExtensions = true  
+    form.keepExtensions = true
     form.parse(req, async (err: any, fields: any, formData: any) => {
     // Account for parsing errors
       if (err) return res.status(500).send(`Error occured: ${err}`)
 
       try {
-        const { userId } = fields
+        const { artistHandle } = fields
         // Read file
         const file = fs.readFileSync(formData.file.path) // Buffer
         const bucketParams = {
           Bucket: 'outputfieldartworks',
-          Key: `${userId}/${formData.file.name}`, // Specify folder and file name
+          Key: `${artistHandle}/${formData.file.name}`, // Specify folder and file name
           Body: file,
           ACL: 'public-read'
         }
         const data = await spaces.send(new PutObjectCommand(bucketParams))
         // console.log('after /uploadFile', data)
 
-        return res.status(200).json(data)
+        const work = {
+          // FIXME: make url dynamic
+          link: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${artistHandle}/${formData.file.name}`
+        }
+
+        return res.status(200).json(work)
       } catch (error) {
         console.log('err', error)
         // Unlink file

@@ -57,7 +57,7 @@ export default function SignUp() {
     let works
     try {
       const uploadPromises = files.map((f: FormData) => {
-        f.append('userId', newUser.id)
+        f.append('artistHandle', newUser.artist.handle)
         return fetch(
           'api/uploadFile',
           {
@@ -65,31 +65,29 @@ export default function SignUp() {
             body: f,
           } )}
       )
-      const uploadResObject = await Promise.all(uploadPromises)
-      console.log('uploadResObject', uploadResObject)
-      works = files.map((f: FormData) => {
-        const file = f.get('file') as File
-        return {
-          label: file.name,
-          // FIXME: make url dynamic
-          url: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${newUser.id}/${file.name}`
-        }
-      })
+      const res = await Promise.all(uploadPromises)
+      works = await Promise.all(res.map(r => r.json()))
+      // works = res.map(async (res) => {
+      //   const work = await res.json()
+      //   return work
+      // })
+      console.log('works', works) // TODO:
+      debugger
     } catch (error) {
       console.error(`Failed to /uploadFile: ${error}`)
-      // console.log(files.map((f: File) => JSON.stringify(f)))
     }
 
     try {
-      // TODO: Write an api route to handle updating User with Works
-      // await prisma.user.update({
-      // where: {
-      //   id: newUser.id
-      // },
-      // works: {
-      //   create: works
-      // }
-      // })
+      await fetch('/api/addArtistWorks',
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            artistHandle: newUser.artist.handle,
+            works
+          })
+        }
+      )
+      console.log('successfully updated user with works!')
     } catch (error) {
       console.error(`Failed to update user Works: ${error}`)
     }

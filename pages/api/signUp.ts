@@ -44,7 +44,13 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
         },
       },
       select: {
-        id: true
+        id: true,
+        artist: {
+          select: {
+            id: true,
+            handle: true
+          }
+        }
       }
     })
     
