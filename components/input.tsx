@@ -4,7 +4,7 @@ import { ChangeHandler } from 'react-hook-form'
 export type Ref = HTMLInputElement
 
 type Props = {
-  label: string;
+  label?: string;
   name: string;
   placeholder: string;
   onChange: ChangeHandler;
@@ -12,18 +12,20 @@ type Props = {
   className?: string
 }
 
-const Input = React.forwardRef<Ref, Props>(({label,
+const Input = React.forwardRef<Ref, Props>(({label = '',
   name,
   placeholder,
   onChange,
   onBlur }, ref) => {
   return (
     <>
-      <label
-        htmlFor={label}
-        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-        {label}
-      </label>
+      {label && (
+        <label
+          htmlFor={label}
+          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+          {label}
+        </label>
+      )}
       <input
         id={label}
         name={name}

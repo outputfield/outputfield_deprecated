@@ -9,16 +9,16 @@ datasource db {
 
 // TODO: update seed.ts in backend; notify allan of change
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar(255)
-  password  String?
-  email     String    @unique @db.VarChar(255)
-  createdAt DateTime  @default(now()) @map(name: "created_at")
+  id                 Int       @id @default(autoincrement())
+  name               String    @db.VarChar(255)
+  password           String?
+  email              String    @unique @db.VarChar(255)
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
 
   // Relation fields
   // tokens    Token[]
   // projects  Project[]
-  artist    Artist?
+  artist             Artist?
   // curator     Curator?
   // venue     Venue?
 
@@ -43,7 +43,7 @@ model Artist {
   work              Work[]
   links             Link[]
 
-  user              User      @relation(fields: [userId], references: [id])
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId            Int       @unique
 }
 
@@ -86,7 +86,7 @@ model Work {
   type      String?   @default("")
   link      String    @default("")
 
-  artist    Artist    @relation(fields: [artistID], references: [id])
+  artist    Artist    @relation(fields: [artistID], references: [id], onDelete: Cascade)
   artistID  Int       
 }
 
@@ -95,7 +95,7 @@ model Link {
   label     String?   @default("")
   url       String    @default("")
 
-  artist    Artist    @relation(fields: [artistID], references: [id])
+  artist    Artist    @relation(fields: [artistID], references: [id], onDelete: Cascade)
   artistID  Int       
 }
 

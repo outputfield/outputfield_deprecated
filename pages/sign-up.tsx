@@ -38,7 +38,7 @@ export default function SignUp() {
     // 1. create user
     try {
       const res = await fetch('/api/signUp', {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -67,12 +67,6 @@ export default function SignUp() {
       )
       const res = await Promise.all(uploadPromises)
       works = await Promise.all(res.map(r => r.json()))
-      // works = res.map(async (res) => {
-      //   const work = await res.json()
-      //   return work
-      // })
-      console.log('works', works) // TODO:
-      debugger
     } catch (error) {
       console.error(`Failed to /uploadFile: ${error}`)
     }

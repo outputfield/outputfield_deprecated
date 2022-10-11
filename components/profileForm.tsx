@@ -3,7 +3,6 @@ import { useForm, useFieldArray, SubmitHandler, SubmitErrorHandler } from 'react
 import Input from './input'
 import { Button } from './button/button.component'
 import DropzoneComponent from './dropzoneComponent'
-// import { useRouter } from 'next/router'
 
 type ProfileLink = {
   url: string;
@@ -139,17 +138,13 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
           {fields.map((field, index) => (
             <div className="py-6 grid grid-cols-2" key={field.id}>
               {/* TODO: change these to Input component, add new "noLabel" prop to Input */}
-              <input
+              <Input
                 className="appearance-none col-span-2 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-3"
-                id="grid-website-url"
-                type="text"
                 placeholder="Enter your website"
                 {...register(`links.${index}.url` as const)}
               />
-              <input
+              <Input
                 className="appearance-none col-span-1 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-website-label"
-                type="text"
                 placeholder="Label"
                 {...register(`links.${index}.label` as const)}
               />
@@ -181,8 +176,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
                   id={`grid-upload-work-${key}`}
                 >
-                  {/* TODO: redirect to /upload/{key} */}
-                  <DropzoneComponent handleDrop={(file: File) => dispatch({ type: 'UPDATE', key, file})} />
+                  {/* TODO: Show overlay popup */}
+                  <DropzoneComponent handleDrop={(file: FormData) => dispatch({ type: 'UPDATE', key, file})} />
                 </div>
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -196,7 +191,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
       </div>
       <Button
         type="submit"
-        disabled={isSubmitting}
+        // disabled={}
+        loading={isSubmitting}
       >
         Save Changes
       </Button>
