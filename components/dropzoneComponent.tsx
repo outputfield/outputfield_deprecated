@@ -87,7 +87,7 @@ function DropzoneComponent({ handleDrop }: any) {
     <section>
       <div {...getRootProps({style})}>
         <input {...getInputProps()} />
-        <div>+</div>
+        <div>Upload</div>
       </div>
       <aside>
         {thumbs}
