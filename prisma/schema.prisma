@@ -28,20 +28,20 @@ model User {
 }
 
 model Artist {
-  id                Int       @id @default(autoincrement())
-  title             String    @default("")
-  pronoun           String?   @default("")
-  createdAt         DateTime  @default(now()) @map(name: "created_at")
-  bio               String    @default("")
-  location          String    @default("")
-  iconColor         String    @default("")
-  handle            String    @unique @db.VarChar(255) 
+  id                Int      @id @default(autoincrement())
+  title             String   @default("")
+  pronoun           String?  @default("")
+  createdAt         DateTime @default(now()) @map(name: "created_at")
+  bio               String   @default("")
+  location          String   @default("")
+  iconColor         String   @default("")
+  handle            String   @unique @db.VarChar(255)
   mediums           String[]
   mediumsOfInterest String[]
 
   // Relation fields
-  work              Work[]
-  links             Link[]
+  work  Work[]
+  links Link[]
 
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId            Int       @unique
@@ -50,15 +50,15 @@ model Artist {
 // TODO:
 // model Curator {
 //   id        Int       @id @default(autoincrement())
-  // user       User     @relation(fields: [userId], references: [id])
-  // userId     Int
+// user       User     @relation(fields: [userId], references: [id])
+// userId     Int
 // }
 
 // TODO:
 // model Venue {
 //   id        Int       @id @default(autoincrement())
-  // user       User     @relation(fields: [userId], references: [id])
-  // userId     Int
+// user       User     @relation(fields: [userId], references: [id])
+// userId     Int
 // }
 
 // model Token {
@@ -82,9 +82,9 @@ model Artist {
 // }
 
 model Work {
-  id        Int       @id @default(autoincrement())
-  type      String?   @default("")
-  link      String    @default("")
+  id   Int     @id @default(autoincrement())
+  type String? @default("")
+  link String  @default("")
 
   artist    Artist    @relation(fields: [artistID], references: [id], onDelete: Cascade)
   artistID  Int       
