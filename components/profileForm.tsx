@@ -3,6 +3,8 @@ import { useForm, useFieldArray, SubmitHandler, SubmitErrorHandler } from 'react
 import Input from './input'
 import { Button } from './button/button.component'
 import DropzoneComponent from './dropzoneComponent'
+import Overlay from './overlay'
+import TabView from './tabView/tabView.component'
 
 type ProfileLink = {
   url: string;
@@ -49,6 +51,9 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
     name: 'links',
     control,
   })
+  const [uploadOpen, setUploadOpen] = useState(false)
+  const [uploadNum, setUploadNum] = useState(-1)
+  const closeUpload = () => setUploadOpen(false)
 
   const [state, dispatch] = useReducer(
     (state: FilesState, action: FilesAction) => {
@@ -195,7 +200,9 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         loading={isSubmitting}
       >
         Save Changes
-      </Button>
-    </form>
+        </Button>
+      </form>
+    </>
+
   )
 }
