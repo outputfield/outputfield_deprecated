@@ -1,16 +1,17 @@
-import React, { useCallback, useReducer } from 'react'
+import React, { useState , useCallback, useReducer } from 'react'
 import { useForm, useFieldArray, SubmitHandler, SubmitErrorHandler } from 'react-hook-form'
 import Input from './input'
 import { Button } from './button/button.component'
 import DropzoneComponent from './dropzoneComponent'
-import { useRouter } from 'next/router'
+import Overlay from './overlay'
+import TabView from './tabView/tabView.component'
 
 type ProfileLink = {
   url: string;
   label: string;
 };
 
-type ISignUpInputs = {
+export type ISignUpInputs = {
   Name: string;
   Title: string;
   Handle: string;
@@ -23,7 +24,7 @@ type ISignUpInputs = {
 };
 
 interface Props {
-  onSubmit: (data: ISignUpInputs, files: File[]) => void;
+  onSubmit: (data: ISignUpInputs, files: FormData[]) => void;
   isSubmitting: boolean;
   profile?: ISignUpInputs | undefined;
 }
@@ -31,11 +32,11 @@ interface Props {
 type FilesAction = {
   type: 'UPDATE', 
   key: number, 
-  file: File 
+  file: FormData 
 }
 
 interface FilesState {
-  [x: number]: File;
+  [x: number]: FormData;
 }
 
 export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) {
@@ -50,13 +51,15 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
     name: 'links',
     control,
   })
+  const [uploadOpen, setUploadOpen] = useState(false)
+  const [uploadNum, setUploadNum] = useState(-1)
+  const closeUpload = () => setUploadOpen(false)
 
   const [state, dispatch] = useReducer(
     (state: FilesState, action: FilesAction) => {
       const _state = {...state}
       switch(action.type) {
       case 'UPDATE':
-        console.log('dispatching... ', action.key, action.file)
         return { ..._state, [action.key]: action.file }
       }
     },
@@ -140,17 +143,13 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
           {fields.map((field, index) => (
             <div className="py-6 grid grid-cols-2" key={field.id}>
               {/* TODO: change these to Input component, add new "noLabel" prop to Input */}
-              <input
+              <Input
                 className="appearance-none col-span-2 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-3"
-                id="grid-website-url"
-                type="text"
                 placeholder="Enter your website"
                 {...register(`links.${index}.url` as const)}
               />
-              <input
+              <Input
                 className="appearance-none col-span-1 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="grid-website-label"
-                type="text"
                 placeholder="Label"
                 {...register(`links.${index}.label` as const)}
               />
@@ -163,9 +162,10 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
           ))}
           <button
             className="uppercase"
-            onClick={() =>
+            onClick={(e) =>{
+              e.preventDefault()
               append({ url: '', label: '' }, { shouldFocus: true })
-            }>
+            }}>
             + Add
           </button>
         </div>
@@ -181,9 +181,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                   className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
                   id={`grid-upload-work-${key}`}
                 >
-                  {/* https://stackoverflow.com/a/47465615 */}
-                  {/* https://carterbancroft.com/uploading-directly-to-digital-ocean-spaces-from-your-dang-browser/ */}
-                  <DropzoneComponent handleDrop={(file: File) => dispatch({ type: 'UPDATE', key, file})} />
+                  {/* TODO: Show overlay popup */}
+                  <DropzoneComponent handleDrop={(file: FormData) => dispatch({ type: 'UPDATE', key, file})} />
                 </div>
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -197,7 +196,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
       </div>
       <Button
         type="submit"
-        disabled={isSubmitting}
+        // disabled={}
+        loading={isSubmitting}
       >
         Save Changes
       </Button>

@@ -1,81 +1,91 @@
 import React, { useState } from 'react'
-import ProfileForm from '../components/profileForm'
+import ProfileForm, { ISignUpInputs } from '../components/profileForm'
 
 export default function SignUp() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
 
-  // Pass submit handler fn into ProfileForm
-  const handleSubmit = async (data: any, files: any) => {
+  /**
+   * 1. Create user /signUp. Get userId back
+   * 2. Upload each file to DO, where key: `${userID}/${fileName}`
+   * 3. Update user's Works, where {
+   *      name: file.name,
+   *      url: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${userID}/${fileName}`
+   *    }
+   * @param data 
+   * @param files 
+   */
+  const handleSubmit = async (data: ISignUpInputs, files: FormData[]) => {
     console.log('sign-up handleSubmit', data, files)
-    // setIsSubmitting(true)
+    setIsSubmitting(true)
 
     // TODO: Grab new user email
-    const _email = 'dummyemail@gmail.com'
+    function makeid(length: number) {
+      let result           = ''
+      const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      const charactersLength = characters.length
+      for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * 
+   charactersLength))
+      }
+      return result
+    }
+    const _email = `${makeid(6)}@gmail.com`
 
-    // TODO: get referrerId
-    const _referrerId = '123456'
+    // TODO: get nominatorId
+    const _nominatorId = 6
 
-    // Returns name and UID (or url?) of each work, as a parameter to /api/signUp
-    let uploadResObject
+    let newUser: any
+    // 1. create user
     try {
-      const uploadPromises = files.map((f: File) => {
-        console.log('enumerating uploadPromises', f)
+      const res = await fetch('/api/signUp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...data,
+          email: _email,
+          nominatorId: _nominatorId,
+        })
+      })
+      newUser = await res.json()
+    } catch (err) {
+      console.error(`Failed to /signUp: ${err}`)
+    }
+
+    // 2. Upload files to DO
+    let works
+    try {
+      const uploadPromises = files.map((f: FormData) => {
+        f.append('artistHandle', newUser.artist.handle)
         return fetch(
-          'api/uploadFile', 
+          'api/uploadFile',
           {
             method: 'PUT',
             body: f,
           } )}
       )
-      // TODO: get each Work { type: string?, link: string }
-      uploadResObject = await Promise.all(uploadPromises)
-      console.log('uploadResObject', uploadResObject)
+      const res = await Promise.all(uploadPromises)
+      works = await Promise.all(res.map(r => r.json()))
     } catch (error) {
       console.error(`Failed to /uploadFile: ${error}`)
-      console.log(files.map((f: File) => JSON.stringify(f)))
     }
 
-    // 2. create user
-    // try {
-    //   await fetch('/api/signUp', {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       ...data,
-    //       email: _email,
-    //       links: uploadResObject,
-    //       referrerId: _referrerId,
-    //     })
-    //   })
-    // } catch (err) {
-    //   console.error(`Failed to /uploadFile: ${err}`)
-    // }
+    try {
+      await fetch('/api/addArtistWorks',
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            artistHandle: newUser.artist.handle,
+            works
+          })
+        }
+      )
+      console.log('successfully updated user with works!')
+    } catch (error) {
+      console.error(`Failed to update user Works: ${error}`)
+    }
 
-
-    //     // const signedUrlRes = await fetch('/api/presignedUrl', {
-    //     //   method: 'POST',
-    //     //   body: JSON.stringify({
-    //     //     fileName: f.name,
-    //     //     fileType: f.type
-    //     //   }),
-    //     //   headers: {
-    //     //     'Content-Type': 'application/json'
-    //     //   },
-    //     // })
-    //     // const { signedUrl } = await signedUrlRes.json()
-
-    //     // const res = await fetch(signedUrl,  {
-    //     //   method: 'PUT',
-    //     //   body: f,
-    //     //   headers: {
-    //     //     'Content-Type': f.type,
-    //     //     'x-amz-acl': 'public-read'
-    //     //   }
-    //     // })        
-
-    //     return data
     setIsSubmitting(false)  
   }
 

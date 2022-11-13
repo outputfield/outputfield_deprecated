@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Spinner from '../spinner'
 
 interface Props {
   children?: string | React.ReactNode;
@@ -6,6 +7,7 @@ interface Props {
   id?: string;
   role?: string;
   disabled?: boolean;
+  loading?: boolean;
   type?: 'button'| 'reset'| 'submit';
 }
 
@@ -16,6 +18,7 @@ export const Button = ({
   id,
   role,
   disabled,
+  loading,
   type
 }:Props) => {
   return (
@@ -40,7 +43,7 @@ export const Button = ({
       disabled={disabled}
       type={type || 'button'}>
       {
-        children
+        loading ? <Spinner/> : children
       }
     </button>
   )
