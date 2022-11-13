@@ -1,6 +1,6 @@
 import React, { useRouter } from 'next/router'
 import { ArtistRow } from '../artists/artistRow.component'
-import { TabView } from '../tabView/tabView.component'
+import TabView from '../tabView/tabView.component'
 import { WorkPanel } from '../tabView/workPanel.component'
 import { InfoPanel } from '../tabView/infoPanel.component'
 import { ContactPanel } from '../tabView/contactPanel.component'

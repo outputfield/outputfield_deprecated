@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from 'react'
+import React, { useState , useCallback, useReducer } from 'react'
 import { useForm, useFieldArray, SubmitHandler, SubmitErrorHandler } from 'react-hook-form'
 import Input from './input'
 import { Button } from './button/button.component'
@@ -200,9 +200,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         loading={isSubmitting}
       >
         Save Changes
-        </Button>
-      </form>
-    </>
-
+      </Button>
+    </form>
   )
 }
