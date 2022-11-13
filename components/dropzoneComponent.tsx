@@ -90,7 +90,7 @@ function DropzoneComponent({ handleDrop }: any) {
         <div>Upload</div>
       </div>
       <aside>
-        {thumbs}
+        {/* {thumbs} */}
       </aside>
     </section>
   )
