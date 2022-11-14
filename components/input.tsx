@@ -1,8 +1,8 @@
-import React from "react";
-import { Path, UseFormRegister } from "react-react-hook-form";
+import React from 'react'
+import { Path, UseFormRegister } from 'react-hook-form'
 
 interface IFormValues {
-  "First Name": string;
+  'First Name': string;
   Age: number;
 }
 
@@ -34,5 +34,5 @@ export default function Input({
         {...register(label, { required })}
       />
     </>
-  );
+  )
 }
