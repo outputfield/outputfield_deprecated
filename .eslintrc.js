@@ -23,6 +23,14 @@ module.exports = {
     '@typescript-eslint'
   ],
   'rules': {
+    'react/no-unknown-property': [
+      2,
+      {
+        'ignore': [
+          'jsx', 'global'
+        ]
+      }
+    ],
     'indent': [
       'error',
       2

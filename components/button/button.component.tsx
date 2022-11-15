@@ -4,12 +4,16 @@ interface Props {
   children?: string | React.ReactNode;
   onClick?: (event: any) => any;
   id?: string;
+  role?: string;
+  disabled?: boolean;
 }
 
 export const Button = ({
   children,
   onClick,
   id,
+  role,
+  disabled
 }:Props) => {
   return (
     <button className="my-0px mx-auto flex items-center
@@ -22,7 +26,7 @@ export const Button = ({
   border-solid
   border-black
   border-box
-  uppercase" onClick={onClick} id={id}>
+  uppercase" onClick={onClick} id={id} role={role} disabled={disabled}>
       {
         children
       }

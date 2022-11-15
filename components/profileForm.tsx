@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer, useState } from 'react'
+import React, { useCallback, useReducer, useState, BaseSyntheticEvent } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
 import Input from './input'
 import { Button } from './button/button.component'
@@ -11,15 +11,16 @@ type ProfileLink = {
   label: string;
 };
 
-type ISignUpInputs = {
+export type ISignUpInputs = {
   Name: string;
   Title: string;
   Pronouns: string;
+  Location: string;
   links: ProfileLink[];
 };
 
 interface Props {
-  onSubmit: (e, data: ISignUpInputs, files) => void;
+  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: File[]) => void;
   isSubmitting: boolean;
   profile?: ISignUpInputs;
 }
@@ -30,13 +31,17 @@ type File = {
 }
 
 type FilesAction = {
-  type: 'UPDATE', 
-  key: number, 
-  file: File 
+  type: 'UPDATE',
+  key: number,
+  file: File
 }
 
 interface FilesState {
   [x: number]: File;
+}
+
+interface DropzoneProps {
+  uploadNum: number,
 }
 
 export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) {
@@ -57,8 +62,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
 
   const [state, dispatch] = useReducer(
     (state: FilesState, action: FilesAction) => {
-      const _state = {...state}
-      switch(action.type) {
+      const _state = { ...state }
+      switch (action.type) {
       case 'UPDATE':
         return { ..._state, [action.key]: action.file }
       }
@@ -66,47 +71,49 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
     {} // TODO: reduce existing files into {}
   )
 
-  const uploadFileCallback = (uploadNum) => (file) => {
+  const uploadFileCallback = (uploadNum: number) => (file: File) => {
     console.log('uploadFileCallback', uploadNum, file)
-    dispatch({ type: 'UPDATE', key: uploadNum, file})
+    dispatch({ type: 'UPDATE', key: uploadNum, file })
     closeUpload()
   }
   console.log('state', state)
 
-  const MemoDropzoneComponent = React.memo(({uploadNum}) => {
+  const MemoDropzoneComponent = React.memo(({ uploadNum }: DropzoneProps) => {
     console.log(`${uploadNum} rendered`)
     return <DropzoneComponent handleDrop={uploadFileCallback(uploadNum)} />
   })
+  MemoDropzoneComponent.displayName = 'MemoDropzoneComponent'
 
   return (
     <>
-      <Overlay className={ uploadOpen ? 'visible' : 'hidden' }>
+      <Overlay className={uploadOpen ? 'visible' : 'hidden'}>
         <button onClick={closeUpload}>
           <img src="/closeIcon.svg" alt="close overlay icon" />
         </button>
         <TabView headers={['Upload', 'Embed']}>
           <div className='UploadPanel'>
-          uploadNum state: {uploadNum} <br/>
+            uploadNum state: {uploadNum} <br />
 
-          We currently support:
-            <br/><br/>
+            We currently support:
+            <br /><br />
             <ul>
               <li>images (jpg, png, gif, tiff)</li>
             </ul>
-            <br/>
+            <br />
             {/* {FIXME: this is always putting uploaded file in index 0} */}
             {/* <DropzoneComponent handleDrop={uploadFileCallback} /> */}
             <MemoDropzoneComponent uploadNum={uploadNum} />
           </div>
           <div className="EmbedPanel">
-            <Input register={() => {}} placeholder="Link Youtube, Vimeo, SoundCloud, etc."/>
-            <Input register={() => {}} placeholder="title"/>
+            <Input register={register} placeholder="Link Youtuboe, Vime, SoundCloud, etc." label={`links.${uploadNum}.url`} required={false} className={''} />
+            <Input register={register} placeholder="label" label={`links.${uploadNum}.label`} required={false} className={''} />
             <Button>Embed</Button>
           </div>
         </TabView>
-        
+
       </Overlay>
-      <form onSubmit={handleSubmit((data, e) => onSubmit(e, data, Object.values(state)))} className="w-full max-w-lg">
+      <form onSubmit={handleSubmit(
+        ((data: any, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state))) as SubmitHandler<ISignUpInputs>)} className="w-full max-w-lg">
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <Input
@@ -118,7 +125,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
             />
             {errors['Name'] && (
               <p className="text-red-500 text-xs italic">
-              Please fill out this field.
+                Please fill out this field.
               </p>
             )}
           </div>
@@ -173,7 +180,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                 <button
                   className="col-span-1 uppercase"
                   onClick={() => remove(index)}>
-                - Remove
+                  - Remove
                 </button>
               </div>
             ))}
@@ -182,7 +189,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
               onClick={() =>
                 append({ url: '', label: '' }, { shouldFocus: true })
               }>
-            + Add
+              + Add
             </button>
           </div>
         </div>
@@ -191,7 +198,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
           <h2>++Upload Work++</h2>
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
             <div className="py-6 grid grid-cols-2">
-              {[...Array(6).keys()].map((key) => {
+              {[0,1,2,3,4,5].map((key) => {
                 const displayKey = key + 1
                 return (
                   <div key={displayKey} className={`cols-span-${displayKey}`}>
@@ -204,7 +211,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                         setUploadNum(key)
                         setUploadOpen(true)
                       }}>
-                    +
+                      +
                     </button>
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -212,12 +219,13 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                       {displayKey}
                     </label>
                   </div>
-                )})}
+                )
+              })}
             </div>
           </div>
         </div>
         <Button role="submit" disabled={isSubmitting}>
-        Save Changes
+          Save Changes
         </Button>
       </form>
     </>
