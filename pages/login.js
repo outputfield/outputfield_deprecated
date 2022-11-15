@@ -6,7 +6,7 @@ import Form from '../components/form'
 import { Magic, RPCError } from 'magic-sdk'
 
 const Login = () => {
-  useUser({ redirectTo: '/', redirectIfFound: true })
+  const user = useUser({ redirectTo: '/', redirectIfFound: true })
   const [errorMsg, setErrorMsg] = useState('')
 
   async function handleSubmit(e) {
@@ -15,16 +15,16 @@ const Login = () => {
 
     // Query db for user on submit. If user not found, redirect to "sign-up" flow.
     try {
-      const { currentTarget: { email: { value: email } } }  = e;
+      const { currentTarget: { email: { value: email } } }  = e
       const result = await fetch('/api/user', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email }),
-        });
-      const { userExists } = await result.json();
-      console.log('user exists? ', user)
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      })
+      const { userExists } = await result.json()
+      // console.log('user exists? ', user)
       if (!userExists) {
         Router.push('/sign-up')
       }
@@ -41,14 +41,14 @@ const Login = () => {
     // Login flow
     try {
       const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY)
-      const didToken = await magic.auth.loginWithMagicLink({ email })
+      const didToken = await magic.auth.loginWithMagicLink({ email: user.email })
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + didToken,
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: user.email }),
       })
       console.log('login RES ', res)
       if (res.status === 200) {

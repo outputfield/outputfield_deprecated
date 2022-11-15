@@ -1,7 +1,7 @@
 import React from'react'
 import { useRouter } from 'next/router'
 import { ArtistRow } from '../../components/artists/artistRow.component'
-import { TabView } from '../../components/tabView/tabView.component'
+import TabView from '../../components/tabView/tabView.component'
 import { WorkPanel } from '../../components/tabView/workPanel.component'
 import { InfoPanel } from '../../components/tabView/infoPanel.component'
 import { ContactPanel } from '../../components/tabView/contactPanel.component'

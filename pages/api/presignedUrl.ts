@@ -1,6 +1,7 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import spaces from '../../lib/doSpaces'
 
-export default async function presignedUrl(req, res) {
+export default async function presignedUrl(req: NextApiRequest, res: NextApiResponse) {
   try {
     const body = req.body
       
@@ -16,7 +17,7 @@ export default async function presignedUrl(req, res) {
       
     res.json({signedUrl})
       
-  } catch (error) {
-    res.status(error.status || 500).end(error.message)
+  } catch (error: any) {
+    res.status(error?.status || 500).end(error?.message)
   }
 }

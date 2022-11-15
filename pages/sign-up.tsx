@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { BaseSyntheticEvent, useState } from 'react'
 import ProfileForm from '../components/profileForm'
 
 export default function SignUp() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
 
   // Pass submit handler fn into ProfileForm
-  const handleSubmit = async (data: any, files: any) => {
+  const handleSubmit = async (event: BaseSyntheticEvent, data: any, files: any) => {
+    event.preventDefault()
     console.log('sign-up handleSubmit', data, files)
     setIsSubmitting(true)
     try {
