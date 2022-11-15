@@ -9,12 +9,12 @@ export default async function user(
   if (req.method === 'GET') {
     // retrieve user from session
     try {
-      let user = null
-      user = await getLoginSession(req)
-      if (!user) {
+      let fetchedUser = null
+      fetchedUser = await getLoginSession(req)
+      if (!fetchedUser) {
         return res.status(404)
       } else {
-        res.status(200).json({ user })
+        res.status(200).json({ user: fetchedUser })
       }
     } catch (error) {
       console.log(error)
@@ -26,11 +26,11 @@ export default async function user(
     try {
       const { email } = req.body
       console.log('searching for user... ', email)
-      const user = await prisma.user.findUnique({
+      const fetchedUser = await prisma.user.findUnique({
         where: { email },
       })
       res.send({
-        'userExists': user ? true : false
+        'userExists': fetchedUser ? true : false
       })
     } catch (err) {
       console.log(err)

@@ -1,20 +1,12 @@
-import React, { useState } from 'react'
-import ProfileForm, { ISignUpInputs } from '../components/profileForm'
+import React, { BaseSyntheticEvent, useState } from 'react'
+import ProfileForm from '../components/profileForm'
 
 export default function SignUp() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
 
-  /**
-   * 1. Create user /signUp. Get userId back
-   * 2. Upload each file to DO, where key: `${userID}/${fileName}`
-   * 3. Update user's Works, where {
-   *      name: file.name,
-   *      url: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${userID}/${fileName}`
-   *    }
-   * @param data 
-   * @param files 
-   */
-  const handleSubmit = async (data: ISignUpInputs, files: FormData[]) => {
+  // Pass submit handler fn into ProfileForm
+  const handleSubmit = async (event: BaseSyntheticEvent, data: any, files: any) => {
+    event.preventDefault()
     console.log('sign-up handleSubmit', data, files)
     setIsSubmitting(true)
 

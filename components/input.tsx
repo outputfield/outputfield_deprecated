@@ -1,22 +1,27 @@
+// TODO: this should be FormInput
 import React from 'react'
-import { ChangeHandler } from 'react-hook-form'
+import { Path, UseFormRegister } from 'react-hook-form'
+import { ISignUpInputs } from './profileForm'
 
-export type Ref = HTMLInputElement
 
-type Props = {
-  label?: string;
-  name: string;
-  placeholder: string;
-  onChange: ChangeHandler;
-  onBlur: ChangeHandler;
-  className?: string
-}
+type InputProps = {
+  label: Path<ISignUpInputs>;
+  register: UseFormRegister<ISignUpInputs>;
+  placeholder?: string;
+  required?: boolean;
+  className?: string;
+  type?: string;
+};
 
-const Input = React.forwardRef<Ref, Props>(({label = '',
-  name,
+export default function Input({
+  label,
+  register,
   placeholder,
-  onChange,
-  onBlur }, ref) => {
+  required,
+  type,
+  className,
+  ...restProps
+}: InputProps) {
   return (
     <>
       {label && (
@@ -30,14 +35,11 @@ const Input = React.forwardRef<Ref, Props>(({label = '',
         id={label}
         name={name}
         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-black rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-        placeholder={placeholder}
-        onChange={onChange}
-        onBlur={onBlur}
-        ref={ref}
+        placeholder={placeholder || ''}
+        type={type || ''}
+        {...restProps}
+        {...register(label, { required })}
       />
-    </>)
-})
-
-Input.displayName = 'Input'
-
-export default Input
+    </>
+  )
+}

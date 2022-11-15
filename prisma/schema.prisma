@@ -9,22 +9,22 @@ datasource db {
 
 // TODO: update seed.ts in backend; notify allan of change
 model User {
-  id                 Int       @id @default(autoincrement())
-  name               String    @db.VarChar(255)
-  password           String?
-  email              String    @unique @db.VarChar(255)
-  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(255)
+  password  String?
+  email     String   @unique @db.VarChar(255)
+  createdAt DateTime @default(now()) @map(name: "created_at")
 
   // Relation fields
   // tokens    Token[]
   // projects  Project[]
-  artist             Artist?
+  artist    Artist?
   // curator     Curator?
   // venue     Venue?
 
-  nominatorId        Int?
-  nominatedBy        User?     @relation("NominatorReference", fields: [nominatorId], references: [id])
-  nominees           User[]    @relation("NominatorReference")
+  nominatorId Int?
+  nominatedBy User?  @relation("NominatorReference", fields: [nominatorId], references: [id])
+  nominees    User[] @relation("NominatorReference")
 }
 
 model Artist {
@@ -43,8 +43,8 @@ model Artist {
   work  Work[]
   links Link[]
 
-  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId            Int       @unique
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId Int  @unique
 }
 
 // TODO:
@@ -86,17 +86,17 @@ model Work {
   type String? @default("")
   link String  @default("")
 
-  artist    Artist    @relation(fields: [artistID], references: [id], onDelete: Cascade)
-  artistID  Int       
+  artist   Artist @relation(fields: [artistID], references: [id], onDelete: Cascade)
+  artistID Int
 }
 
 model Link {
-  id        Int       @id @default(autoincrement())
-  label     String?   @default("")
-  url       String    @default("")
+  id    Int     @id @default(autoincrement())
+  label String? @default("")
+  url   String  @default("")
 
-  artist    Artist    @relation(fields: [artistID], references: [id], onDelete: Cascade)
-  artistID  Int       
+  artist   Artist @relation(fields: [artistID], references: [id], onDelete: Cascade)
+  artistID Int
 }
 
 // enum TokenType {
