@@ -1,5 +1,5 @@
 import React from 'react'
-import { useUser } from '../lib/hooks'
+import { useUser } from '../lib/useUser'
 
 const Home = () => {
   const user = useUser()

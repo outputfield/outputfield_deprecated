@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { useUser } from '../lib/hooks'
+import { useUser } from '../lib/useUser'
 
 const Header = () => {
   const user = useUser()
@@ -10,19 +10,19 @@ const Header = () => {
       <nav>
         <ul>
           <li>
-            <Link href="/">
+            <Link href="/" legacyBehavior>
               <a>Home</a>
             </Link>
           </li>
           <li>
-            <Link href="/artists">
+            <Link href="/artists" legacyBehavior>
               <a>Artists</a>
             </Link>
           </li>
           {user ? (
             <>
               <li>
-                <Link href="/profile">
+                <Link href="/profile" legacyBehavior>
                   <a>Profile</a>
                 </Link>
               </li>
@@ -32,7 +32,7 @@ const Header = () => {
             </>
           ) : (
             <li>
-              <Link href="/login">
+              <Link href="/login" legacyBehavior>
                 <a>Login</a>
               </Link>
             </li>

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Spinner from '../spinner'
 
 interface Props {
   children?: string | React.ReactNode;
@@ -9,14 +10,15 @@ interface Props {
   loading?: boolean;
 }
 
+
 export const Button = ({
   children,
   onClick,
   id,
   role,
   disabled,
-  loading,
-}: Props) => {
+  loading
+}:Props) => {
   return (
     <button className="my-0px mx-auto flex items-center
   justify-center
@@ -30,8 +32,11 @@ export const Button = ({
   border-box
   uppercase" onClick={onClick} id={id} role={role} disabled={disabled || false}>
       {
-        loading ? 'Loading' : children
+        loading ? <Spinner/> : children
       }
     </button>
   )
+}
+Button.defaultProps = {
+  type: 'button'
 }

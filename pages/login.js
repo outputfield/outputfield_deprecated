@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Router from 'next/router'
-import { useUser } from '../lib/hooks'
+import { useUser } from '../lib/useUser'
 import Form from '../components/form'
 
 import { Magic, RPCError } from 'magic-sdk'
@@ -12,6 +12,7 @@ const Login = () => {
   async function handleSubmit(e) {
     e.preventDefault()
     if (errorMsg) setErrorMsg('')
+    const { currentTarget: { email: { value: email } } }  = e
 
     // Query db for user on submit. If user not found, redirect to "sign-up" flow.
     try {

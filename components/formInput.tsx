@@ -3,7 +3,6 @@ import React from 'react'
 import { Path, UseFormRegister } from 'react-hook-form'
 import { ISignUpInputs } from './profileForm'
 
-
 type InputProps = {
   label: Path<ISignUpInputs>;
   register: UseFormRegister<ISignUpInputs>;
@@ -21,15 +20,18 @@ export default function FormInput({
   required,
   type,
   disabled,
+  // className,
   ...restProps
 }: InputProps) {
   return (
     <>
-      <label
-        htmlFor={label}
-        className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-        {label}
-      </label>
+      {label && (
+        <label
+          htmlFor={label}
+          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+          {label}
+        </label>
+      )}
       <input
         id={label}
         disabled={disabled || false}

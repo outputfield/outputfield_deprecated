@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { useUser } from '../lib/hooks'
+import { useUser } from '../lib/useUser'
 
 export const Navbar = () => {
   // const [user, setUser] = useContext(UserContext);
@@ -68,31 +68,36 @@ export const Navbar = () => {
       >
         <div className="py-1" role="none">
           {/* <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" --> */}
-          <Link href="/artists" passHref>
-            <a
-              className="text-gray-700 block px-4 py-2 text-sm"
-              role="menuitem"
-              id="menu-item-0">P
+          <Link
+            href="/artists"
+            passHref
+            className="text-gray-700 block px-4 py-2 text-sm"
+            role="menuitem"
+            id="menu-item-0">
+            P
               Artists
-            </a>
+            
           </Link>
           {user ? (
-            <Link href="/account" passHref>
-              <a
-                className="text-gray-700 block px-4 py-2 text-sm"
-                role="menuitem"
-                id="menu-item-0">
+            <Link
+              href="/account"
+              passHref
+              className="text-gray-700 block px-4 py-2 text-sm"
+              role="menuitem"
+              id="menu-item-0">
+              
                 Account
-              </a>
+              
             </Link>
           ) : (
-            <Link href="/login">
-              <a
-                className="text-gray-700 block px-4 py-2 text-sm"
-                role="menuitem"
-                id="menu-item-1">
+            <Link
+              href="/login"
+              className="text-gray-700 block px-4 py-2 text-sm"
+              role="menuitem"
+              id="menu-item-1">
+              
                 Login
-              </a>
+              
             </Link>
           )}
           <button
