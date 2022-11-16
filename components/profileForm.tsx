@@ -1,6 +1,6 @@
 import React, { useCallback, useReducer, useState, BaseSyntheticEvent } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
-import Input from './input'
+import Input from './formInput'
 import { Button } from './button/button.component'
 import DropzoneComponent from './dropzoneComponent'
 import Overlay from './overlay'
@@ -70,6 +70,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
     },
     {} // TODO: reduce existing files into {}
   )
+  console.log('profileform state, ', state)
 
   const uploadFileCallback = (uploadNum: number) => (file: File) => {
     console.log('uploadFileCallback', uploadNum, file)
@@ -79,7 +80,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
   console.log('state', state)
 
   const MemoDropzoneComponent = React.memo(({ uploadNum }: DropzoneProps) => {
-    console.log(`${uploadNum} rendered`)
     return <DropzoneComponent handleDrop={uploadFileCallback(uploadNum)} />
   })
   MemoDropzoneComponent.displayName = 'MemoDropzoneComponent'
@@ -105,8 +105,9 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
             <MemoDropzoneComponent uploadNum={uploadNum} />
           </div>
           <div className="EmbedPanel">
-            <Input register={register} placeholder="Link Youtuboe, Vime, SoundCloud, etc." label={`links.${uploadNum}.url`} required={false} className={''} />
-            <Input register={register} placeholder="label" label={`links.${uploadNum}.label`} required={false} className={''} />
+            {/* TODO: */}
+            <Input disabled register={register} placeholder="Link Youtuboe, Vime, SoundCloud, etc." label={`links.${uploadNum}.url`} required={false} className={''} />
+            <Input disabled register={register} placeholder="label" label={`links.${uploadNum}.label`} required={false} className={''} />
             <Button>Embed</Button>
           </div>
         </TabView>
@@ -122,6 +123,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
               placeholder="Enter your name"
               type="text"
               required
+              // {...register("Name", { required: true })}
             />
             {errors['Name'] && (
               <p className="text-red-500 text-xs italic">
@@ -207,7 +209,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id={`grid-upload-work-${displayKey}`}
                       onClick={() => {
-                        console.log('setting', key === uploadNum)
                         setUploadNum(key)
                         setUploadOpen(true)
                       }}>
@@ -224,11 +225,10 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
             </div>
           </div>
         </div>
-        <Button role="submit" disabled={isSubmitting}>
+        <Button role="submit" loading={isSubmitting}>
           Save Changes
         </Button>
       </form>
     </>
-
   )
 }

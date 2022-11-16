@@ -6,9 +6,9 @@ export default function SignUp() {
 
   // Pass submit handler fn into ProfileForm
   const handleSubmit = async (event: BaseSyntheticEvent, data: any, files: any) => {
-    event.preventDefault()
+    // event.preventDefault()
     console.log('sign-up handleSubmit', data, files)
-    setIsSubmitting(true)
+    // setIsSubmitting(true)
     try {
       // 1. create user
       await fetch('/api/signUp', {
@@ -38,6 +38,7 @@ export default function SignUp() {
           method: 'PUT',
           body: f,
           headers: {
+            'Origin': window.location.origin,
             'Content-Type': f.type,
             'x-amz-acl': 'public-read'
           }
@@ -46,7 +47,7 @@ export default function SignUp() {
     } catch (error) {
       console.log(error)
     }
-    setIsSubmitting(true)  
+    setIsSubmitting(false)
   }
 
   return (
