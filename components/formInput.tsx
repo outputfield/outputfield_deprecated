@@ -19,6 +19,7 @@ export default function FormInput({
   placeholder,
   required,
   type,
+  disabled,
   // className,
   ...restProps
 }: InputProps) {
