@@ -11,15 +11,16 @@ type InputProps = {
   required?: boolean;
   className?: string;
   type?: string;
+  disabled?: boolean;
 };
 
-export default function Input({
+export default function FormInput({
   label,
   register,
   placeholder,
   required,
   type,
-  className,
+  disabled,
   ...restProps
 }: InputProps) {
   return (
@@ -31,6 +32,8 @@ export default function Input({
       </label>
       <input
         id={label}
+        disabled={disabled || false}
+        // name={name}
         className="appearance-none block w-full bg-gray-200 text-gray-700 border border-black rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         placeholder={placeholder || ''}
         type={type || ''}

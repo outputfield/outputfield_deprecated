@@ -6,6 +6,7 @@ interface Props {
   id?: string;
   role?: string;
   disabled?: boolean;
+  loading?: boolean;
 }
 
 export const Button = ({
@@ -13,8 +14,9 @@ export const Button = ({
   onClick,
   id,
   role,
-  disabled
-}:Props) => {
+  disabled,
+  loading,
+}: Props) => {
   return (
     <button className="my-0px mx-auto flex items-center
   justify-center
@@ -26,9 +28,9 @@ export const Button = ({
   border-solid
   border-black
   border-box
-  uppercase" onClick={onClick} id={id} role={role} disabled={disabled}>
+  uppercase" onClick={onClick} id={id} role={role} disabled={disabled || false}>
       {
-        children
+        loading ? 'Loading' : children
       }
     </button>
   )

@@ -69,14 +69,14 @@ function DropzoneComponent({ handleDrop }: any) {
     isDragAccept
   ])
 
-  const thumbs = files.map((file: FilePlus) => (
-    <div key={file.name}>
-      <Image
-        src={file.preview}
-        alt={file.name}
-      />
-    </div>
-  ))
+  // const thumbs = files.map((file: FilePlus) => (
+  //   <div key={file.name}>
+  //     <Image
+  //       src={file.preview}
+  //       alt={file.name}
+  //     />
+  //   </div>
+  // ))
 
   // clean up
   useEffect(() => () => {
