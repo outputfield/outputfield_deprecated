@@ -24,7 +24,7 @@ export default function SignUp() {
     const _email = `${makeid(6)}@gmail.com`
 
     // TODO: get nominatorId
-    const _nominatorId = 6
+    const _nominatorId = 1
 
     let newUser: any
     // 1. create user
