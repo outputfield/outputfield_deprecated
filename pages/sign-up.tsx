@@ -6,7 +6,7 @@ export default function SignUp() {
 
   // Pass submit handler fn into ProfileForm
   const handleSubmit = async (event: BaseSyntheticEvent, data: any, files: any) => {
-    event.preventDefault()
+    // event.preventDefault()
     console.log('sign-up handleSubmit', data, files)
     setIsSubmitting(true)
 

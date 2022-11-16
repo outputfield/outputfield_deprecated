@@ -1,6 +1,6 @@
 import React, { useCallback, useReducer, useState, BaseSyntheticEvent } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
-import Input from './input'
+import Input from './formInput'
 import { Button } from './button/button.component'
 import DropzoneComponent from './dropzoneComponent'
 import Overlay from './overlay'
@@ -78,7 +78,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
   }
 
   const MemoDropzoneComponent = React.memo(({ uploadNum }: DropzoneProps) => {
-    console.log(`${uploadNum} rendered`)
     return <DropzoneComponent handleDrop={uploadFileCallback(uploadNum)} />
   })
   MemoDropzoneComponent.displayName = 'MemoDropzoneComponent'
@@ -121,6 +120,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
               placeholder="Enter your name"
               type="text"
               required
+              // {...register("Name", { required: true })}
             />
             {errors['Name'] && (
               <p className="text-red-500 text-xs italic">
@@ -225,7 +225,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id={`grid-upload-work-${displayKey}`}
                       onClick={() => {
-                        console.log('setting', key === uploadNum)
                         setUploadNum(key)
                         setUploadOpen(true)
                       }}>
@@ -242,7 +241,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
             </div>
           </div>
         </div>
-        <Button role="submit" disabled={isSubmitting}>
+        <Button role="submit" loading={isSubmitting}>
           Save Changes
         </Button>
       </form>
