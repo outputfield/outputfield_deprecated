@@ -32,11 +32,11 @@ interface Props {
 type FilesAction = {
   type: 'UPDATE',
   key: number,
-  file: File
+  file: FormData
 }
 
 interface FilesState {
-  [x: number]: File;
+  [x: number]: FormData;
 }
 
 interface DropzoneProps {
@@ -69,8 +69,9 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
     },
     {} // TODO: reduce existing files into {} as initialState
   )
+  console.log('profileForm state', state)
 
-  const uploadFileCallback = (uploadNum: number) => (file: File) => {
+  const uploadFileCallback = (uploadNum: number) => (file: FormData) => {
     console.log('uploadFileCallback', uploadNum, file)
     dispatch({ type: 'UPDATE', key: uploadNum, file })
     closeUpload()
@@ -103,8 +104,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
             <MemoDropzoneComponent uploadNum={uploadNum} />
           </div>
           <div className="EmbedPanel">
-            <Input placeholder="Link Youtuboe, Vime, SoundCloud, etc." label={`links.${uploadNum}.url`} {...register(`links.${uploadNum}.url`)} />
-            <Input placeholder="label" label={`links.${uploadNum}.label`} {...register(`links.${uploadNum}.label`)} />
+            {/* <Input placeholder="Link Youtuboe, Vime, SoundCloud, etc." label={`links.${uploadNum}.url`} {...register(`links.${uploadNum}.url`)} />
+            <Input placeholder="label" label={`links.${uploadNum}.label`} {...register(`links.${uploadNum}.label`)} /> */}
             <Button>Embed</Button>
           </div>
         </TabView>
@@ -115,11 +116,11 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <Input
+              register={register}
               label="Name"
               placeholder="Enter your name"
               type="text"
               required
-              {...register('Name', { required: true })}
             />
             {errors['Name'] && (
               <p className="text-red-500 text-xs italic">
@@ -131,44 +132,44 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <Input
+              register={register}
               label="Title"
               placeholder="ie. suavepainter"
-              {...register('Title')}
             />
           </div>
           <div className="w-full px-3">
             <Input
+              register={register}
               label="Handle"
               placeholder="ie. suavepainter"
-              {...register('Handle')}
             />
           </div>
           <div className="w-full px-3">
             <Input
+              register={register}
               label="Pronouns"
               placeholder="ie. they/them"
-              {...register('Pronouns')}
             />
           </div>
           <div className="w-full px-3">
             <Input
+              register={register}
               label="Mediums"
               placeholder="ie. they/them"
-              {...register('Mediums')}
             />
           </div>
           <div className="w-full px-3">
             <Input
+              register={register}
               label="Mediums of Interest"
               placeholder="ie. they/them"
-              {...register('Mediums of Interest')}
             />
           </div>
           <div className="w-full px-3">
             <Input
+              register={register}
               label="Location"
               placeholder="ie. Berlin, Shanghai, etc."
-              {...register('Location')}
             />
           </div>
         </div>
@@ -218,7 +219,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                 const displayKey = key + 1
                 return (
                   <div key={displayKey} className={`cols-span-${displayKey}`}>
-                    <div>{state[key]?.name || ''}</div>
+                    {/* TODO: component for image preview */}
+                    <div>{state[key] ? 'file here!' : ''}</div>
                     <button
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id={`grid-upload-work-${displayKey}`}
@@ -245,6 +247,5 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         </Button>
       </form>
     </>
-
   )
 }
