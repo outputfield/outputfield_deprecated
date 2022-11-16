@@ -19,7 +19,7 @@ const Layout = ({ children }: any) => (
 Footer Here
     </footer>
 
-    <style jsx global>{`
+    <style jsx>{`
       *,
       *::before,
       *::after {
