@@ -30,7 +30,7 @@ export const Button = ({
   border-solid
   border-black
   border-box
-  uppercase" onClick={onClick} id={id} role={role} disabled={disabled || false}>
+  uppercase" onClick={onClick} id={id} role={role} disabled={loading || false}>
       {
         loading ? <Spinner/> : children
       }
