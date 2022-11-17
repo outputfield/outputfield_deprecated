@@ -61,7 +61,7 @@ export default function SignUp() {
         )
       })
 
-      debugger
+      // debugger
       const res = await Promise.all(uploadPromises)
       works = await Promise.all(res.map(r => r.json()))
     } catch (error) {
