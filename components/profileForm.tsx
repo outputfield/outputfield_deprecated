@@ -224,7 +224,9 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                     <button
                       className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id={`grid-upload-work-${displayKey}`}
-                      onClick={() => {
+                      onClick={(e: BaseSyntheticEvent) => {
+                        // TODO: extract this function
+                        e.preventDefault()
                         setUploadNum(key)
                         setUploadOpen(true)
                       }}>
