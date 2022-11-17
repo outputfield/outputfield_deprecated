@@ -24,7 +24,7 @@ export type ISignUpInputs = {
 };
 
 interface Props {
-  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: File[]) => void;
+  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => Promise<void>;
   isSubmitting: boolean;
   profile?: ISignUpInputs | undefined;
 }
@@ -241,7 +241,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
             </div>
           </div>
         </div>
-        {/* FIXME:  */}
         <Button role="submit" loading={isSubmitting}>
           Save Changes
         </Button>
