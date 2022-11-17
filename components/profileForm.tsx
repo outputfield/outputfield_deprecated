@@ -24,7 +24,7 @@ export type ISignUpInputs = {
 };
 
 interface Props {
-  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: File[]) => void;
+  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => Promise<void>;
   isSubmitting: boolean;
   profile?: ISignUpInputs | undefined;
 }

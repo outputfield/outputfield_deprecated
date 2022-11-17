@@ -43,13 +43,5 @@ module.exports = {
       'error',
       'never'
     ],
-    'react/no-unknown-property': [
-      2,
-      {
-        'ignore': [
-          'jsx'
-        ]
-      }
-    ]
   }
 }
