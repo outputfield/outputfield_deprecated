@@ -27,13 +27,13 @@ function DropzoneComponent({ handleDrop }: any) {
   // }, [file])
 
   async function handleImageUpload(e: ChangeEvent<HTMLInputElement>) {
+    e.preventDefault() // need to stop default, which causes form submit
     console.log('handleImageUpload')
     const el = e.target as HTMLInputElement
     if (el.files != null) {
       const file = el.files[0]
       const formData = new FormData()
       formData.append('file', file)
-      // formData.append('id', userId) //FIXME: how to associate file to a user before user is created?
 
       // 1. set state locally, for fileWithPreview preview purposes.
       // const fileWithPreview = {...file, preview: URL.createObjectURL(file)}
