@@ -46,7 +46,6 @@ export default function SignUp() {
     }
 
     // 2. Upload files to DO
-    // FIXME: these calls are getting skipped for some reason...
     let works
     try {
       const uploadPromises = files.map((f: FormData) => {
@@ -56,7 +55,7 @@ export default function SignUp() {
           'api/uploadFile',
           {
             method: 'PUT',
-            body: f,
+            body: f, // FIXME: The format submitted in this api call may not be correct...
           } 
         )
       })
