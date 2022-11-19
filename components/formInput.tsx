@@ -1,4 +1,4 @@
-// TODO: this should be FormInput
+import Image from 'next/image';
 import React from 'react'
 import { Path, UseFormRegister } from 'react-hook-form'
 import { ISignUpInputs } from './profileForm'
@@ -20,28 +20,30 @@ export default function FormInput({
   required,
   type,
   disabled,
-  // className,
   ...restProps
 }: InputProps) {
   return (
-    <>
-      {label && (
+    <div className="flex w-full">
+      <Image src='/fourpointstar.svg' alt='star' width='16' height='16' />
+      <span>
+        {label && (
         <label
           htmlFor={label}
-          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+          className="block uppercase tracking-wide text-gray-700 text-xs mb-2">
           {label}
         </label>
       )}
       <input
         id={label}
         disabled={disabled || false}
-        // name={name}
-        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-black rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        className="appearance-none block text-gray-700 border border-black py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         placeholder={placeholder || ''}
         type={type || ''}
         {...restProps}
         {...register(label, { required })}
       />
-    </>
+      </span>
+      
+    </div>
   )
 }

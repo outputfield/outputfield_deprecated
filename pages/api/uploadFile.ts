@@ -1,4 +1,3 @@
-import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { NextApiRequest, NextApiResponse } from 'next'
 import spaces from '../../lib/doSpaces'
 
@@ -35,6 +34,8 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
           // FIXME: make url dynamic, or retrieve from api call
           link: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${artistHandle}/${formData.file.name}`
         }
+
+        //THIS WORSK~!!!
         const data = await spaces.putObject({
           Bucket: 'outputfieldartworks',
           Key: `${artistHandle}/${formData.file.name}`, // Specify folder and file name
