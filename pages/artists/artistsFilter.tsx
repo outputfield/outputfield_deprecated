@@ -4,12 +4,12 @@ import Checkbox from '../../components/checkbox'
 import { Button } from '../../components/button/button.component'
 
 interface Props {
+  isOpen: boolean,
   onClose: () => void;
   onSubmit: (filters: string[]) => void;
   onUnmount: () => void;
   filterOptions: string[];
   selectedFilters: string[];
-  className?: string;
 }
 
 type FilterAction = ({ type: 'UPDATE', filterName: string }) | {type: 'CLEAR'}
@@ -19,12 +19,12 @@ interface FilterState {
 }
 
 const ArtistsFilter: React.FC<Props> = ({
+  isOpen,
   onClose,
   onSubmit,
   onUnmount,
   filterOptions,
   selectedFilters,
-  className,
 }) => {
   const [state, dispatch] = useReducer(
     (state: FilterState, action: FilterAction) => {
@@ -69,7 +69,7 @@ const ArtistsFilter: React.FC<Props> = ({
   }
 
   return (
-    <Overlay className={className}>
+    <Overlay className={`${isOpen? 'visible': 'hidden'}`}>
       <div className="mt-0 sm:mt-0 sm:ml-4 flex justify-between border-b border-black border-dashed px-4 pb-4">
         <button
           className="underline uppercase leading-6 disabled:text-gray"

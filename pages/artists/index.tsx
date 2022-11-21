@@ -150,14 +150,13 @@ const ArtistListPage = ({ mediums }: any) => {
       </div>
 
       <ArtistsFilter
+        isOpen={filterOpen}
         filterOptions={mediums}
         onClose={closeFilters}
         onSubmit={submitFilters}
         onUnmount={unfreezeDocument}
         selectedFilters={filters}
-        className={`${filterOpen? 'visible': 'hidden'}`}
       />
-
     </Layout>
   )
 }
