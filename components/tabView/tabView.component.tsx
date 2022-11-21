@@ -54,7 +54,7 @@ const TabView: React.FC<Props> = ({ headers, children }) => {
         {/* TAB HEADERS END */}
 
         {/* TAB PANELS */}
-        <div className="relative flex flex-col break-words w-full px-4 pb-5">
+        <div className="relative flex flex-col break-words w-full px-4 ">
           {children.map((panel, index) => (
             <div
               className={`m-2 glow-red-lg shadow-lg ${openTab === index ? 'block' : 'hidden'}`}

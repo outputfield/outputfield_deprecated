@@ -84,32 +84,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
 
   return (
     <>
-      <Overlay className={uploadOpen ? 'visible' : 'hidden'}>
-        <button onClick={closeUpload}>
-          <img src="/closeIcon.svg" alt="close overlay icon" />
-        </button>
-        <TabView headers={['Upload', 'Embed']}>
-          <div className='UploadPanel'>
-            uploadNum state: {uploadNum} <br />
-
-            We currently support:
-            <br /><br />
-            <ul>
-              <li>images (jpg, png, gif, tiff)</li>
-            </ul>
-            <br />
-            {/* {FIXME: this is always putting uploaded file in index 0} */}
-            {/* <DropzoneComponent handleDrop={uploadFileCallback} /> */}
-            <MemoDropzoneComponent uploadNum={uploadNum} />
-          </div>
-          <div className="EmbedPanel">
-            {/* <Input placeholder="Link Youtuboe, Vime, SoundCloud, etc." label={`links.${uploadNum}.url`} {...register(`links.${uploadNum}.url`)} />
-            <Input placeholder="label" label={`links.${uploadNum}.label`} {...register(`links.${uploadNum}.label`)} /> */}
-            <Button>Embed</Button>
-          </div>
-        </TabView>
-
-      </Overlay>
+      
       <form onSubmit={handleSubmit(
         ((data: any, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state))) as SubmitHandler<ISignUpInputs>)} className="w-full max-w-lg">
         <div className="flex flex-wrap -mx-3 mb-6">
@@ -213,6 +188,36 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
 
         <div className="flex flex-wrap -mx-3 mb-2">
           <h2>Upload Work</h2>
+          <Overlay className={uploadOpen ? 'visible' : 'hidden'}>
+            <div className="mt-0 sm:mt-0 sm:ml-4 flex justify-between border-b border-black border-dashed px-4 pb-4">
+              <button onClick={() => setUploadOpen(false)}>
+                <img src="/closeIcon.svg" alt="close overlay icon" />
+              </button>
+            </div>
+            <div className="my-5 text-center">
+
+              <TabView headers={['Upload', 'Embed']}>
+                <div className='UploadPanel'>
+            uploadNum state: {uploadNum} <br />
+
+            We currently support:
+                  <br /><br />
+                  <ul>
+                    <li>images (jpg, png, gif, tiff)</li>
+                  </ul>
+                  <br />
+                  {/* {FIXME: this is always putting uploaded file in index 0} */}
+                  {/* <DropzoneComponent handleDrop={uploadFileCallback} /> */}
+                  <MemoDropzoneComponent uploadNum={uploadNum} />
+                </div>
+                <div className="EmbedPanel">
+                  {/* <Input placeholder="Link Youtuboe, Vime, SoundCloud, etc." label={`links.${uploadNum}.url`} {...register(`links.${uploadNum}.url`)} />
+            <Input placeholder="label" label={`links.${uploadNum}.label`} {...register(`links.${uploadNum}.label`)} /> */}
+                  <Button>Embed</Button>
+                </div>
+              </TabView>
+            </div>
+          </Overlay>
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
             <div className="py-6 grid grid-cols-2">
               {[0,1,2,3,4,5].map((key) => {

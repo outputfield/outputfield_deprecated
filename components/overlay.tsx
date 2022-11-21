@@ -9,7 +9,7 @@ const Overlay: React.FC<Props> = ({ className, children })  => {
   return (
     <div
       id="filter"
-      className={`fixed z-50 inset-0 overflow-y-hidden height-screen ${className}`}
+      className={`fixed z-50 inset-0 overflow-y-auto ${className}`}
       aria-labelledby="filters-modal"
       role="dialog"
       aria-modal="true">
