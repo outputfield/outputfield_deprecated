@@ -175,7 +175,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         </div>
 
         <div className="flex flex-wrap -mx-3 mb-2">
-          <h2>++Add Links++</h2>
+          <h2>Add Links</h2>
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
             {fields.map((field, index) => (
               <div className="py-6 grid grid-cols-2" key={field.id}>
@@ -212,7 +212,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         </div>
 
         <div className="flex flex-wrap -mx-3 mb-2">
-          <h2>++Upload Work++</h2>
+          <h2>Upload Work</h2>
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
             <div className="py-6 grid grid-cols-2">
               {[0,1,2,3,4,5].map((key) => {
@@ -222,7 +222,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                     {/* TODO: component for image preview */}
                     <div>{state[key] ? 'file here!' : ''}</div>
                     <button
-                      className="appearance-none block w-full bg-gray-200 text-gray-700 border border-dashed rounded-full p-10 mb-3 leading-tight focus:outline-none focus:bg-white"
+                      className="appearance-none block w-full text-gray-700 border border-dashed rounded-full p-8 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id={`grid-upload-work-${displayKey}`}
                       onClick={(e: BaseSyntheticEvent) => {
                         // TODO: extract this function
@@ -233,7 +233,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                       +
                     </button>
                     <label
-                      className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                      className="block uppercase tracking-wide text-gray-700 text-xs text-center mb-2"
                       htmlFor={`grid-upload-work-${displayKey}`}>
                       {displayKey}
                     </label>

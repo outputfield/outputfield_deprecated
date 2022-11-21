@@ -46,7 +46,7 @@ function DropzoneComponent({ handleDrop }: any) {
 
   return (
     <section>
-      <label htmlFor="file-upload">
+      <label htmlFor="file-upload" className='pointer cursor-pointer'>
         <div>
           {/* {thumbNail} */}
           {file && (
@@ -55,7 +55,7 @@ function DropzoneComponent({ handleDrop }: any) {
           <div id="dashboard-image-hover" >Upload Image</div>
         </div>
       </label>
-      <input id="file-upload" type="file" onChange={handleImageUpload}/>
+      <input id="file-upload" type="file" accept='.png, .jpeg, .jpg' onChange={handleImageUpload} className='hidden'/>
     </section>
   )
 }

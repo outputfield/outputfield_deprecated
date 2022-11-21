@@ -12,11 +12,11 @@ export const config = {
 
 export default async function uploadFile(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'PUT') {
-    // parse request to readable form
     const form = new formidable.IncomingForm()
     form.keepExtensions = true
+    // parse request to readable form
     form.parse(req, async (err: any, fields: any, formData: any) => {
-    // Account for parsing errors
+      // Account for parsing errors
       if (err) return res.status(500).send(`Error occured: ${err}`)
 
       try {
