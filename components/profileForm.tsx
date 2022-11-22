@@ -213,8 +213,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                     <li>images (jpg, png, gif, tiff)</li>
                   </ul>
                   <br />
-                  {/* {FIXME: this is always putting uploaded file in index 0} */}
-                  {/* <DropzoneComponent handleDrop={uploadFileCallback} /> */}
+
                   <MemoDropzoneComponent uploadNum={uploadNum} />
                 </div>
                 <div className="EmbedPanel">
@@ -226,15 +225,13 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
             </div>
           </Overlay>
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
-            <div className="py-6 grid grid-cols-2">
+            <div className="py-6 grid grid-cols-2 justify-items-center">
               {[0,1,2,3,4,5].map((key) => {
                 const displayKey = key + 1
                 return (
-                  <div key={displayKey} className={`cols-span-${displayKey}`}>
-                    {/* TODO: component for image preview */}
-                    <div>{state[key] ? 'file here!' : ''}</div>
+                  <div key={displayKey} className={`cols-span-${displayKey} `}>
                     <button
-                      className="appearance-none block w-full text-gray-700 border border-dashed rounded-full p-8 mb-3 leading-tight focus:outline-none focus:bg-white"
+                      className="appearance-none block w-10 h-10 text-gray-700 border border-black border-dashed rounded-full p-8 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id={`grid-upload-work-${displayKey}`}
                       onClick={(e: BaseSyntheticEvent) => {
                         // TODO: extract this function
@@ -242,7 +239,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                         setUploadNum(key)
                         setUploadOpen(true)
                       }}>
-                      +
+                      <div>{state[key] ? 'file here!' : '+'}</div>
                     </button>
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs text-center mb-2"
