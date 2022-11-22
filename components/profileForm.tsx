@@ -156,14 +156,14 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
               <div className="py-6 grid grid-cols-2" key={field.id}>
                 {/* TODO: change these to Input component, add new "noLabel" prop to Input */}
                 <input
-                  className="appearance-none col-span-2 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-3"
+                  className="appearance-none col-span-2 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-3"
                   id="grid-website-url"
                   type="text"
                   placeholder="Enter your website"
                   {...register(`links.${index}.url` as const)}
                 />
                 <input
-                  className="appearance-none col-span-1 bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  className="appearance-none col-span-1 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-website-label"
                   type="text"
                   placeholder="Label"
@@ -171,15 +171,20 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                 />
                 <button
                   className="col-span-1 uppercase"
-                  onClick={() => remove(index)}>
+                  onClick={(e) => {
+                    e.preventDefault()
+                    remove(index)}
+                  }>
                   - Remove
                 </button>
               </div>
             ))}
             <button
               className="uppercase"
-              onClick={() =>
+              onClick={(e) => {
+                e.preventDefault()
                 append({ url: '', label: '' }, { shouldFocus: true })
+              }
               }>
               + Add
             </button>
@@ -190,7 +195,10 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
           <h2>Upload Work</h2>
           <Overlay className={uploadOpen ? 'visible' : 'hidden'}>
             <div className="mt-0 sm:mt-0 sm:ml-4 flex justify-between border-b border-black border-dashed px-4 pb-4">
-              <button onClick={() => setUploadOpen(false)}>
+              <button onClick={(e) => {
+                e.preventDefault()
+                setUploadOpen(false)
+              }}>
                 <img src="/closeIcon.svg" alt="close overlay icon" />
               </button>
             </div>
@@ -198,7 +206,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
 
               <TabView headers={['Upload', 'Embed']}>
                 <div className='UploadPanel'>
-            uploadNum state: {uploadNum} <br />
 
             We currently support:
                   <br /><br />
