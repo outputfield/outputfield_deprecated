@@ -13,7 +13,7 @@ const Overlay: React.FC<Props> = ({ className, children })  => {
       aria-labelledby="filters-modal"
       role="dialog"
       aria-modal="true">
-      <div className="flex justify-center min-h-screen text-center sm:block sm:p-0">
+      <div className="flex justify-center text-center sm:block sm:p-0">
         {/* <!--
                 Modal panel, show/hide based on modal state.
                 TODO: 
@@ -25,7 +25,7 @@ const Overlay: React.FC<Props> = ({ className, children })  => {
                   To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             --> */}
 
-        <div className="block align-bottom bg-white opacity-100 overflow-hidden transform transition-all w-full">
+        <div className="block align-bottom bg-white opacity-100 overflow-hidden transform transition-all w-full min-h-screen">
           <div className="bg-white pt-5 pb-4 sm:pb-4">
             <div className="sm:flex sm:items-start">{children}</div>
           </div>
