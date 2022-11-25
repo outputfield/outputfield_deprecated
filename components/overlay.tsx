@@ -1,5 +1,7 @@
 import React from 'react'
 
+// TODO: This should have an onClose prop, and have its own isOpen state
+// TODO: Then, write onEscPress func which triggers onClose
 type Props = {
   className?: string;
   children?: React.ReactNode;
