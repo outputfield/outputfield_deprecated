@@ -1,6 +1,6 @@
 import React, { useCallback, useReducer, useState, BaseSyntheticEvent } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
-import Input from './formInput'
+import FormInput from './formInput'
 import { Button } from './button/button.component'
 import DropzoneComponent from './dropzoneComponent'
 import TabView from './tabView/tabView.component'
@@ -97,9 +97,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         <div className="fixed inset-0 flex items-center justify-center ">
           {/* The actual dialog panel  */}
           <Dialog.Panel className="mx-auto max-w-sm bg-white min-h-screen min-w-full">
-            {/* <Dialog.Title>Complete your order</Dialog.Title> */}
-
-            <div className="mt-0 sm:mt-0 sm:ml-4 flex justify-between border-b border-black border-dashed px-4 pb-4">
+            <div className="mt-2 sm:ml-4 flex justify-between px-4 pb-4">
               <button onClick={(e) => {
                 e.preventDefault()
                 setUploadOpen(false)
@@ -107,11 +105,9 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                 <Image src="/closeIcon.svg" alt="close" width={16} height={16} />
               </button>
             </div>
-            <div className="my-5 text-center">
-
+            <div className='mb-4 px-5 py-8 border-y border-black border-dashed h-full'>
               <TabView headers={['Upload', 'Embed']}>
-                <div className='UploadPanel'>
-
+                <div className="text-center">
                    We currently support:
                   <br /><br />
                   <ul>
@@ -120,9 +116,9 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                   <br />
                   <MemoDropzoneComponent uploadNum={uploadNum} />
                 </div>
-                <div className="EmbedPanel">
-                  {/* <Input placeholder="Link Youtuboe, Vime, SoundCloud, etc." label={`links.${uploadNum}.url`} {...register(`links.${uploadNum}.url`)} />
-          <Input placeholder="label" label={`links.${uploadNum}.label`} {...register(`links.${uploadNum}.label`)} /> */}
+                <div className="text-center">
+                  <FormInput register={register} placeholder="Link Youtuboe, Vime, SoundCloud, etc." name={`links.${uploadNum}.url`} />
+                  <FormInput register={register} placeholder="label" name={`links.${uploadNum}.label`} />
                   <Button>Embed</Button>
                 </div>
               </TabView>
@@ -135,13 +131,14 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         ((data: any, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state))) as SubmitHandler<ISignUpInputs>)} className="w-full max-w-lg">
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <Input
+            <FormInput
               register={register}
+              name="Name"
               label="Name"
               placeholder="Enter your name"
               type="text"
               required
-              // {...register("Name", { required: true })}
+              icon
             />
             {errors['Name'] && (
               <p className="text-red-500 text-xs italic">
@@ -152,45 +149,57 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
         </div>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
-            <Input
+            <FormInput
               register={register}
+              name="Title"
               label="Title"
-              placeholder="ie. suavepainter"
+              placeholder="Witch Gambler"
+              icon
             />
           </div>
           <div className="w-full px-3">
-            <Input
+            <FormInput
               register={register}
+              name="Handle"
               label="Handle"
               placeholder="ie. suavepainter"
+              icon
             />
           </div>
           <div className="w-full px-3">
-            <Input
+            <FormInput
               register={register}
+              name="Pronouns"
               label="Pronouns"
               placeholder="ie. they/them"
+              icon
             />
           </div>
           <div className="w-full px-3">
-            <Input
+            <FormInput
               register={register}
+              name="Mediums"
               label="Mediums"
-              placeholder="ie. they/them"
+              placeholder="wood, sound"
+              icon
             />
           </div>
           <div className="w-full px-3">
-            <Input
+            <FormInput
               register={register}
+              name="Mediums of Interest"
               label="Mediums of Interest"
-              placeholder="ie. they/them"
+              placeholder="graphite, metal sculpture"
+              icon
             />
           </div>
           <div className="w-full px-3">
-            <Input
+            <FormInput
               register={register}
+              name="Location"
               label="Location"
               placeholder="ie. Berlin, Shanghai, etc."
+              icon
             />
           </div>
         </div>
@@ -199,30 +208,34 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
           <h2>Add Links</h2>
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
             {fields.map((field, index) => (
-              <div className="py-6 grid grid-cols-2" key={field.id}>
-                {/* TODO: change these to Input component, add new "noLabel" prop to Input */}
-                <input
-                  className="appearance-none col-span-2 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mb-3"
-                  id="grid-website-url"
-                  type="text"
-                  placeholder="Enter your website"
-                  {...register(`links.${index}.url` as const)}
-                />
-                <input
-                  className="appearance-none col-span-1 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="grid-website-label"
-                  type="text"
-                  placeholder="Label"
-                  {...register(`links.${index}.label` as const)}
-                />
-                <button
-                  className="col-span-1 uppercase"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    remove(index)}
-                  }>
+              <div className="py-6 grid grid-cols-2 grid-flow-cols justify-items-stretch items-center" key={field.id}>
+                <div className='col-start-1 col-end-3'>
+                  <FormInput
+                    register={register}
+                    name={`links.${index}.url`}
+                    placeholder="Enter your website"
+                  />
+                </div>
+                <div className='cols-span-1'>
+                  <FormInput
+                    register={register}
+                    name={`links.${index}.label`}
+                    placeholder="Label"
+                  />
+                </div>
+                <div className='cols-span-1 justify-self-end'>
+                  <button
+                    className="uppercase"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      remove(index)}
+                    }>
                   - Remove
-                </button>
+                  </button>
+                </div>
+                
+                
+
               </div>
             ))}
             <button
