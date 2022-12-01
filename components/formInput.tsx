@@ -1,14 +1,14 @@
 import Image from 'next/image'
 import React from 'react'
 import { Path, UseFormRegister } from 'react-hook-form'
-import { ISignUpInputs } from './profileForm'
+import { ISignUpInputs } from './ProfileForm'
 
 type InputProps = {
   register: UseFormRegister<ISignUpInputs>;
-  name: string;
+  name: Path<ISignUpInputs>;
+  label?: Path<ISignUpInputs>;
   placeholder?: string;
   type?: string;
-  label?: Path<ISignUpInputs>;
   required?: boolean;
   disabled?: boolean;
   icon?: boolean;

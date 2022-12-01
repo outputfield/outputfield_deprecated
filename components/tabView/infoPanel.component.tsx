@@ -1,7 +1,7 @@
 import React from 'react'
 import Artist from '../data/artist'
 import { ContactPanel } from '../tabView/contactPanel.component'
-import { Button } from '../button/button.component'
+import { Button } from '../Button'
 
 interface Props {
   artist: Artist;

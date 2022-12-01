@@ -1,11 +1,12 @@
 import React, { useCallback, useReducer, useState, BaseSyntheticEvent } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
-import FormInput from './formInput'
-import { Button } from './button/button.component'
-import DropzoneComponent from './dropzoneComponent'
-import TabView from './tabView/tabView.component'
+import FormInput from '../formInput'
+import { Button } from '../Button'
+import DropzoneComponent from '../dropzoneComponent'
+import TabView from '../tabView/tabView.component'
 import { Dialog } from '@headlessui/react'
 import Image from 'next/image'
+import EmbedPanel from './embedPanel'
 
 type ProfileLink = {
   url: string;
@@ -24,57 +25,74 @@ export type ISignUpInputs = {
   links: ProfileLink[];
 };
 
+type ISignUpInputsAndWorks = ISignUpInputs & { works: FormData | EmbeddedWork }
+
 interface Props {
   onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => Promise<void>;
   isSubmitting: boolean;
-  profile?: ISignUpInputs | undefined;
+  profileData?: ISignUpInputsAndWorks | undefined;
 }
 
-type FilesAction = {
+export type EmbeddedWork = {
+  title: string,
+  url: string,
+}
+
+type UploadWorksAction = {
   type: 'UPDATE',
   key: number,
-  file: FormData
+  work: FormData | EmbeddedWork
 }
 
-interface FilesState {
-  [x: number]: FormData;
+interface UploadWorksState {
+  [x: number]: FormData | EmbeddedWork;
 }
 
 interface DropzoneProps {
   uploadNum: number,
 }
 
-export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) {
+export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Props) {
   const {
     register,
     handleSubmit,
     control,
-    // watch,
     formState: { errors },
-  } = useForm<ISignUpInputs>()
+  } = useForm<ISignUpInputs>({
+    defaultValues: profileData
+  })
   const { fields, append, remove } = useFieldArray({
     name: 'links',
     control,
   })
+
   const [uploadOpen, setUploadOpen] = useState(false)
   const [uploadNum, setUploadNum] = useState(-1)
   const closeUpload = () => setUploadOpen(false)
 
   const [state, dispatch] = useReducer(
-    (state: FilesState, action: FilesAction): FilesState => {
+    (state: UploadWorksState, action: UploadWorksAction): UploadWorksState => {
       const _state = { ...state }
       switch (action.type) {
       case 'UPDATE':
-        return { ..._state, [action.key]: action.file }
+        return { ..._state, [action.key]: action.work }
       }
     },
-    {} // TODO: reduce existing files into {} as initialState
+    {}
+    // profileData?.works,
+    // () => {
+    // } // TODO: reduce existing files into {} as initialState
   )
   console.log('profileForm state', state)
 
   const uploadFileCallback = (uploadNum: number) => (file: FormData) => {
     console.log('uploadFileCallback', uploadNum, file)
-    dispatch({ type: 'UPDATE', key: uploadNum, file })
+    dispatch({ type: 'UPDATE', key: uploadNum, work: file })
+    closeUpload()
+  }
+
+  const handleEmbedWork = (work: EmbeddedWork) => {
+    dispatch({ type: 'UPDATE', key: uploadNum, work })
     closeUpload()
   }
 
@@ -107,6 +125,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
             </div>
             <div className='mb-4 px-5 py-8 border-y border-black border-dashed h-full'>
               <TabView headers={['Upload', 'Embed']}>
+                {/* TODO: separate component, which takes takes submit ("Upload") button as prop*/}
                 <div className="text-center">
                    We currently support:
                   <br /><br />
@@ -116,11 +135,25 @@ export default function ProfileForm({ onSubmit, isSubmitting, profile }: Props) 
                   <br />
                   <MemoDropzoneComponent uploadNum={uploadNum} />
                 </div>
-                <div className="text-center">
-                  <FormInput register={register} placeholder="Link Youtuboe, Vime, SoundCloud, etc." name={`links.${uploadNum}.url`} />
-                  <FormInput register={register} placeholder="label" name={`links.${uploadNum}.label`} />
-                  <Button>Embed</Button>
-                </div>
+                {/* <div className="text-center"> */}
+                {/* TODO: separate Embed component, 
+                      which takes Submit ("Embed") button as prop, and 
+                      has its own useForm and validation
+                  */}
+                {/* TODO: VALIDATION: 
+                    (1) fields cannot be empty upon submit
+                    ()use ReactPlayer.canPlay(url) to check for valid embed URL
+                  */}
+                {/* TODO: create Input component to use separately from react-hook-form */}
+                {/* <input onChange={e => setEmbedUrl(e.target.value)} placeholder="Link Youtuboe, Vimeo, SoundCloud, etc." name={`embed.${uploadNum}.url`} />
+                  <input onChange={e => setEmbedLabel(e.target.value)} placeholder="label" name={`embed.${uploadNum}.label`} />
+                  <Button
+                    onClick={handleEmbedWork}
+                  >
+                    Embed
+                  </Button>
+                </div> */}
+                <EmbedPanel handleEmbedWork={handleEmbedWork} />
               </TabView>
             </div>
           </Dialog.Panel>

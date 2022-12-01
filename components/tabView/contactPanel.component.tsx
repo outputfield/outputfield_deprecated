@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 
 import Artist from '../data/artist'
-import { Button } from '../button/button.component'
+import { Button } from '../Button'
 import { sendMessage } from '../../pages/api/sendMessage'
 
 interface Props {

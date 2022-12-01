@@ -1,5 +1,6 @@
 import React, { BaseSyntheticEvent, useState } from 'react'
-import ProfileForm, { ISignUpInputs } from '../components/profileForm'
+
+import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
 
 export default function SignUp() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
@@ -55,12 +56,11 @@ export default function SignUp() {
           'api/uploadFile',
           {
             method: 'PUT',
-            body: f, // FIXME: The format submitted in this api call may not be correct...
+            body: f,
           } 
         )
       })
 
-      // debugger
       const res = await Promise.all(uploadPromises)
       works = await Promise.all(res.map(r => r.json()))
     } catch (error) {

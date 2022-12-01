@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Spinner from '../spinner'
+import Spinner from './spinner'
 
 interface Props {
   children?: string | React.ReactNode;
