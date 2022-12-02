@@ -1,12 +1,12 @@
-import React, { useCallback, useReducer, useState, BaseSyntheticEvent } from 'react'
+import React, { useReducer, useState, BaseSyntheticEvent } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
 import FormInput from '../formInput'
 import { Button } from '../Button'
-import DropzoneComponent from '../dropzoneComponent'
 import TabView from '../tabView/tabView.component'
 import { Dialog } from '@headlessui/react'
 import Image from 'next/image'
 import EmbedPanel from './embedPanel'
+import UploadPanel from './uploadPanel'
 
 type ProfileLink = {
   url: string;
@@ -25,7 +25,7 @@ export type ISignUpInputs = {
   links: ProfileLink[];
 };
 
-type ISignUpInputsAndWorks = ISignUpInputs & { works: FormData | EmbeddedWork }
+type ISignUpInputsAndWorks = ISignUpInputs & { works: (FormData | EmbeddedWork)[] }
 
 interface Props {
   onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => Promise<void>;
@@ -48,10 +48,6 @@ interface UploadWorksState {
   [x: number]: FormData | EmbeddedWork;
 }
 
-interface DropzoneProps {
-  uploadNum: number,
-}
-
 export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Props) {
   const {
     register,
@@ -70,6 +66,14 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
   const [uploadNum, setUploadNum] = useState(-1)
   const closeUpload = () => setUploadOpen(false)
 
+  function init(works: (FormData | EmbeddedWork)[]) {
+    return works.reduce(
+      (acc: UploadWorksState, curr: FormData| EmbeddedWork, index: number) => {
+        return { [index]: curr, ...acc }
+      }, {}
+    )
+  }
+
   const [state, dispatch] = useReducer(
     (state: UploadWorksState, action: UploadWorksAction): UploadWorksState => {
       const _state = { ...state }
@@ -78,14 +82,12 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
         return { ..._state, [action.key]: action.work }
       }
     },
-    {}
-    // profileData?.works,
-    // () => {
-    // } // TODO: reduce existing files into {} as initialState
+    profileData?.works || [],
+    init
   )
   console.log('profileForm state', state)
 
-  const uploadFileCallback = (uploadNum: number) => (file: FormData) => {
+  const handleUploadWork = (uploadNum: number) => (file: FormData) => {
     console.log('uploadFileCallback', uploadNum, file)
     dispatch({ type: 'UPDATE', key: uploadNum, work: file })
     closeUpload()
@@ -96,10 +98,13 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
     closeUpload()
   }
 
-  const MemoDropzoneComponent = React.memo(({ uploadNum }: DropzoneProps) => {
-    return <DropzoneComponent handleDrop={uploadFileCallback(uploadNum)} />
-  })
-  MemoDropzoneComponent.displayName = 'MemoDropzoneComponent'
+
+
+  const setUploadDialogOpen = (key: number) => (e: BaseSyntheticEvent) => {
+    e.preventDefault()
+    setUploadNum(key)
+    setUploadOpen(true)
+  }
 
   return (
     <>
@@ -125,34 +130,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
             </div>
             <div className='mb-4 px-5 py-8 border-y border-black border-dashed h-full'>
               <TabView headers={['Upload', 'Embed']}>
-                {/* TODO: separate component, which takes takes submit ("Upload") button as prop*/}
-                <div className="text-center">
-                   We currently support:
-                  <br /><br />
-                  <ul>
-                    <li>images (jpg, png, gif, tiff)</li>
-                  </ul>
-                  <br />
-                  <MemoDropzoneComponent uploadNum={uploadNum} />
-                </div>
-                {/* <div className="text-center"> */}
-                {/* TODO: separate Embed component, 
-                      which takes Submit ("Embed") button as prop, and 
-                      has its own useForm and validation
-                  */}
-                {/* TODO: VALIDATION: 
-                    (1) fields cannot be empty upon submit
-                    ()use ReactPlayer.canPlay(url) to check for valid embed URL
-                  */}
-                {/* TODO: create Input component to use separately from react-hook-form */}
-                {/* <input onChange={e => setEmbedUrl(e.target.value)} placeholder="Link Youtuboe, Vimeo, SoundCloud, etc." name={`embed.${uploadNum}.url`} />
-                  <input onChange={e => setEmbedLabel(e.target.value)} placeholder="label" name={`embed.${uploadNum}.label`} />
-                  <Button
-                    onClick={handleEmbedWork}
-                  >
-                    Embed
-                  </Button>
-                </div> */}
+                <UploadPanel handleUploadWork={handleUploadWork} uploadNum={uploadNum} />
                 <EmbedPanel handleEmbedWork={handleEmbedWork} />
               </TabView>
             </div>
@@ -161,7 +139,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
       </Dialog>
       
       <form onSubmit={handleSubmit(
-        ((data: any, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state))) as SubmitHandler<ISignUpInputs>)} className="w-full max-w-lg">
+        ((data: ISignUpInputs, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state))) as SubmitHandler<ISignUpInputs>)} className="w-full max-w-lg">
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <FormInput
@@ -266,9 +244,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                   - Remove
                   </button>
                 </div>
-                
-                
-
               </div>
             ))}
             <button
@@ -294,12 +269,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                     <button
                       className="appearance-none block w-10 h-10 text-gray-700 border border-black border-dashed rounded-full p-8 mb-3 leading-tight focus:outline-none focus:bg-white"
                       id={`grid-upload-work-${displayKey}`}
-                      onClick={(e: BaseSyntheticEvent) => {
-                        // TODO: extract this function
-                        e.preventDefault()
-                        setUploadNum(key)
-                        setUploadOpen(true)
-                      }}>
+                      onClick={setUploadDialogOpen(key)}>
                       <div>{state[key] ? 'file here!' : '+'}</div>
                     </button>
                     <label

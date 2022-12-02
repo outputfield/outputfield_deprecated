@@ -1,5 +1,6 @@
 import React, { BaseSyntheticEvent } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import ReactPlayer from 'react-player'
 import { EmbeddedWork } from '.'
 import { Button } from '../Button'
 
@@ -32,14 +33,18 @@ export default function EmbedPanel({
         {...register('url', {
           required: true,
           validate: {
-            notEmpty: url => url !== ''
-          //   playableUrl: url => ReactPlayer.canPlay(url),
+            playableUrl: url => ReactPlayer.canPlay(url),
           }
         })}
       />
-      {errors['url'] && (
+      {errors?.url?.type === 'required' && (
         <p className="text-red-500 text-xs italic">
-                Please fill out this field.
+          Please fill out this field. 
+        </p>
+      )}
+      {errors?.url?.type === 'playableUrl' && (
+        <p className="text-red-500 text-xs italic">
+          Not a valid URL. 
         </p>
       )}
       <input 
@@ -48,7 +53,7 @@ export default function EmbedPanel({
       />
       {errors['title'] && (
         <p className="text-red-500 text-xs italic">
-                Please fill out this field.
+          Please fill out this field.
         </p>
       )}
       <Button type='submit'>
