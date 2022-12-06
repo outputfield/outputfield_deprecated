@@ -1,12 +1,16 @@
 import React, { BaseSyntheticEvent } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import ReactPlayer from 'react-player'
-import { EmbeddedWork } from '.'
 import { Button } from '../Button'
 
 type EmbedPanelProps = {
   handleEmbedWork: (work: FormData) => void
 };
+
+type EmbeddedWork = {
+  title: string,
+  url: string,
+}
 
 export default function EmbedPanel({
   handleEmbedWork

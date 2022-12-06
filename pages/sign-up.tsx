@@ -10,8 +10,8 @@ export type Work = {
 }
 
 // 1. create user
-async function createUser(data: UserCreateInputWithArtist) {
-  let newUser: any
+async function createUser(data: UserCreateInputWithArtist): Promise<UserWithArtist> {
+  let newUser: UserWithArtist
   try {
     const res = await fetch('/api/signUp', {
       method: 'POST',
@@ -23,7 +23,7 @@ async function createUser(data: UserCreateInputWithArtist) {
     newUser = await res.json()
     return newUser
   } catch (err) {
-    console.error(`Failed to /signUp: ${err}`)
+    throw new Error(`Failed to /signUp: ${err}`)
   }
 }
 
@@ -55,7 +55,7 @@ async function uploadFiles(files: FormData[], handle: string) {
     const res = await Promise.all(uploadPromises)
     works.concat(await Promise.all(res.map((r: Response) => r.json())))
   } catch (error) {
-    console.error(`Failed to /uploadFile: ${error}`)
+    throw new Error(`Failed to /uploadFile: ${error}`)
   } 
   
   return works
@@ -117,7 +117,7 @@ export default function SignUp() {
       const works = await uploadFiles(files, userId)
       updateUserWithWorks(works as Work[], userId)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     } finally {
       setIsSubmitting(false)
     }

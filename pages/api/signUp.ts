@@ -2,7 +2,7 @@ import prisma from '../../lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Prisma } from '@prisma/client'
 
-export type UserCreateInputWithArtist = Prisma.UserCreateInput & Prisma.UserCreateManyInput & Prisma.ArtistCreateWithoutUserInput & { nominatorId: number }
+export type UserCreateInputWithArtist = Prisma.UserCreateInput & Prisma.ArtistCreateWithoutUserInput & { nominatorId: number }
 
 function createUserAndIncludeArtist(d: UserCreateInputWithArtist) {
   return prisma.user.create({
@@ -61,7 +61,7 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
       nominatorId: req.body.email,
     }
     try {
-      const newUser: UserWithArtist = await createUserAndIncludeArtist(userArgs)   
+      const newUser: UserWithArtist = await createUserAndIncludeArtist(userArgs)        
       return res.status(200).json(newUser)
     } catch (error) {
       console.log(`/api failed to create user: ${error}`)
