@@ -23,9 +23,10 @@ export type ISignUpInputs = {
   Pronouns: string;
   Location: string;
   links: ProfileLink[];
+  email: string;
 };
 
-type ISignUpInputsAndWorks = ISignUpInputs & { works: (FormData | EmbeddedWork)[] }
+type ISignUpInputsAndWorks = ISignUpInputs & { works: FormData[] }
 
 interface Props {
   onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => Promise<void>;
@@ -33,19 +34,14 @@ interface Props {
   profileData?: ISignUpInputsAndWorks | undefined;
 }
 
-export type EmbeddedWork = {
-  title: string,
-  url: string,
-}
-
 type UploadWorksAction = {
   type: 'UPDATE',
   key: number,
-  work: FormData | EmbeddedWork
+  work: FormData
 }
 
 interface UploadWorksState {
-  [x: number]: FormData | EmbeddedWork;
+  [x: number]: FormData;
 }
 
 export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Props) {
@@ -66,9 +62,9 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
   const [uploadNum, setUploadNum] = useState(-1)
   const closeUpload = () => setUploadOpen(false)
 
-  function init(works: (FormData | EmbeddedWork)[]) {
+  function init(works: FormData[]) {
     return works.reduce(
-      (acc: UploadWorksState, curr: FormData| EmbeddedWork, index: number) => {
+      (acc: UploadWorksState, curr: FormData, index: number) => {
         return { [index]: curr, ...acc }
       }, {}
     )
@@ -93,7 +89,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
     closeUpload()
   }
 
-  const handleEmbedWork = (work: EmbeddedWork) => {
+  const handleEmbedWork = (work: FormData) => {
     dispatch({ type: 'UPDATE', key: uploadNum, work })
     closeUpload()
   }

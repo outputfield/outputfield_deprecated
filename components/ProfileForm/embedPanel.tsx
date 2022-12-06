@@ -5,7 +5,7 @@ import { EmbeddedWork } from '.'
 import { Button } from '../Button'
 
 type EmbedPanelProps = {
-  handleEmbedWork: (work: EmbeddedWork) => void
+  handleEmbedWork: (work: FormData) => void
 };
 
 export default function EmbedPanel({
@@ -16,12 +16,13 @@ export default function EmbedPanel({
     handleSubmit,
     formState: { errors },
   } = useForm<EmbeddedWork>()
-  const onSubmit =(data: EmbeddedWork, e: BaseSyntheticEvent) => {
-    e?.preventDefault()
-    handleEmbedWork({
-      url: data.url,
-      title: data.title
-    })
+  const onSubmit = (data: EmbeddedWork, e: BaseSyntheticEvent) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('workType', 'embeddedWork')
+    formData.append('url', data.url)
+    formData.append('title', data.title)
+    handleEmbedWork(formData)
   }
   return (
     <form

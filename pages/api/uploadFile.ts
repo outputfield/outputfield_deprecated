@@ -21,29 +21,18 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
 
       try {
         const { artistHandle } = fields
-        // Read file
-        const file = fs.readFileSync(formData.file.path) // Buffer type
-        const bucketParams = {
-          Bucket: 'outputfieldartworks',
-          Key: `${artistHandle}/${formData.file.name}`, // Specify folder and file name
-          Body: file,
-          ACL: 'public-read'
-        }
-        // const data = await spaces.send(new PutObjectCommand(bucketParams))
         const work = {
-          // FIXME: make url dynamic, or retrieve from api call
-          link: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${artistHandle}/${formData.file.name}`
+          title: formData.file.name,
+          // TODO: make url dynamic, or retrieve from api call
+          url: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${artistHandle}/${formData.file.name}`
         }
 
-        //THIS WORSK~!!!
-        const data = await spaces.putObject({
+        spaces.putObject({
           Bucket: 'outputfieldartworks',
           Key: `${artistHandle}/${formData.file.name}`, // Specify folder and file name
           Body: fs.createReadStream(formData.file.path),
           ACL: 'public-read'
         }, async() => res.status(201).send(work))
-
-        // return res.status(200).json(work)
       } catch (error) {
         console.log('err', error)
         // Unlink file
