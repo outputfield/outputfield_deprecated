@@ -9,9 +9,7 @@ function createUserAndIncludeArtist(d: UserCreateInputWithArtist) {
     data: {
       name: d.name,
       email: d.email,
-      nominatedBy: {
-        connect: { id: d.nominatorId }
-      },
+      nominatorId: d.nominatorId,
       artist: {
         create: {
           title: d.title,
@@ -58,7 +56,7 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
       links: req.body.links,
       Bio: req.body.bio,
       email: req.body.email,
-      nominatorId: req.body.email,
+      nominatorId: req.body.nominatorId,
     }
     try {
       const newUser: UserWithArtist = await createUserAndIncludeArtist(userArgs)        

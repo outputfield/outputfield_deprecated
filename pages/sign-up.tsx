@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client'
 
 import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
 import { UserCreateInputWithArtist, UserWithArtist } from './api/signUp'
+import { partition } from '../lib/utils'
 
 export type Work = {
   title: string,
@@ -29,18 +30,25 @@ async function createUser(data: UserCreateInputWithArtist): Promise<UserWithArti
 
 // 2. Upload files to DO
 async function uploadFiles(files: FormData[], handle: string) {
-  const works = files.filter((f: FormData) => {
-    const workType = f.get('workType')
-    return workType === 'embeddedWork'
-  }).map((f: FormData) => (
+  let works
+  const [_embeddedWork, _uploadedWork] = partition(
+    files,
+    (f: FormData) => {
+      const workType = f.get('workType')
+      return workType === 'embeddedWork'
+    }
+  )
+  const embeddedWork = _embeddedWork.map((f: FormData) => (
     {
       url: f.get('url') || '',
       title: f.get('title') || ''
     }
   ))
 
+  console.log(embeddedWork)
+
   try {
-    const uploadPromises = files.map((f: FormData) => {
+    const uploadPromises = _uploadedWork.map((f: FormData) => {
       console.log('inside of creating uploadPromises', f)
       f.append('artistHandle', handle)
       return fetch(
@@ -53,7 +61,10 @@ async function uploadFiles(files: FormData[], handle: string) {
     })
 
     const res = await Promise.all(uploadPromises)
-    works.concat(await Promise.all(res.map((r: Response) => r.json())))
+    const uploadedWork = await Promise.all(res.map((r: Response) => r.json()))
+    console.log(uploadedWork)
+    works = embeddedWork.concat(uploadedWork)
+    console.log(works)
   } catch (error) {
     throw new Error(`Failed to /uploadFile: ${error}`)
   } 
