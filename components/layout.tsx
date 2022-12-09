@@ -10,7 +10,11 @@ const Layout = ({ children }: any) => (
       <div className="container">{children}</div>
     </main>
 
-    <style jsx global>{`
+    <footer>
+Footer Here
+    </footer>
+
+    <style jsx>{`
       *,
       *::before,
       *::after {
