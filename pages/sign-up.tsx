@@ -46,10 +46,9 @@ async function uploadFiles(files: FormData[], handle: string) {
   ))
 
   console.log(embeddedWork)
-
+ 
   try {
     const uploadPromises = _uploadedWork.map((f: FormData) => {
-      console.log('inside of creating uploadPromises', f)
       f.append('artistHandle', handle)
       return fetch(
         'api/uploadFile',

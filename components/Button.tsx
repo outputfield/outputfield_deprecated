@@ -10,7 +10,6 @@ interface Props {
   loading?: boolean;
 }
 
-
 export const Button = ({
   children,
   onClick,
