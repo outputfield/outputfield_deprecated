@@ -30,8 +30,8 @@ CREATE TABLE "Artist" (
 -- CreateTable
 CREATE TABLE "Work" (
     "id" SERIAL NOT NULL,
-    "type" TEXT DEFAULT E'',
-    "link" TEXT NOT NULL DEFAULT E'',
+    "title" TEXT DEFAULT E'',
+    "url" TEXT NOT NULL DEFAULT E'',
     "artistID" INTEGER NOT NULL,
 
     CONSTRAINT "Work_pkey" PRIMARY KEY ("id")

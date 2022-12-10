@@ -1,6 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
+// TODO: replace querystring usage with URLSearchParams API
 import { ParsedUrlQuery } from 'querystring'
 
 import { ArtistRow } from '../../../components/artists/artistRow.component'
@@ -39,11 +40,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     },
     // FIXME:
     // select: {
-    //   nominatedBy: {
-    //     include: {
-    //       user: true
-    //     }
-    //   },
+    //   nominatedBy: true
     // }
   })
   const artist = JSON.parse(JSON.stringify(res))

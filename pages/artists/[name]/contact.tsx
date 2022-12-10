@@ -5,6 +5,7 @@ import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } 
 import { useRouter } from 'next/router'
 import { useUser } from '../../../lib/useUser'
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
+// TODO: replace querystring usage with URLSearchParams API
 import { ParsedUrlQuery } from 'querystring'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
 
