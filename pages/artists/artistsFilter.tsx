@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useReducer } from 'react'
 import Overlay from '../../components/overlay'
 import Checkbox from '../../components/checkbox'
-import { Button } from '../../components/button/button.component'
+import { Button } from '../../components/Button'
 
 interface Props {
   isOpen: boolean,

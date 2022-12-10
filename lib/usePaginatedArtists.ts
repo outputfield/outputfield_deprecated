@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSWRInfinite } from 'swr'
+import useSWRInfinite from 'swr/infinite'
 
 const fetcher = (url: any) => fetch(url).then((res) => res.json())
 
