@@ -1,11 +1,11 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { ArtistWithUserAndReferredByAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithUserAndnominatedByAndWorkAndLinks } from '../../pages/api/artists/[name]'
 import { Button } from '../Button'
 
 interface Props {
-  artist: ArtistWithUserAndReferredByAndWorkAndLinks;
+  artist: ArtistWithUserAndnominatedByAndWorkAndLinks;
   className?: string;
   includeContact?: boolean;
 }
@@ -87,12 +87,12 @@ export const InfoPanel: React.FC<Props> = ({
       
 
       {includeContact && (
-        <Link href={`${router.asPath}/contact`} passHref>
-          <a>
-            <Button className="mb-8 w-7/12 text-lg">contact</Button>
-          </a>
-        </Link>
+        (<Link href={`${router.asPath}/contact`} passHref>
+
+          <Button className="mb-8 w-7/12 text-lg">contact</Button>
+
+        </Link>)
       )}
     </div>
-  )
+  );
 }

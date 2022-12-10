@@ -34,14 +34,17 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     },
     include: {
       user: true,
-      referredBy: {
-        include: {
-          user: true
-        }
-      },
       work: true,
       links: true,
     },
+    // FIXME:
+    // select: {
+    //   nominatedBy: {
+    //     include: {
+    //       user: true
+    //     }
+    //   },
+    // }
   })
   const artist = JSON.parse(JSON.stringify(res))
   return {

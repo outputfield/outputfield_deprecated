@@ -16,7 +16,7 @@ bio?:               string;
 mediums?:           string[];
 mediumsOfInterest?: string[];
 links?:             Link[];
-referredBy?:        Artist;
+nominatedBy?:        Artist;
 */
 
 /*
@@ -362,7 +362,7 @@ const artistdata = new artistlist(
 )
 
 for(let i = 0; i<artistdata.artists.length; i++){
-  artistdata.artists[i].referredBy = artistdata.artists[(i+1)%artistdata.artists.length]
+  artistdata.artists[i].nominatedBy = artistdata.artists[(i+1)%artistdata.artists.length]
 }
 
 export default artistdata

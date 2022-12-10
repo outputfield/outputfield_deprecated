@@ -44,12 +44,14 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
     </div>
   )
   if (type === 'list') {
-    return (<Link
-      href={uri}
-      className="last-of-type:border last-of-type:border-black last-of-type:border-dashed"
-    >
-      {row}
-    </Link>)
+    return (
+      <Link
+        href={uri}
+        className="last-of-type:border last-of-type:border-black last-of-type:border-dashed"
+        legacyBehavior>
+        {row}
+      </Link>
+    );
   } 
 
   return row
