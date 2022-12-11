@@ -14,14 +14,14 @@ type ProfileLink = {
 };
 
 export type ISignUpInputs = {
-  Name: string;
-  Title: string;
-  Handle: string;
-  Bio: string;
-  Mediums: string[];
-  'Mediums of Interest': string[];
-  Pronouns: string;
-  Location: string;
+  name: string;
+  title: string;
+  handle: string;
+  bio: string;
+  mediums: string[];
+  mediumsOfInterest: string[];
+  pronouns: string;
+  location: string;
   links: ProfileLink[];
   email: string;
 };
@@ -140,14 +140,14 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <FormInput
               register={register}
-              name="Name"
+              name="name"
               label="Name"
               placeholder="Enter your name"
               type="text"
               required
               icon
             />
-            {errors['Name'] && (
+            {errors['name'] && (
               <p className="text-red-500 text-xs italic">
                 Please fill out this field.
               </p>
@@ -158,7 +158,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           <div className="w-full px-3">
             <FormInput
               register={register}
-              name="Title"
+              name="title"
               label="Title"
               placeholder="Witch Gambler"
               icon
@@ -167,7 +167,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           <div className="w-full px-3">
             <FormInput
               register={register}
-              name="Handle"
+              name="handle"
               label="Handle"
               placeholder="ie. suavepainter"
               icon
@@ -176,7 +176,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           <div className="w-full px-3">
             <FormInput
               register={register}
-              name="Pronouns"
+              name="pronouns"
               label="Pronouns"
               placeholder="ie. they/them"
               icon
@@ -185,7 +185,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           <div className="w-full px-3">
             <FormInput
               register={register}
-              name="Mediums"
+              name="mediums"
               label="Mediums"
               placeholder="wood, sound"
               icon
@@ -194,7 +194,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           <div className="w-full px-3">
             <FormInput
               register={register}
-              name="Mediums of Interest"
+              name="mediumsOfInterest"
               label="Mediums of Interest"
               placeholder="graphite, metal sculpture"
               icon
@@ -203,9 +203,18 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           <div className="w-full px-3">
             <FormInput
               register={register}
-              name="Location"
+              name="location"
               label="Location"
               placeholder="ie. Berlin, Shanghai, etc."
+              icon
+            />
+          </div>
+          <div className="w-full px-3">
+            <FormInput
+              register={register}
+              name="bio"
+              label="Bio"
+              placeholder="Tell us something about yourself."
               icon
             />
           </div>

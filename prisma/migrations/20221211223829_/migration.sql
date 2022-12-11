@@ -14,7 +14,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Artist" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL DEFAULT E'',
-    "pronoun" TEXT DEFAULT E'',
+    "pronouns" TEXT DEFAULT E'',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "bio" TEXT NOT NULL DEFAULT E'',
     "location" TEXT NOT NULL DEFAULT E'',
