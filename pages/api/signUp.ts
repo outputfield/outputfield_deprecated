@@ -44,20 +44,20 @@ export type UserWithArtist = Prisma.PromiseReturnType<typeof createUserAndInclud
 // Create user in DB (as an Artist), along with artist's Works, and Links. Return artist handle
 export default async function signUp(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    console.log(req.body)
     const userArgs = {
-      name: req.body.name,
-      Title: req.body.title,
-      handle: req.body.handle,
-      Pronouns: req.body.pronoun,
-      Location: req.body.location,
-      Mediums: req.body.mediums,
-      'Mediums of Interest': req.body.mediumsOfInterest,
+      name: req.body.Name,
+      title: req.body.Title,
+      handle: req.body.Handle,
+      pronoun: req.body.Pronouns, // FIXME: should be 'pronouns' - fix in schema!
+      location: req.body.Location,
+      mediums: req.body.Mediums, // FIXME: parse this into String[]
+      mediumsOfInterest: req.body['Mediums of Interest'], // FIXME: parse this into String[]
       links: req.body.links,
-      Bio: req.body.bio,
+      bio: req.body.Bio, //FIXME: there's no field for this!
       email: req.body.email,
       nominatorId: req.body.nominatorId,
     }
+    console.log(userArgs)
     try {
       const newUser: UserWithArtist = await createUserAndIncludeArtist(userArgs)        
       return res.status(200).json(newUser)

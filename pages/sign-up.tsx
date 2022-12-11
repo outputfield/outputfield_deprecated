@@ -19,7 +19,7 @@ async function createUser(data: UserCreateInputWithArtist): Promise<UserWithArti
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({...data})
+      body: JSON.stringify(data)
     })
     newUser = await res.json()
     return newUser
