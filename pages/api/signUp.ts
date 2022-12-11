@@ -13,7 +13,7 @@ function createUserAndIncludeArtist(d: UserCreateInputWithArtist) {
       artist: {
         create: {
           title: d.title,
-          pronoun: d.pronoun,
+          pronouns: d.pronouns,
           bio: d.bio,
           location: d.location,
           handle: d.handle,
@@ -44,22 +44,33 @@ export type UserWithArtist = Prisma.PromiseReturnType<typeof createUserAndInclud
 // Create user in DB (as an Artist), along with artist's Works, and Links. Return artist handle
 export default async function signUp(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    console.log(req.body)
-    const userArgs = {
-      name: req.body.name,
-      Title: req.body.title,
-      handle: req.body.handle,
-      Pronouns: req.body.pronoun,
-      Location: req.body.location,
-      Mediums: req.body.mediums,
-      'Mediums of Interest': req.body.mediumsOfInterest,
-      links: req.body.links,
-      Bio: req.body.bio,
-      email: req.body.email,
-      nominatorId: req.body.nominatorId,
-    }
     try {
-      const newUser: UserWithArtist = await createUserAndIncludeArtist(userArgs)        
+      const {
+        name,
+        title,
+        handle,
+        pronouns,
+        location,
+        mediums,
+        mediumsOfInterest,
+        links,
+        bio,
+        email,
+        nominatorId,
+      } = req.body
+      const newUser: UserWithArtist = await createUserAndIncludeArtist({
+        name,
+        title,
+        handle,
+        pronouns,
+        location,
+        mediums, // FIXME: (v2) parse this into String[]
+        mediumsOfInterest, // FIXME: (v2) parse this into String[]
+        links,
+        bio,
+        email,
+        nominatorId,
+      })
       return res.status(200).json(newUser)
     } catch (error) {
       console.log(`/api failed to create user: ${error}`)

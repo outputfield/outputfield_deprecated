@@ -17,13 +17,14 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
     const form = new formidable.IncomingForm()
     form.keepExtensions = true
     // parse request to readable form
-    form.parse(req, async (err: any, fields: any, formData: FormData) => {
+    form.parse(req, async (err: any, fields: any, files: any) => {
+      const { artistHandle } = fields
+      const file = files.file as FileWithPath
+
       // Account for parsing errors
       if (err) return res.status(500).send(`Error occured: ${err}`)
 
       try {
-        const { artistHandle } = fields
-        const file = formData.get('file') as FileWithPath
         const work = {
           title: file.name,
           // TODO: Put bucket name in .env, and make it dynamic
@@ -40,7 +41,6 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
         console.log('err', error)
 
         // Unlink file
-        const file = formData.get('file') as FileWithPath
         fs.unlinkSync(file?.path)
 
         // FIXME: this should throw error

@@ -22,7 +22,6 @@ export default async function addArtistWorks(req: NextApiRequest, res: NextApiRe
       })
       return res.status(200).json(result)
     } catch (error) {
-      console.log(`/api failed to create user: ${error}`)
       throw error
     }
   } else {

@@ -6,7 +6,7 @@ import { ISignUpInputs } from './ProfileForm'
 type InputProps = {
   register: UseFormRegister<ISignUpInputs>;
   name: Path<ISignUpInputs>;
-  label?: Path<ISignUpInputs>;
+  label?: string;
   placeholder?: string;
   type?: string;
   required?: boolean;

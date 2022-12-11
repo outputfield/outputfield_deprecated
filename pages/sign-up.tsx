@@ -19,7 +19,7 @@ async function createUser(data: UserCreateInputWithArtist): Promise<UserWithArti
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({...data})
+      body: JSON.stringify(data)
     })
     newUser = await res.json()
     return newUser
@@ -46,10 +46,9 @@ async function uploadFiles(files: FormData[], handle: string) {
   ))
 
   console.log(embeddedWork)
-
+ 
   try {
     const uploadPromises = _uploadedWork.map((f: FormData) => {
-      console.log('inside of creating uploadPromises', f)
       f.append('artistHandle', handle)
       return fetch(
         'api/uploadFile',
@@ -113,13 +112,12 @@ export default function SignUp() {
     try {
       // FIXME: Grab new user email from URL
       const _email = `${makeid(6)}@gmail.com`
-
       // FIXME: get nominatorId from URL
       const _nominatorId = 1
       const newUser: UserWithArtist = await createUser({
         ...data,
-        name: data.Name,
-        handle: data.Handle,
+        name: data.name,
+        handle: data.handle,
         links: data.links as Prisma.LinkCreateNestedManyWithoutArtistInput,
         email: _email,
         nominatorId: _nominatorId,
