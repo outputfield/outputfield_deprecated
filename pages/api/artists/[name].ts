@@ -24,6 +24,9 @@ export const getArtistWithUserAndNominatedByAndWorkAndLinks = (name: string) => 
     },
     include: {
       user: {
+        select: {
+          name: true
+        },
         include: {
           nominatedBy: {
             include: {
@@ -35,7 +38,7 @@ export const getArtistWithUserAndNominatedByAndWorkAndLinks = (name: string) => 
             }
           },
         }
-      }, 
+      },
       work: true,
       links: true,
     },
