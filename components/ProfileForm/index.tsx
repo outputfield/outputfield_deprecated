@@ -4,7 +4,7 @@ import FormInput from '../formInput'
 import { Button } from '../Button'
 import TabView from '../tabView/tabView.component'
 import { Dialog } from '@headlessui/react'
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image'
 import EmbedPanel from './embedPanel'
 import UploadPanel from './uploadPanel'
 

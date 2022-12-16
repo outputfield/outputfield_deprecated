@@ -4,21 +4,20 @@ module.exports = {
       {
         protocol: 'https',
         hostname: 'outputfieldartworks.sfo3.digitaloceanspaces.com',
-        port: '**',
+        port: '*',
         // pathname: '/account123/**',
         // pathname: '*'
       },
       {
         protocol: 'https',
-        hostname: 'outputfieldartworks.sfo3.digitaloceanspaces.com',
-        port: '**',
-        // pathname: '/account123/**',
-        // pathname: '*'
+        hostname: 'via.placeholder.com',
+        port: '*',
+        pathname: '/100'
       },
     ],
-    domains: [
-      'via.placeholder.com',
-      'outputfieldartworks.sfo3.digitaloceanspaces.com',
-    ],
+    // domains: [
+    //   'via.placeholder.com',
+    //   'outputfieldartworks.sfo3.digitaloceanspaces.com',
+    // ],
   },
 }

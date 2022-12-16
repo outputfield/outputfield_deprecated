@@ -1,11 +1,11 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
-import { ArtistWithUserAndnominatedByAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithUserAndNominatedByAndWorkAndLinks } from '../../pages/api/artists/[name]'
 import { Button } from '../Button'
+import Link from 'next/link'
 
 interface Props {
-  artist: ArtistWithUserAndnominatedByAndWorkAndLinks;
+  artist: ArtistWithUserAndNominatedByAndWorkAndLinks;
   className?: string;
   includeContact?: boolean;
 }
@@ -68,7 +68,7 @@ export const InfoPanel: React.FC<Props> = ({
         </div>
       </div>
       {
-        artist?.nominatedBy && (
+        artist?.user.nominatedBy && (
           <div id="artistReference" className={'flex justify-end relative w-full h-20 mb-20'}>
             <img src="/dashedEllipses2.svg" className="absolute" />
             <div className="absolute uppercase mt-2 mr-8">
@@ -76,9 +76,9 @@ export const InfoPanel: React.FC<Props> = ({
               <br />
               <a
                 className="underline glow-highlight"
-                href={'/artists/'+artist?.nominatedBy?.handle}
+                href={'/artists/'+artist?.user?.nominatedBy?.artist?.handle}
               >
-                {artist?.nominatedBy?.user.name}
+                {artist?.user.nominatedBy?.name}
               </a>
             </div>
           </div>
@@ -88,11 +88,9 @@ export const InfoPanel: React.FC<Props> = ({
 
       {includeContact && (
         (<Link href={`${router.asPath}/contact`} passHref>
-
-          <Button className="mb-8 w-7/12 text-lg">contact</Button>
-
+          <Button>contact</Button>
         </Link>)
       )}
     </div>
-  );
+  )
 }

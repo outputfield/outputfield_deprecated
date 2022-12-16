@@ -1,4 +1,4 @@
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image'
 import React from 'react'
 import { Path, UseFormRegister } from 'react-hook-form'
 import { ISignUpInputs } from './ProfileForm'

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ErrorMessage } from '@hookform/error-message'
-import { Button } from '../../../components/button/button.component'
+import { Button } from '../../../components/Button'
 import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useUser } from '../../../lib/useUser'
@@ -170,7 +170,7 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
         <ErrorMessage errors={errors} name="subject" as="p" />
         <ErrorMessage errors={errors} name="message" as="p" />
       </div>
-      <Button className="mb-8 w-7/12 text-lg" buttonType="submit">contact</Button>
+      <Button type="submit">contact</Button>
     </form>
   )
 }

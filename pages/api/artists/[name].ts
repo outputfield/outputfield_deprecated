@@ -22,16 +22,20 @@ export const getArtistWithUserAndNominatedByAndWorkAndLinks = (name: string) => 
     where: {
       handle: name,
     },
-    // FIXME:
-    // select: {
-    //   nominatedBy: {
-    //     include: {
-    //       user: true
-    //     }
-    //   },
-    // },
     include: {
-      user: true, 
+      user: {
+        include: {
+          nominatedBy: {
+            include: {
+              artist: {
+                select: {
+                  handle: true
+                }
+              }
+            }
+          },
+        }
+      }, 
       work: true,
       links: true,
     },

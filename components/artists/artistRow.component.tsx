@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image'
 import Link from 'next/link'
 import { ArtistWithWorkAndLinks } from '../../pages/api/artists/[name]'
 
@@ -27,7 +27,7 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
             width={100}
             className="rounded-full"
           />
-          {type == 'detail' && <div className="text-center font-serif">{artist?.pronoun}</div>}
+          {type == 'detail' && <div className="text-center font-serif">{artist?.pronouns}</div>}
         </div>
         <div className="ml-3 py-auto text-lg">
           <p className="text-[18px]">{artist?.user.name}</p>
@@ -51,7 +51,7 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
         legacyBehavior>
         {row}
       </Link>
-    );
+    )
   } 
 
   return row

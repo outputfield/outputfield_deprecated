@@ -40,7 +40,7 @@ CREATE TABLE "Work" (
 -- CreateTable
 CREATE TABLE "Link" (
     "id" SERIAL NOT NULL,
-    "label" TEXT DEFAULT E'',
+    "title" TEXT DEFAULT E'',
     "url" TEXT NOT NULL DEFAULT E'',
     "artistID" INTEGER NOT NULL,
 

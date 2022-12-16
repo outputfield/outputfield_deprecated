@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Swipe from 'react-easy-swipe'
-import Image from "next/legacy/image";
+import Image from 'next/legacy/image'
 
 interface Slide {
   link: string;

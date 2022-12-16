@@ -2,8 +2,13 @@ import React, {useMemo} from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useUser } from '../lib/useUser'
+import Image from 'next/image'
 
 const LINKS = [
+  {
+    href: '/',
+    label: 'Home'
+  },
   {
     href: '/login',
     label: 'Login'
@@ -35,7 +40,9 @@ const Header = () => {
         <div className="group relative">
           <button className="w-full border border-black drop-shadow text-black px-4 h-10 flex justify-between items-center">
             <p>{currentPage}</p>
-            <img
+            <Image
+              width={16}
+              height={16}
               src="/selectArrow.svg"
               alt="select arrow"
               className="justify-self-end"
@@ -60,11 +67,11 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <a
+                    <Link
                       href="/api/logout"
                       className="block px-4 py-2 hover:bg-gray">
                       Logout
-                    </a>
+                    </Link>
                   </li>
                 </>
               ) : (
@@ -79,7 +86,7 @@ const Header = () => {
         </div>
       </div>
     </header>
-  );
+  )
 }
 
 export default Header

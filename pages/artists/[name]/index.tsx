@@ -9,7 +9,7 @@ import Tabs from '../../../components/tabView/tabView.component'
 import WorkPanel from '../../../components/tabView/workPanel.component'
 import { InfoPanel } from '../../../components/tabView/infoPanel.component'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 
 export const getStaticPaths = async () => {
   const data = await getArtistsWithUserAndWorkAndLinks()

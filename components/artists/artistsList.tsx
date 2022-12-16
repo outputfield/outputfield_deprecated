@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
 
-import { ArtistRow } from '../../components/artists/artistRow.component'
-import { ArtistsWithUserAndWorkAndLinks } from '../api/artists'
+import { ArtistRow } from './artistRow.component'
+import { ArtistsWithUserAndWorkAndLinks } from '../../pages/api/artists'
 
 interface Props {
   artists: ArtistsWithUserAndWorkAndLinks;
