@@ -14,6 +14,7 @@ const Login = () => {
     if (errorMsg) setErrorMsg('')
     const { currentTarget: { email: { value: email } } }  = e
 
+    // TODO: write these try/catches as separate async functions, and call them from a main try catch
     // Query db for user on submit. If user not found, redirect to "sign-up" flow.
     try {
       const { currentTarget: { email: { value: email } } }  = e
