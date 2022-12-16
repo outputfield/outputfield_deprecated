@@ -45,7 +45,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   //   //   nominatedBy: true
   //   // }
   // })
-  const res = getArtistWithUserAndNominatedByAndWorkAndLinks(name)
+  const res = await getArtistWithUserAndNominatedByAndWorkAndLinks(name)
   const artist = JSON.parse(JSON.stringify(res))
   return {
     props: {
