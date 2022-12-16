@@ -1,5 +1,5 @@
-import * as React from 'react'
-import Spinner from '../spinner'
+import React from 'react'
+import Spinner from './spinner'
 
 interface Props {
   children?: string | React.ReactNode;
@@ -9,7 +9,6 @@ interface Props {
   disabled?: boolean;
   loading?: boolean;
 }
-
 
 export const Button = ({
   children,

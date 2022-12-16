@@ -14,7 +14,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Artist" (
     "id" SERIAL NOT NULL,
     "title" TEXT NOT NULL DEFAULT E'',
-    "pronoun" TEXT DEFAULT E'',
+    "pronouns" TEXT DEFAULT E'',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "bio" TEXT NOT NULL DEFAULT E'',
     "location" TEXT NOT NULL DEFAULT E'',
@@ -30,8 +30,8 @@ CREATE TABLE "Artist" (
 -- CreateTable
 CREATE TABLE "Work" (
     "id" SERIAL NOT NULL,
-    "type" TEXT DEFAULT E'',
-    "link" TEXT NOT NULL DEFAULT E'',
+    "title" TEXT DEFAULT E'',
+    "url" TEXT NOT NULL DEFAULT E'',
     "artistID" INTEGER NOT NULL,
 
     CONSTRAINT "Work_pkey" PRIMARY KEY ("id")
@@ -40,7 +40,7 @@ CREATE TABLE "Work" (
 -- CreateTable
 CREATE TABLE "Link" (
     "id" SERIAL NOT NULL,
-    "label" TEXT DEFAULT E'',
+    "title" TEXT DEFAULT E'',
     "url" TEXT NOT NULL DEFAULT E'',
     "artistID" INTEGER NOT NULL,
 

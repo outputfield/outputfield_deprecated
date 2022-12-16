@@ -1,47 +1,51 @@
-// TODO: this should be FormInput
+import Image from 'next/legacy/image'
 import React from 'react'
 import { Path, UseFormRegister } from 'react-hook-form'
-import { ISignUpInputs } from './profileForm'
+import { ISignUpInputs } from './ProfileForm'
 
 type InputProps = {
-  label: Path<ISignUpInputs>;
   register: UseFormRegister<ISignUpInputs>;
+  name: Path<ISignUpInputs>;
+  label?: string;
   placeholder?: string;
-  required?: boolean;
-  className?: string;
   type?: string;
+  required?: boolean;
   disabled?: boolean;
+  icon?: boolean;
 };
 
 export default function FormInput({
   label,
   register,
+  name,
   placeholder,
   required,
   type,
   disabled,
-  // className,
+  icon,
   ...restProps
 }: InputProps) {
   return (
-    <>
-      {label && (
-        <label
-          htmlFor={label}
-          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-          {label}
-        </label>
-      )}
-      <input
-        id={label}
-        disabled={disabled || false}
-        // name={name}
-        className="appearance-none block w-full bg-gray-200 text-gray-700 border border-black rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-        placeholder={placeholder || ''}
-        type={type || ''}
-        {...restProps}
-        {...register(label, { required })}
-      />
-    </>
+    <div className="flex w-full">
+      {icon && <Image src='/fourpointstar.svg' alt='star' width='16' height='16' />}
+      <span className="w-full block">
+        {label && (
+          <label
+            htmlFor={label}
+            className="block uppercase tracking-wide text-gray-700 text-xs mb-2">
+            {label}
+          </label>
+        )}
+        <input
+          id={label}
+          disabled={disabled || false}
+          className="w-full appearance-none text-gray-700 border border-black py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+          placeholder={placeholder || ''}
+          type={type || ''}
+          {...restProps}
+          {...register(name, { required })}
+        />
+      </span>
+    </div>
   )
 }

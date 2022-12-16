@@ -1,97 +1,96 @@
 import React from 'react'
-import Artist from '../data/artist'
-import { ContactPanel } from '../tabView/contactPanel.component'
-import { Button } from '../button/button.component'
+import { useRouter } from 'next/router'
+import { ArtistWithUserAndNominatedByAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import { Button } from '../Button'
+import Link from 'next/link'
 
 interface Props {
-  artist: Artist;
+  artist: ArtistWithUserAndNominatedByAndWorkAndLinks;
   className?: string;
   includeContact?: boolean;
 }
 
-export const InfoPanel = ({
+export const InfoPanel: React.FC<Props> = ({
   artist,
   className,
-  includeContact = true
-}:Props) => {
-  function openContact(){
-    const t = document.querySelector('#infoPanel')
-    t?.querySelector('#info')?.classList?.remove('active')
-    t?.querySelector('#contact')?.classList?.add('active')
-  }
-  function closeContact(){
-    const t = document.querySelector('#infoPanel')
-    t?.querySelector('#contact')?.classList?.remove('active')
-    t?.querySelector('#info')?.classList?.add('active')
-  }
+  includeContact = true,
+}) => {
+  const router = useRouter()
+
+  console.log(artist)
 
   return (
-    <div className={`${className} relative text-center mt-8 mx-20 min-h-184`} id="infoPanel">
-      <div className="hidden active:block" id="info">
-        <div className="w-full pt-20 pr-13 pb-56 pl-16 border-box whitespace-pre-wrap">
-          {artist.bio}
-        </div>
-        <div className="relative inline-block pt-18 pr-48 pb-0 pr-45 h-160 my-0 mx-auto content-box">
-          <div className="block absolute h-160 w-160 z-0 top-0 left-62 rounded-full border-1 border-dashed"></div>
-          {
-            artist.mediums.length==0?
-              (<div className="relative w-122 min-h-36"/>)
-              :
-              (
-                <div className="relative w-122 min-h-36">
-                Mediums:<br/>
-                  {artist.mediums.join(', ')}
-                </div>
-              )
-          }
-          {
-            artist.mediumsOfInterest.length==0?
-              (<div className="relative w-160 min-h-36 mt-48 pr-0 pb-0 pl-82" />)
-              :
-              (
-                <div className="relative w-160 min-h-36 mt-48 pr-0 pb-0 pl-82">
-                Mediums Of Interest:<br/>
-                  {artist.mediumsOfInterest.join(', ')}
-                </div>
-              )
-          }
-        </div>
-        <div className="grid pt-80 px-0 pb-50 grid-cols-1">
-          {
-            artist.links.map((e,i)=>{
-              return (
-                <div key={'link_'+i} className="h-40 flex items-center justify-start py-0 px-16">
-                  <a href={e.link} className="relative block pr-29 after:content-[''] after:inline-block after:h-17 after: w-17 after:absolute after:right-0 after:top-1 after:bg-[url('/extarrow.png')]">
-                    {e.title}
-                  </a>
-                </div>
-              )
-            })
-          }
-        </div>
-        <div className={'flex justify-end w-full py-0 px-61 mb-68'}>
-          {/* <div className="text-left">
-            Referred By:<br/>
-            <a href={"../artists/"+artist.referredBy.handle}>{artist.referredBy.name}</a>
-          </div> */}
-        </div>
-        {includeContact?
-          (
-            <Button onClick={openContact}>
-              contact
-            </Button>
-          )
-          : ''
-        }
+    <div
+      className={`${className} relative min-h-184 grid text-base p-3`}
+      id="infoPanel">
+      <div
+        id="bio"
+        className="w-full mb-8 border-box whitespace-pre-wrap uppercase">
+        {artist?.bio}
       </div>
-      {includeContact?
-        (
-          <div id="contact" className="hidden">
-            <ContactPanel artist={artist} onClick={closeContact}/>
+
+      <div
+        id="mediums"
+        className="relative uppercase inline-block h-36 w-9/12 mb-16 mx-auto content-box ">
+        <img src="/dashedCircle.svg" className="absolute ml-4" />
+        <div className="flex flex-col justify-between mt-4 h-full">
+          {artist?.mediums.length !== 0 && (
+            <div className="relative">
+              <b>Mediums:</b>
+              <br />
+              {artist?.mediums.join(', ')}
+            </div>
+          )}
+          {artist?.mediumsOfInterest.length !== 0 && (
+            <div className="relative self-end">
+              <b>Mediums Of Interest:</b>
+              <br />
+              {artist?.mediumsOfInterest.join(', ')}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div id="artistLinks" className="relative mb-24 h-32">
+        <img src="/dashedEllipses4.svg" className="absolute" />
+        <div className="absolute flex flex-col space-y-4 mt-4">
+          {artist?.links.map(({ title, url }) => (
+            <a
+              key={url}
+              href={url}
+              target="_blank"
+              rel="noreferrer"
+              className="uppercase flex space-x-2 items-center">
+              <span>{title}</span>
+              <img src="/externalLinkIcon.svg" />
+            </a>
+          ))}
+        </div>
+      </div>
+      {
+        artist?.user.nominatedBy && (
+          <div id="artistReference" className={'flex justify-end relative w-full h-20 mb-20'}>
+            <img src="/dashedEllipses2.svg" className="absolute" />
+            <div className="absolute uppercase mt-2 mr-8">
+          Referred By:
+              <br />
+              <a
+                className="underline glow-highlight"
+                href={'/artists/'+artist?.user?.nominatedBy?.artist?.handle}
+              >
+                {artist?.user.nominatedBy?.name}
+              </a>
+            </div>
           </div>
         )
-        : ''
       }
+      
+
+      {includeContact && (
+        (<Link href={`${router.asPath}/contact`} passHref>
+          <Button>contact</Button>
+        </Link>)
+      )}
     </div>
   )
 }

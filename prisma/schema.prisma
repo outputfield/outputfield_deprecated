@@ -18,7 +18,7 @@ model User {
   // Relation fields
   // tokens    Token[]
   // projects  Project[]
-  artist    Artist?
+  artist Artist?
   // curator     Curator?
   // venue     Venue?
 
@@ -30,7 +30,7 @@ model User {
 model Artist {
   id                Int      @id @default(autoincrement())
   title             String   @default("")
-  pronoun           String?  @default("")
+  pronouns          String?  @default("")
   createdAt         DateTime @default(now()) @map(name: "created_at")
   bio               String   @default("")
   location          String   @default("")
@@ -82,9 +82,9 @@ model Artist {
 // }
 
 model Work {
-  id   Int     @id @default(autoincrement())
-  type String? @default("")
-  link String  @default("")
+  id    Int     @id @default(autoincrement())
+  title String? @default("")
+  url   String  @default("")
 
   artist   Artist @relation(fields: [artistID], references: [id], onDelete: Cascade)
   artistID Int
@@ -92,7 +92,7 @@ model Work {
 
 model Link {
   id    Int     @id @default(autoincrement())
-  label String? @default("")
+  title String? @default("")
   url   String  @default("")
 
   artist   Artist @relation(fields: [artistID], references: [id], onDelete: Cascade)
