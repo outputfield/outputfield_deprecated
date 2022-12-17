@@ -10,7 +10,7 @@ import WorkPanel from '../../../components/tabView/workPanel.component'
 import { InfoPanel } from '../../../components/tabView/infoPanel.component'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
 import Image from 'next/legacy/image'
-import { getArtistWithUserAndNominatedByAndWorkAndLinks } from '../../api/artists/[name]'
+import { getArtistWithUserAndWorkAndLinks } from '../../api/artists/[name]'
 
 export const getStaticPaths = async () => {
   const data = await getArtistsWithUserAndWorkAndLinks()
@@ -31,21 +31,9 @@ interface IParams extends ParsedUrlQuery {
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const { name } = context.params as IParams
-  // const res = await prisma.artist.findUnique({
-  //   where: {
-  //     handle: name,
-  //   },
-  //   include: {
-  //     user: true,
-  //     work: true,
-  //     links: true,
-  //   },
-  //   // FIXME:
-  //   // select: {
-  //   //   nominatedBy: true
-  //   // }
-  // })
-  const res = await getArtistWithUserAndNominatedByAndWorkAndLinks(name)
+
+  //FIXME: this needs to also return user's name
+  const res = await getArtistWithUserAndWorkAndLinks(name)
   const artist = JSON.parse(JSON.stringify(res))
   return {
     props: {
