@@ -35,7 +35,7 @@ export const getArtistWithUserAndNominatedByAndWorkAndLinks = (name: string) => 
             }
           },
         }
-      }, 
+      },
       work: true,
       links: true,
     },

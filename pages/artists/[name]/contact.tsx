@@ -8,6 +8,7 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
 // TODO: replace querystring usage with URLSearchParams API
 import { ParsedUrlQuery } from 'querystring'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
+import prisma from '../../../lib/prisma'
 
 const TOPICS = ['Collab', 'Business', 'Other']
 
