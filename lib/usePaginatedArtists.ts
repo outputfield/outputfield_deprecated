@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useSWRInfinite } from 'swr'
+import useSWRInfinite from 'swr/infinite'
 
 const fetcher = (url: any) => fetch(url).then((res) => res.json())
 
-// Based on // https://www.ibrahima-ndaw.com/blog/data-fetching-in-nextjs-using-useswr/#paginating-the-data-with-useswrinfinite
+// Based on https://www.ibrahima-ndaw.com/blog/data-fetching-in-nextjs-using-useswr/#paginating-the-data-with-useswrinfinite
 export const usePaginatedArtists = (path: any) => {
   const [searchTerm, setSearchTerm] = useState<string>('')
   const [filters, setFilters] = useState<string[]>([])

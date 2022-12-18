@@ -1,8 +1,16 @@
 module.exports = {
   images: {
-    domains: [
-      "via.placeholder.com",
-      "outputfieldartworks.sfo3.digitaloceanspaces.com",
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'outputfieldartworks.sfo3.digitaloceanspaces.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+        pathname: '/**'
+      },
     ],
   },
-};
+}

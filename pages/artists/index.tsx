@@ -7,7 +7,7 @@ import prisma from '../../lib/prisma'
 import { usePaginatedArtists } from '../../lib/usePaginatedArtists'
 import Layout from '../../components/layout'
 
-const ArtistListPage = ({ mediums }: any) => {
+const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
   const [filterOpen, setFilterOpen] = useState(false)
   const router = useRouter()
 
@@ -150,14 +150,13 @@ const ArtistListPage = ({ mediums }: any) => {
       </div>
 
       <ArtistsFilter
+        isOpen={filterOpen}
         filterOptions={mediums}
         onClose={closeFilters}
         onSubmit={submitFilters}
         onUnmount={unfreezeDocument}
         selectedFilters={filters}
-        className={`${filterOpen? 'visible': 'hidden'}`}
       />
-
     </Layout>
   )
 }
@@ -175,7 +174,7 @@ export async function getStaticProps() {
   const uniqueMediums = mediums.filter((v: any, i: any, a: any) => a.indexOf(v) === i)
   return {
     props: {
-      mediums: uniqueMediums,
+      mediums: uniqueMediums || [],
     },
   }
 }

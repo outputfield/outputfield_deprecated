@@ -1,12 +1,11 @@
 import React from 'react'
-// import Artist from '../data/artist'
-import { Button } from '../button/button.component'
 import { useRouter } from 'next/router'
+import { ArtistWithUserAndNominatedByAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import { Button } from '../Button'
 import Link from 'next/link'
-import { ArtistWithUserAndReferredByAndWorkAndLinks } from '../../pages/api/artists/[name]'
 
 interface Props {
-  artist: ArtistWithUserAndReferredByAndWorkAndLinks;
+  artist: ArtistWithUserAndNominatedByAndWorkAndLinks;
   className?: string;
   includeContact?: boolean;
 }
@@ -53,21 +52,21 @@ export const InfoPanel: React.FC<Props> = ({
       <div id="artistLinks" className="relative mb-24 h-32">
         <img src="/dashedEllipses4.svg" className="absolute" />
         <div className="absolute flex flex-col space-y-4 mt-4">
-          {artist?.links.map(({ type, link }) => (
+          {artist?.links.map(({ title, url }) => (
             <a
-              key={link}
-              href={link}
+              key={url}
+              href={url}
               target="_blank"
               rel="noreferrer"
               className="uppercase flex space-x-2 items-center">
-              <span>{type}</span>
+              <span>{title}</span>
               <img src="/externalLinkIcon.svg" />
             </a>
           ))}
         </div>
       </div>
       {
-        artist?.referredBy && (
+        artist?.user.nominatedBy && (
           <div id="artistReference" className={'flex justify-end relative w-full h-20 mb-20'}>
             <img src="/dashedEllipses2.svg" className="absolute" />
             <div className="absolute uppercase mt-2 mr-8">
@@ -75,9 +74,9 @@ export const InfoPanel: React.FC<Props> = ({
               <br />
               <a
                 className="underline glow-highlight"
-                href={'/artists/'+artist?.referredBy?.handle}
+                href={'/artists/'+artist?.user?.nominatedBy?.artist?.handle}
               >
-                {artist?.referredBy?.user.name}
+                {artist?.user.nominatedBy?.name}
               </a>
             </div>
           </div>
@@ -86,11 +85,9 @@ export const InfoPanel: React.FC<Props> = ({
       
 
       {includeContact && (
-        <Link href={`${router.asPath}/contact`} passHref>
-          <a>
-            <Button className="mb-8 w-7/12 text-lg">contact</Button>
-          </a>
-        </Link>
+        (<Link href={`${router.asPath}/contact`} passHref>
+          <Button>contact</Button>
+        </Link>)
       )}
     </div>
   )

@@ -17,16 +17,23 @@ export const getArtistWithUserAndWorkAndLinks = (artistName: any) => {
 
 export type ArtistWithWorkAndLinks = Prisma.PromiseReturnType<typeof getArtistWithUserAndWorkAndLinks>
 
-export const getArtistWithUserAndReferredByAndWorkAndLinks = (name: string) => {
+export const getArtistWithUserAndNominatedByAndWorkAndLinks = (name: string) => {
   return prisma?.artist.findUnique({
     where: {
       handle: name,
     },
     include: {
-      user: true,
-      referredBy: {
+      user: {
         include: {
-          user: true
+          nominatedBy: {
+            include: {
+              artist: {
+                select: {
+                  handle: true
+                }
+              }
+            }
+          },
         }
       },
       work: true,
@@ -35,7 +42,7 @@ export const getArtistWithUserAndReferredByAndWorkAndLinks = (name: string) => {
   })
 }
 
-export type ArtistWithUserAndReferredByAndWorkAndLinks = Prisma.PromiseReturnType<typeof getArtistWithUserAndReferredByAndWorkAndLinks>
+export type ArtistWithUserAndNominatedByAndWorkAndLinks = Prisma.PromiseReturnType<typeof getArtistWithUserAndNominatedByAndWorkAndLinks>
 
 export default async function (
   req: NextApiRequest,

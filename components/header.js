@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useUser } from '../lib/useUser'
+import Image from 'next/image'
 
 const LINKS = [
   {
@@ -39,7 +40,9 @@ const Header = () => {
         <div className="group relative">
           <button className="w-full border border-black drop-shadow text-black px-4 h-10 flex justify-between items-center">
             <p>{currentPage}</p>
-            <img
+            <Image
+              width={16}
+              height={16}
               src="/selectArrow.svg"
               alt="select arrow"
               className="justify-self-end"
@@ -50,31 +53,31 @@ const Header = () => {
             className="z-50 border border-black bg-white invisible w-full absolute left-0 top-full transition-all opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-1">
             <ul className="py-1">
               <li>
-                <Link href="/artists">
-                  <a className="block px-4 py-2 hover:bg-gray">Artists</a>
+                <Link href="/artists" className="block px-4 py-2 hover:bg-gray">
+                  Artists
                 </Link>
               </li>
               {user ? (
                 <>
                   <li>
-                    <Link href="/profile" passHref>
-                      <a className="block px-4 py-2 hover:bg-gray">
+                    <Link href="/profile" passHref className="block px-4 py-2 hover:bg-gray">
+                      
                         Profile
-                      </a>
+                      
                     </Link>
                   </li>
                   <li>
-                    <a
+                    <Link
                       href="/api/logout"
                       className="block px-4 py-2 hover:bg-gray">
                       Logout
-                    </a>
+                    </Link>
                   </li>
                 </>
               ) : (
                 <li>
-                  <Link href="/login" passHref>
-                    <a className="block px-4 py-2 hover:bg-gray">Login</a>
+                  <Link href="/login" passHref className="block px-4 py-2 hover:bg-gray">
+                    Login
                   </Link>
                 </li>
               )}

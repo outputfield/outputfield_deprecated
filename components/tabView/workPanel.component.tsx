@@ -1,11 +1,12 @@
 import React from 'react'
-import Work from '../data/work'
 import { Pagination, A11y } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import Image from 'next/image'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
+import { Work } from '@prisma/client'
+import ReactPlayer from 'react-player'
+import Image from 'next/legacy/image'
 
 interface Props {
   works: Work[];
@@ -25,15 +26,29 @@ const WorkPanel: React.FC<Props> = ({
       onSwiper={swiper => console.log(swiper)}
       className='h-72'>
       {works ? 
-        works.map((work) => {
+        works.map(({id, url}) => {
+          const playable = ReactPlayer.canPlay(url)
+          console.log(playable, url)
+          
           return (
-            <SwiperSlide key={work.id}>
-              <Image
-                src={work.link}
-                layout="fill"
-                alt="This is a carousel slide"
-                className='block w-full h-auto object-cover'
-              />
+            <SwiperSlide key={id}>
+              {
+                playable ?
+                  (
+                    <ReactPlayer
+                      url={url}
+                      width='100%'
+                      height='100%'
+                    />
+                  ) : (
+                    <Image
+                      src={url}
+                      layout="fill"
+                      alt="This is a carousel slide"
+                      className='block w-full h-auto object-cover'
+                    />
+                  )
+              }      
             </SwiperSlide>
           )
         })
