@@ -40,16 +40,15 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
             'x-amz-acl': 'public-read'
           }
         }, async (err, data) => {
-          // FIXME: Maybe this should throw, to be caught down below?
-          if (err) console.log(err, err.stack)
-          else {
+          if (err) {
+            console.log(err, err.stack)
+            throw err
+          } else {
             console.log('Successful upload to DigitalOcean! Data: ', data)
             res.status(201).send(work)
           }
         })
       } catch (error) {
-        console.log('err', error)
-
         // Unlink file
         fs.unlinkSync(file?.path)
 
