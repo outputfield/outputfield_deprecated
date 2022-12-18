@@ -35,8 +35,18 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
           Bucket: 'outputfieldartworks',
           Key: `${artistHandle}/${file.name}`, // Specify folder and file name
           Body: fs.createReadStream(file.path),
-          ACL: 'public-read'
-        }, async () => res.status(201).send(work))
+          ACL: 'public-read',
+          Metadata: {
+            'x-amz-acl': 'public-read'
+          }
+        }, async (err, data) => {
+          // FIXME: Maybe this should throw, to be caught down below?
+          if (err) console.log(err, err.stack)
+          else {
+            console.log('Successful upload to DigitalOcean! Data: ', data)
+            res.status(201).send(work)
+          }
+        })
       } catch (error) {
         console.log('err', error)
 
