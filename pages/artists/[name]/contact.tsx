@@ -10,6 +10,8 @@ import { ParsedUrlQuery } from 'querystring'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
 import prisma from '../../../lib/prisma'
 
+const RE_EMAIL_PATTERN =  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
 const TOPICS = [
   {
     label: 'Collab',
@@ -88,7 +90,15 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
     trigger,
     getFieldState,
     formState: { errors },
-  } = useForm()
+  } = useForm({
+    mode: 'onBlur',
+    defaultValues: {
+      topic: '',
+      senderEmail: '',
+      subject: '',
+      message: '',
+    }
+  })
   const [topic, setTopic] = useState(null)
   const router = useRouter()
   const user = useUser()
@@ -99,8 +109,8 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
     clearErrors()
 
     // TODO: side effect, set message text
-    const message = `${"aaa"} Here's their message:
-To reply, email them at ${"aaa"}
+    const message = `${'aaa'} Here's their message:
+To reply, email them at ${'aaa'}
     `
     setValue('message', message)
   }
@@ -114,8 +124,7 @@ To reply, email them at ${"aaa"}
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     trigger()
-    const { email: senderEmail } = user
-    const { user: { name: recipientName, email: recipientEmail}, title, mediums, location } = artistdata
+    const { user: { name: recipientName, email: recipientEmail }, title, mediums, location } = artistdata
     const { subject, message } = data
 
     const senderName = 'Buddy'  // TODO: grab sender's name inside of this component...
@@ -130,7 +139,7 @@ To reply, email them at ${"aaa"}
       location,
       mediums,
       message,
-      senderEmail,
+      senderEmail: user ? user.email : 'dummy@gmail.com', //FIXME: New input for senderEmail (sender is not a user)
     }
     console.log('submitting email body to api/email/artist... ', body)
     await fetch('/api/email/artist', {
@@ -142,7 +151,7 @@ To reply, email them at ${"aaa"}
     })
   }
 
-  const onError:SubmitErrorHandler<FieldErrors> = (errors, e) => console.log(errors, e)
+  const onError: SubmitErrorHandler<FieldErrors> = (errors, e) => console.log(errors, e)
 
   return (
     <form
@@ -165,8 +174,7 @@ To reply, email them at ${"aaa"}
             <button
               key={label}
               value={label}
-              className={`px-3 py-1 mx-2 border rounded-full basis-1/${TOPICS.filter(({ authenticated }) => Boolean(user) === authenticated).length} ${
-                label === topic ? 'border-blue' : 'border-black'
+              className={`px-3 py-1 mx-2 border rounded-full basis-1/${TOPICS.filter(({ authenticated }) => Boolean(user) === authenticated).length} ${label === topic ? 'border-blue' : 'border-black'
               }`}
               onClick={selectTopic}>
               {label}
@@ -175,9 +183,29 @@ To reply, email them at ${"aaa"}
       </div>
 
       <div id="messageWrap" className="m-6" onClick={messageClick}>
+        {Boolean(user) === false && (
+          <>
+            <input
+              className={`border-box rounded-none border border-solid ${getFieldState('message').invalid ? 'border-red' : 'border-black'
+              }  w-full outline-0 placeholder:text-slate-400 disabled:text-slate-300 disabled:placeholder:text-slate-300 px-3 py-3.5`}
+              type="text"
+              placeholder="Your email address"
+              id="contactSubject"
+              autoComplete="off"
+              {...register('senderEmail', {
+                required: 'EMAIL REQUIRED',
+                disabled: topic === null,
+                pattern: {
+                  value: RE_EMAIL_PATTERN,
+                  message: 'INVALID EMAIL ADDRESS'
+                }
+              })}
+            />
+            <div className="h-6 border-x border-dashed border-black" />
+          </>
+        )}
         <input
-          className={`border-box rounded-none border border-solid ${
-            getFieldState('message').invalid ? 'border-red' : 'border-black'
+          className={`border-box rounded-none border border-solid ${getFieldState('message').invalid ? 'border-red' : 'border-black'
           }  w-full outline-0 placeholder:text-slate-400 disabled:text-slate-300 disabled:placeholder:text-slate-300 px-3 py-3.5`}
           type="text"
           placeholder="Subject"
@@ -190,8 +218,7 @@ To reply, email them at ${"aaa"}
         />
         <div className="h-6 border-x border-dashed border-black" />
         <textarea
-          className={`text-black border-box rounded-none border border-solid ${
-            getFieldState('message').invalid ? 'border-red-500' : 'border-black'
+          className={`text-black border-box rounded-none border border-solid ${getFieldState('message').invalid ? 'border-red-500' : 'border-black'
           } outline-none w-full placeholder:text-slate-400 readOnly:text-slate-300 p-4 min-h-80 align-top resize-y leading-9 whitespace-normal overflow-auto`}
           placeholder="Message"
           id="contactMessage"
@@ -203,6 +230,7 @@ To reply, email them at ${"aaa"}
       </div>
       <div className="text-center text-red h-7 mb-6">
         <ErrorMessage errors={errors} name="topic" as="p" />
+        <ErrorMessage errors={errors} name="senderEmail" as="p" />
         <ErrorMessage errors={errors} name="subject" as="p" />
         <ErrorMessage errors={errors} name="message" as="p" />
       </div>

@@ -5,12 +5,9 @@ import sgClient from '../../../lib/sendgridClient'
   Artist to Artist Contact
  */
 export default async function sendArtistEmail(req: NextApiRequest, res: NextApiResponse) {
-  // TODO: REMOVE
-  console.log(process.env.SENDGRID_API_KEY)
-  
   try {
     const {
-      senderName = '',
+      senderName = 'Anonymous',
       senderEmail,
       recipientName,
       recipientEmail,
@@ -22,9 +19,9 @@ export default async function sendArtistEmail(req: NextApiRequest, res: NextApiR
       message,
     } = req.body
     const msg = {
-      to: recipientEmail, // Change to your recipient
+      to: recipientEmail,
       from: 'team@outputfield.com',
-      templateId: 'd-9cf2d11178ee4095ac907bde7a085a46',
+      templateId: 'd-f0bff8d23784404aa5fa8108a9c0e0ad',
       dynamic_template_data: {
         senderName,
         topic,
