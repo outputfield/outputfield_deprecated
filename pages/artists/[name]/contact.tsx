@@ -4,12 +4,9 @@ import { Button } from '../../../components/Button'
 import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { useUser } from '../../../lib/useUser'
-import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
-// TODO: replace querystring usage with URLSearchParams API
-import { ParsedUrlQuery } from 'querystring'
-import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
-import prisma from '../../../lib/prisma'
+import { ArtistWithUserAndNominatedByAndWorkAndLinks } from '../../api/artists/[name]'
 
+// eslint-disable-next-line no-useless-escape
 const RE_EMAIL_PATTERN =  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 const TOPICS = [
@@ -45,42 +42,47 @@ const TOPICS = [
   },
 ]
 
-export const getStaticPaths = async () => {
-  const data = await getArtistsWithUserAndWorkAndLinks()
-  const paths = data.map((artist) => {
-    return {
-      params: { name: artist.handle },
-    }
-  })
-  return {
-    paths,
-    fallback: false,
-  }
+// export const getStaticPaths = async () => {
+//   const data = await getArtistsWithUserAndWorkAndLinks()
+//   const paths = data.map((artist) => {
+//     return {
+//       params: { name: artist.handle },
+//     }
+//   })
+//   return {
+//     paths,
+//     fallback: false,
+//   }
+// }
+
+// interface IParams extends ParsedUrlQuery {
+//   name: string
+// }
+
+// export async function getStaticProps(context: GetStaticPropsContext) {
+//   const { name } = context.params as IParams
+//   const res = await prisma.artist.findUnique({
+//     where: {
+//       handle: name,
+//     },
+//     include: {
+//       user: true
+//     },
+//   })
+//   const artistData = JSON.parse(JSON.stringify(res))
+//   return {
+//     props: {
+//       artistData,
+//     },
+//   }
+// }
+
+interface Props {
+  artistData: ArtistWithUserAndNominatedByAndWorkAndLinks,
+  onClose: () => void
 }
 
-interface IParams extends ParsedUrlQuery {
-  name: string
-}
-
-export async function getStaticProps(context: GetStaticPropsContext) {
-  const { name } = context.params as IParams
-  const res = await prisma.artist.findUnique({
-    where: {
-      handle: name,
-    },
-    include: {
-      user: true
-    },
-  })
-  const artistdata = JSON.parse(JSON.stringify(res))
-  return {
-    props: {
-      artistdata,
-    },
-  }
-}
-
-const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Contact: React.FC<Props> = ({ artistData, onClose }) => {
   const {
     register,
     handleSubmit,
@@ -100,7 +102,6 @@ const Contact = ({ artistdata }: InferGetStaticPropsType<typeof getStaticProps>)
     }
   })
   const [topic, setTopic] = useState(null)
-  const router = useRouter()
   const user = useUser()
 
   function selectTopic(event: any) {
@@ -124,7 +125,7 @@ To reply, email them at ${'aaa'}
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     trigger()
-    const { user: { name: recipientName, email: recipientEmail }, title, mediums, location } = artistdata
+    const { user: { name: recipientName, email: recipientEmail }, title, mediums, location } = artistData
     const { subject, message } = data
 
     const senderName = 'Buddy'  // TODO: grab sender's name inside of this component...
@@ -157,13 +158,6 @@ To reply, email them at ${'aaa'}
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
       className={'bg-white w-full h-full pt-0 px-6 pb-16'}>
-      <button
-        className="flex items-center space-x-2 my-4"
-        onClick={() => router.back()}>
-        {/* TODO: Replace backArrow with svg for better resolution */}
-        <span><img src="/backArrow.png" /></span>
-        <span>Back to artist info</span>
-      </button>
       <div className="block pt-5 px-3 pb-3">Select a message topic:</div>
       <div
         id="topicSelector"
@@ -235,6 +229,13 @@ To reply, email them at ${'aaa'}
         <ErrorMessage errors={errors} name="message" as="p" />
       </div>
       <Button type="submit">contact</Button>
+      <button
+        className="flex items-center space-x-2 my-4"
+        onClick={onClose}>
+        {/* TODO: Replace backArrow with svg for better resolution */}
+        <span><img src="/backArrow.png" /></span>
+        <span>Back to artist info</span>
+      </button>
     </form>
   )
 }

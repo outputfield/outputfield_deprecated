@@ -70,6 +70,7 @@ const ArtistPage = ({ artist }: InferGetStaticPropsType<typeof getStaticProps>) 
           </button>
         </div>
         <ArtistRow artist={artist} type="detail" />
+        <div className='p-6'/>
         <Tabs headers={['Work', 'Info']}>
           <WorkPanel works={artist.work} />
           <InfoPanel artist={artist} />

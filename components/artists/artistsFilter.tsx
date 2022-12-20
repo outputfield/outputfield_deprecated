@@ -13,7 +13,7 @@ interface Props {
   selectedFilters: string[];
 }
 
-type FilterAction = ({ type: 'UPDATE', filterName: string }) | {type: 'CLEAR'}
+type FilterAction = ({ type: 'UPDATE', filterName: string, value: boolean }) | {type: 'CLEAR'}
 
 interface FilterState {
   [x: string]: boolean;
@@ -32,11 +32,10 @@ const ArtistsFilter: React.FC<Props> = ({
       const _state = {...state}
       switch(action.type) {
       case 'UPDATE':
-        return { [action.filterName]: !_state[action.filterName], ...state }
+        return { ...state, [action.filterName]: action.value }
       case 'CLEAR':
         return Object.keys(_state).reduce((acc, curr) => ({[curr]: false, ...acc }), {})
       }
-      
     },
     filterOptions.reduce((acc, curr) => ({[curr]: selectedFilters.includes(curr), ...acc}), {})
   )
@@ -54,8 +53,9 @@ const ArtistsFilter: React.FC<Props> = ({
     return (() => onUnmount())
   }, [])
 
-  const onCheckChange = (name: string) => {
-    dispatch({ type: 'UPDATE', filterName: name })
+  const onCheckChange = (name: string, value: boolean) => {
+    console.log(name, value)
+    dispatch({ type: 'UPDATE', filterName: name, value })
   }
 
   const clearFilters = () => dispatch({ type: 'CLEAR' })
@@ -73,7 +73,7 @@ const ArtistsFilter: React.FC<Props> = ({
     <Overlay className={`${isOpen? 'visible': 'hidden'}`}>
       <div className="mt-0 sm:mt-0 sm:ml-4 flex justify-between border-b border-black border-dashed px-4 pb-4">
         <button
-          className="underline uppercase leading-6 disabled:text-gray"
+          className={'underline uppercase leading-6 disabled:text-gray' + (filtersCount === 0 && 'cursor-not-allowed')}
           type="reset"
           onClick={clearFilters}
           disabled={filtersCount === 0}
@@ -87,7 +87,7 @@ const ArtistsFilter: React.FC<Props> = ({
       <div className="my-5 text-center">
         <form className="mx-auto max-w-fit">
           {filterOptions.map(( medium ) => {
-            const n = `filters[${medium}]`
+            // const n = `filters[${medium}]`
             return (
               <Checkbox
                 key={medium}

@@ -29,10 +29,10 @@ const TabView: React.FC<Props> = ({ headers, children }) => {
               /* Use the `selected` state to conditionally style the selected tab. */
               <a
                 className={
-                  '-mb-px mr-2 last:mr-0 flex-auto text-left text-s font-bold uppercase px-5 py-3 block leading-normal underline-offset-4 decoration-blue-600 decoration-2 ' +
+                  'px-4 py-0 mx-2 border rounded-full -mb-px mr-2 last:mr-0 flex-auto text-left text-s font-bold uppercase block leading-normal underline-offset-4 decoration-blue-600 decoration-2 ' +
                       (selected
-                        ? 'underline text-blue'
-                        : 'no-underline')
+                        ? 'border-blue'
+                        : 'border-black')
                 }
               >
                 {header}
