@@ -90,8 +90,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     setError,
     clearErrors,
     trigger,
-    getFieldState,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -140,7 +139,7 @@ To reply, email them at ${'aaa'}
       location,
       mediums,
       message,
-      senderEmail: user ? user.email : 'dummy@gmail.com', //FIXME: New input for senderEmail (sender is not a user)
+      senderEmail: user ? user.email : 'dummy@gmail.com',
     }
     console.log('submitting email body to api/email/artist... ', body)
     await fetch('/api/email/artist', {
@@ -226,7 +225,7 @@ To reply, email them at ${'aaa'}
         <ErrorMessage errors={errors} name="message" as="p" />
       </div>
       {/* FIXME: disabled if errors */}
-      <Button type="submit">Send</Button>
+      <Button type="submit" disabled={!isValid}>Send</Button>
       <button
         className="flex items-center space-x-2 my-4"
         onClick={onClose}>

@@ -52,8 +52,8 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
         // Unlink file
         fs.unlinkSync(file?.path)
 
-        // FIXME: this should throw error
-        return res.status(500).send(`Error occured: ${error}`)
+        console.log(`/api failed to upload file: ${error}`)
+        throw error
       }
     })
   } else {

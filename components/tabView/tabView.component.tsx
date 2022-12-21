@@ -22,14 +22,16 @@ const TabView: React.FC<Props> = ({ headers, children }) => {
 
   return (
     <Tab.Group>
-      <Tab.List className="flex mb-0 ml-6 ml-list-none flex-wrap pb-4 flex-row">
+      <Tab.List className="flex flex-row items-start mb-0 mx-6 pb-4">
         {headers?.map((header) => (
-          <Tab key={header} >
+          <Tab
+            key={header}
+            className={`flex-1 basis-1/${headers.length} text-left`}
+          >
             {({ selected }) => (
-              /* Use the `selected` state to conditionally style the selected tab. */
               <a
                 className={
-                  'px-4 py-0 mx-2 border rounded-full -mb-px mr-2 last:mr-0 flex-auto text-left text-s font-bold uppercase block leading-normal underline-offset-4 decoration-blue-600 decoration-2 ' +
+                  'px-4 py-0 mx-2 border rounded-full last:mr-0 font-bold uppercase leading-normal decoration-blue-600 decoration-2 ' +
                       (selected
                         ? 'border-blue'
                         : 'border-black')

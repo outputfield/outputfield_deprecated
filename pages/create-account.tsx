@@ -1,10 +1,10 @@
-// TODO: rename to create-account
 import React, { BaseSyntheticEvent, useState } from 'react'
 import { Prisma } from '@prisma/client'
 
 import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
 import { UserCreateInputWithArtist, UserWithArtist } from './api/signUp'
 import { partition } from '../lib/utils'
+import { useRouter } from 'next/router'
 
 export type Work = {
   title: string,
@@ -106,6 +106,7 @@ function makeid(length: number) {
 
 export default function CreateAccount() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
+  const router = useRouter()
 
   // Pass submit handler fn into ProfileForm
   const handleSubmit = async (event: BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => {
@@ -129,6 +130,7 @@ export default function CreateAccount() {
       const userId = newUser.artist? newUser.artist.handle : `artist${newUser.id}`
       const works = await uploadFiles(files, userId)
       updateUserWithWorks(works as Work[], userId)
+      router.push('/login')
       // TODO: redirect to /login, where user will login for the first time
     } catch (error) {
       console.error(error)
@@ -138,11 +140,9 @@ export default function CreateAccount() {
   }
 
   return (
-    <>
-      <ProfileForm
-        onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-      />
-    </>
+    <ProfileForm
+      onSubmit={handleSubmit}
+      isSubmitting={isSubmitting}
+    />
   )
 }

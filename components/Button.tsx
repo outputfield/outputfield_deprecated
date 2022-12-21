@@ -17,21 +17,25 @@ export const Button = ({
   role,
   disabled,
   loading
-}:Props) => {
+}: Props) => {
   return (
-    <button className="my-0px mx-auto flex items-center
-  justify-center
-  w-72
-  h-16
-  bg-black
-  text-white
-  border
-  border-solid
-  border-black
-  border-box
-  uppercase" onClick={onClick} id={id} role={role} disabled={loading || false}>
+    <button className={`my-0px
+      mx-auto
+      flex
+      items-center
+      justify-center
+      w-72
+      h-16
+      bg-black
+      text-white
+      border
+      border-solid
+      border-black
+      border-box
+      uppercase ${disabled && 'cursor-not-allowed bg-gray-light border border-gray-med'}`}
+    onClick={onClick} id={id} role={role} disabled={disabled || loading || false}>
       {
-        loading ? <Spinner/> : children
+        loading ? <Spinner /> : children
       }
     </button>
   )
