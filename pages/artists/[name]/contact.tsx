@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { ErrorMessage } from '@hookform/error-message'
 import { Button } from '../../../components/Button'
 import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
@@ -7,7 +7,7 @@ import { useUser } from '../../../lib/useUser'
 import { ArtistWithUserAndNominatedByAndWorkAndLinks } from '../../api/artists/[name]'
 
 // eslint-disable-next-line no-useless-escape
-const RE_EMAIL_PATTERN =  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const RE_EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 const TOPICS = [
   {
@@ -154,21 +154,21 @@ To reply, email them at ${'aaa'}
 
   const onError: SubmitErrorHandler<FieldErrors> = (errors, e) => console.log(errors, e)
 
+  const RELEVANT_TOPICS = useMemo(() => TOPICS.filter(({ authenticated }) => Boolean(user) === authenticated), [user])
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className={'bg-white w-full h-full pt-0 px-6 pb-16'}>
+      className={'w-full h-full pt-0 pb-16 focus-within:outline-dotted'}>
       <div className="block pt-5 px-3 pb-3">Select a message topic:</div>
       <div
         id="topicSelector"
         className={'relative flex flex-row text-center py-8 px-4 mx-auto border-box'}>
-        {TOPICS
-          .filter(({ authenticated }) => Boolean(user) === authenticated)
+        {RELEVANT_TOPICS
           .map(({ label }) => (
             <button
               key={label}
               value={label}
-              className={`px-3 py-1 mx-2 border rounded-full basis-1/${TOPICS.filter(({ authenticated }) => Boolean(user) === authenticated).length} ${label === topic ? 'border-blue' : 'border-black'
+              className={`px-3 py-1 mx-2 border rounded-full basis-1/${RELEVANT_TOPICS.length} ${label === topic ? 'border-blue' : 'border-black'
               }`}
               onClick={selectTopic}>
               {label}
@@ -176,12 +176,11 @@ To reply, email them at ${'aaa'}
           ))}
       </div>
 
-      <div id="messageWrap" className="m-6" onClick={messageClick}>
+      <div id="messageWrap" className="m-4" onClick={messageClick}>
         {Boolean(user) === false && (
           <>
             <input
-              className={`border-box rounded-none border border-solid ${getFieldState('message').invalid ? 'border-red' : 'border-black'
-              }  w-full outline-0 placeholder:text-slate-400 disabled:text-slate-300 disabled:placeholder:text-slate-300 px-3 py-3.5`}
+              className={'border-box rounded-none border border-solid invalid:border-red border-black w-full outline-0 placeholder:text-slate-400 disabled:text-slate-300 disabled:placeholder:text-slate-300 py-3.5 text-base focus:outline-none focus:ring-4'}
               type="text"
               placeholder="Your email address"
               id="contactSubject"
@@ -199,8 +198,7 @@ To reply, email them at ${'aaa'}
           </>
         )}
         <input
-          className={`border-box rounded-none border border-solid ${getFieldState('message').invalid ? 'border-red' : 'border-black'
-          }  w-full outline-0 placeholder:text-slate-400 disabled:text-slate-300 disabled:placeholder:text-slate-300 px-3 py-3.5`}
+          className={'border-box rounded-none border border-solid invalid:border-red border-black w-full outline-0 placeholder:text-slate-400 disabled:text-slate-300 disabled:placeholder:text-slate-300 px-3 py-3.5 text-base'}
           type="text"
           placeholder="Subject"
           id="contactSubject"
@@ -212,8 +210,7 @@ To reply, email them at ${'aaa'}
         />
         <div className="h-6 border-x border-dashed border-black" />
         <textarea
-          className={`text-black border-box rounded-none border border-solid ${getFieldState('message').invalid ? 'border-red-500' : 'border-black'
-          } outline-none w-full placeholder:text-slate-400 readOnly:text-slate-300 p-4 min-h-80 align-top resize-y leading-9 whitespace-normal overflow-auto`}
+          className={'text-black border-box rounded-none border border-solid invalid:border-red-500 border-black outline-none w-full placeholder:text-slate-400 readOnly:text-slate-300 p-4 min-h-80 align-top resize-y leading-9 whitespace-normal overflow-auto text-base'}
           placeholder="Message"
           id="contactMessage"
           {...register('message', {
@@ -228,7 +225,8 @@ To reply, email them at ${'aaa'}
         <ErrorMessage errors={errors} name="subject" as="p" />
         <ErrorMessage errors={errors} name="message" as="p" />
       </div>
-      <Button type="submit">contact</Button>
+      {/* FIXME: disabled if errors */}
+      <Button type="submit">Send</Button>
       <button
         className="flex items-center space-x-2 my-4"
         onClick={onClose}>

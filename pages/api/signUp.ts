@@ -1,3 +1,4 @@
+// TODO: rename to create-account
 import prisma from '../../lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Prisma } from '@prisma/client'

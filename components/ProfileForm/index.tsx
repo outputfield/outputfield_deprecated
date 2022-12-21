@@ -1,3 +1,5 @@
+// TODO: Required: Name, Title, Pronoun, Location, At lest one link, at least one work
+
 import React, { useReducer, useState, BaseSyntheticEvent } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
 import FormInput from '../formInput'
@@ -161,6 +163,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
               name="title"
               label="Title"
               placeholder="Witch Gambler"
+              required
               icon
             />
           </div>
@@ -179,6 +182,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
               name="pronouns"
               label="Pronouns"
               placeholder="ie. they/them"
+              required
               icon
             />
           </div>
@@ -206,6 +210,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
               name="location"
               label="Location"
               placeholder="ie. Berlin, Shanghai, etc."
+              required
               icon
             />
           </div>

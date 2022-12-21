@@ -22,8 +22,16 @@
   .glow-highlight {  
     text-shadow: 0px 0px 2px theme('colors.highlight');
   }
-  .glow-red-lg {
+
+  .glow-red-inner {
+    background-color: #fff;
     box-shadow: 0px 4px 8px rgba(255, 0, 15, 0.2), 0px 5px 8px rgba(255, 0, 31, 0.6);
+    padding: 8px 5px;
+  }
+  .glow-red-outer {
+    background: rgba(219, 37, 37, 0.25);
+    box-shadow: 0px 4px 4px rgba(224, 22, 34, 0.25), 0px 4px 4px rgba(208, 81, 89, 0.2);
+    filter: blur(8px);
   }
 }
 

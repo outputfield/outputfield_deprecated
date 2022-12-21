@@ -1,3 +1,4 @@
+// TODO: rename to create-account
 import React, { BaseSyntheticEvent, useState } from 'react'
 import { Prisma } from '@prisma/client'
 
@@ -9,6 +10,8 @@ export type Work = {
   title: string,
   url: string,
 }
+
+// - - - HELPER FNs - - -
 
 // 1. create user
 async function createUser(data: UserCreateInputWithArtist): Promise<UserWithArtist> {
@@ -88,6 +91,7 @@ async function updateUserWithWorks(works: Work[], handle: string) {
     throw new Error(`Failed to update user Works: ${error}`)
   }
 }
+// - - - END HELPER FNs - - -
 
 function makeid(length: number) {
   let result           = ''
@@ -100,7 +104,7 @@ function makeid(length: number) {
   return result
 }
 
-export default function SignUp() {
+export default function CreateAccount() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
 
   // Pass submit handler fn into ProfileForm
@@ -125,6 +129,7 @@ export default function SignUp() {
       const userId = newUser.artist? newUser.artist.handle : `artist${newUser.id}`
       const works = await uploadFiles(files, userId)
       updateUserWithWorks(works as Work[], userId)
+      // TODO: redirect to /login, where user will login for the first time
     } catch (error) {
       console.error(error)
     } finally {

@@ -5,6 +5,12 @@ import Form from '../components/form'
 
 import { Magic, RPCError } from 'magic-sdk'
 
+/**
+ *  On login submit, query the db for user.
+ *     If user not found,  redirect to cheeky 404, NO ACCOUNT WITHOUT REFERRAL
+ *     else, continue to Magic login flow
+ * @returns React.FC
+ */
 const Login = () => {
   const user = useUser({ redirectTo: '/', redirectIfFound: true })
   const [errorMsg, setErrorMsg] = useState('')
@@ -14,10 +20,9 @@ const Login = () => {
     if (errorMsg) setErrorMsg('')
     const { currentTarget: { email: { value: email } } }  = e
 
-    // TODO: write these try/catches as separate async functions, and call them from a main try catch
-    // Query db for user on submit. If user not found, redirect to "sign-up" flow.
+    // TODO: write these try/catches as separate async helper functions, and call them from a main try catch
     try {
-      const { currentTarget: { email: { value: email } } }  = e
+      // const { currentTarget: { email: { value: email } } }  = e
       const result = await fetch('/api/user', {
         method: 'POST',
         headers: {
@@ -43,7 +48,7 @@ const Login = () => {
     // Login flow
     try {
       const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY)
-      const didToken = await magic.auth.loginWithMagicLink({ email: user.email })
+      const didToken = await magic.auth.loginWithMagicLink({ email })
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: {
@@ -70,9 +75,10 @@ const Login = () => {
   return (
     <>
       <div className="login">
+        {/* TODO: Write the form here instead of in a separate component */}
         <Form errorMessage={errorMsg} onSubmit={handleSubmit} />
       </div>
-      <style jsx>{`
+      {/* <style jsx>{`
         .login {
           max-width: 21rem;
           margin: 0 auto;
@@ -80,7 +86,7 @@ const Login = () => {
           border: 1px solid #ccc;
           border-radius: 4px;
         }
-      `}</style>
+      `}</style> */}
     </>
   )
 }
