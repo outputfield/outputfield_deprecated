@@ -27,7 +27,7 @@ export const InfoPanel: React.FC<Props> = ({
           <>
             <div
               id="bio"
-              className="w-full mb-8 border-box whitespace-pre-wrap uppercase">
+              className="w-full mt-5 ml-4 mr-3 mb-8 border-box whitespace-pre-wrap uppercase">
               {artist?.bio}
             </div>
 

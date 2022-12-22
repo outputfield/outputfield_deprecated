@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { BaseSyntheticEvent } from 'react'
 import Spinner from './spinner'
 
 interface Props {
   children?: string | React.ReactNode;
-  onClick?: (event: any) => any;
+  onClick?: (event: BaseSyntheticEvent) => void;
   id?: string;
   role?: string;
   disabled?: boolean;
@@ -19,27 +19,38 @@ export const Button = ({
   loading
 }: Props) => {
   return (
-    <button className={`my-0px
-      mx-auto
-      flex
-      items-center
-      justify-center
-      w-72
-      h-16
-      bg-black
-      text-white
-      border
-      border-solid
-      border-black
-      border-box
-      uppercase ${disabled && 'cursor-not-allowed bg-gray-light border border-gray-med'}`}
-    onClick={onClick} id={id} role={role} disabled={disabled || loading || false}>
+    <button
+      className={`
+        my-0px
+        mx-auto
+        py-4
+        px-16
+        flex
+        items-center
+        justify-center
+        w-52
+        h-14
+        bg-black
+        text-white
+        border
+        border-solid
+        border-black
+        border-box
+        uppercase
+        ${disabled && 'cursor-not-allowed bg-gray-light border border-gray-med text-gray-dark'}
+      `}
+      onClick={onClick}
+      id={id}
+      role={role}
+      disabled={disabled || loading || false}
+    >
       {
         loading ? <Spinner /> : children
       }
     </button>
   )
 }
+
 Button.defaultProps = {
   type: 'button'
 }

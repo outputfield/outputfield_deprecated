@@ -26,15 +26,15 @@ const TabView: React.FC<Props> = ({ headers, children }) => {
         {headers?.map((header) => (
           <Tab
             key={header}
-            className={`flex-1 basis-1/${headers.length} text-left`}
+            className={'flex-1 text-left outline-none'}
           >
             {({ selected }) => (
               <a
                 className={
                   'px-4 py-0 mx-2 border rounded-full last:mr-0 font-bold uppercase leading-normal decoration-blue-600 decoration-2 ' +
-                      (selected
-                        ? 'border-blue'
-                        : 'border-black')
+                  (selected
+                    ? 'border-blue'
+                    : 'border-black')
                 }
               >
                 {header}

@@ -124,6 +124,7 @@ To reply, email them at ${'aaa'}
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     trigger()
+    // FIXME:
     const { user: { name: recipientName, email: recipientEmail }, title, mediums, location } = artistData
     const { subject, message } = data
 
@@ -157,7 +158,7 @@ To reply, email them at ${'aaa'}
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className={'w-full h-full pt-0 pb-16 focus-within:outline-dotted'}>
+      className={'w-full h-full pt-0 focus-within:outline-dotted'}>
       <div className="block pt-5 px-3 pb-3">Select a message topic:</div>
       <div
         id="topicSelector"
@@ -197,7 +198,7 @@ To reply, email them at ${'aaa'}
           </>
         )}
         <input
-          className={'border-box rounded-none border border-solid invalid:border-red border-black w-full outline-0 placeholder:text-slate-400 disabled:text-slate-300 disabled:placeholder:text-slate-300 px-3 py-3.5 text-base'}
+          className={'border-box rounded-none border border-solid invalid:border-red border-black w-full outline-0 placeholder:text-slate-400 disabled:text-slate-300 disabled:placeholder:text-slate-300 px-3 py-3.5 text-base uppercase'}
           type="text"
           placeholder="Subject"
           id="contactSubject"
@@ -227,10 +228,9 @@ To reply, email them at ${'aaa'}
       {/* FIXME: disabled if errors */}
       <Button type="submit" disabled={!isValid}>Send</Button>
       <button
-        className="flex items-center space-x-2 my-4"
+        className="flex items-center space-x-2 my-12 mx-auto uppercase"
         onClick={onClose}>
-        {/* TODO: Replace backArrow with svg for better resolution */}
-        <span><img src="/backArrow.png" /></span>
+        <span><img src="/backArrow.svg" /></span>
         <span>Back to artist info</span>
       </button>
     </form>
