@@ -33,7 +33,7 @@ const TabView: React.FC<Props> = ({ headers, children }) => {
                 className={
                   'px-4 py-0 mx-2 border rounded-full last:mr-0 font-bold uppercase leading-normal decoration-blue-600 decoration-2 ' +
                   (selected
-                    ? 'border-blue'
+                    ? 'border-blue text-blue'
                     : 'border-black')
                 }
               >

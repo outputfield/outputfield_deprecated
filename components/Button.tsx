@@ -37,7 +37,10 @@ export const Button = ({
         border-black
         border-box
         uppercase
-        ${disabled && 'cursor-not-allowed bg-gray-light border border-gray-med text-gray-dark'}
+        disabled:cursor-not-allowed
+        disabled:bg-gray-light
+        disabled:border-gray-med
+        disabled:text-gray-dark
       `}
       onClick={onClick}
       id={id}

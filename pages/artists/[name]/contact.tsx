@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react'
 import { ErrorMessage } from '@hookform/error-message'
 import { Button } from '../../../components/Button'
 import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
-import { useRouter } from 'next/router'
 import { useUser } from '../../../lib/useUser'
 import { ArtistWithUserAndNominatedByAndWorkAndLinks } from '../../api/artists/[name]'
 
@@ -41,41 +40,6 @@ const TOPICS = [
     authenticated: false,
   },
 ]
-
-// export const getStaticPaths = async () => {
-//   const data = await getArtistsWithUserAndWorkAndLinks()
-//   const paths = data.map((artist) => {
-//     return {
-//       params: { name: artist.handle },
-//     }
-//   })
-//   return {
-//     paths,
-//     fallback: false,
-//   }
-// }
-
-// interface IParams extends ParsedUrlQuery {
-//   name: string
-// }
-
-// export async function getStaticProps(context: GetStaticPropsContext) {
-//   const { name } = context.params as IParams
-//   const res = await prisma.artist.findUnique({
-//     where: {
-//       handle: name,
-//     },
-//     include: {
-//       user: true
-//     },
-//   })
-//   const artistData = JSON.parse(JSON.stringify(res))
-//   return {
-//     props: {
-//       artistData,
-//     },
-//   }
-// }
 
 interface Props {
   artistData: ArtistWithUserAndNominatedByAndWorkAndLinks,
@@ -162,25 +126,51 @@ To reply, email them at ${'aaa'}
       <div className="block pt-5 px-3 pb-3">Select a message topic:</div>
       <div
         id="topicSelector"
-        className={'relative flex flex-row text-center py-8 px-4 mx-auto border-box'}>
+        className={'text-center pt-8 px-3 mx-auto border-box grid justify-items-center grid-cols-' + RELEVANT_TOPICS.length}>
         {RELEVANT_TOPICS
           .map(({ label }) => (
-            <button
-              key={label}
-              value={label}
-              className={`px-3 py-1 mx-2 border rounded-full basis-1/${RELEVANT_TOPICS.length} ${label === topic ? 'border-blue' : 'border-black'
-              }`}
-              onClick={selectTopic}>
-              {label}
-            </button>
+            <div key={label}>
+              <button
+                value={label}
+                className={`
+                uppercase
+                py-2
+                px-4
+                border-2
+                rounded-full
+                ${label === topic ? 'border-blue/80 bg-gray-light' : 'border-black'}
+              `}
+                onClick={selectTopic}>
+                {label}
+              </button>
+            </div>
           ))}
+        {RELEVANT_TOPICS.map(({ label }) => (
+          <div key={label} className={`w-0 h-8 ${label === topic && 'border border-blue'}`} />
+        ))}
       </div>
 
-      <div id="messageWrap" className="m-4" onClick={messageClick}>
+      <div id="messageWrap" className="mx-4" onClick={messageClick}>
         {Boolean(user) === false && (
           <>
             <input
-              className={'border-box rounded-none border border-solid invalid:border-red border-black w-full outline-0 placeholder:text-slate-400 disabled:text-slate-300 disabled:placeholder:text-slate-300 py-3.5 text-base focus:outline-none focus:ring-4'}
+              className={`
+                border-box
+                rounded-none
+                border
+                border-solid
+                invalid:border-red
+                border-black
+                w-full
+                outline-0
+                placeholder:text-slate-400
+                disabled:text-slate-300
+                disabled:placeholder:text-slate-300
+                py-3.5
+                text-base
+                focus:outline-none
+                focus:ring-4
+              `}
               type="text"
               placeholder="Your email address"
               id="contactSubject"
@@ -198,7 +188,23 @@ To reply, email them at ${'aaa'}
           </>
         )}
         <input
-          className={'border-box rounded-none border border-solid invalid:border-red border-black w-full outline-0 placeholder:text-slate-400 disabled:text-slate-300 disabled:placeholder:text-slate-300 px-3 py-3.5 text-base uppercase'}
+          className={`
+            border-box
+            rounded-none
+            border
+            border-solid
+            invalid:border-red
+            border-black
+            w-full
+            outline-0
+            placeholder:text-slate-400
+            disabled:text-slate-300
+            disabled:placeholder:text-slate-300
+            px-3
+            py-3.5
+            text-base
+            uppercase
+          `}
           type="text"
           placeholder="Subject"
           id="contactSubject"
@@ -210,7 +216,27 @@ To reply, email them at ${'aaa'}
         />
         <div className="h-6 border-x border-dashed border-black" />
         <textarea
-          className={'text-black border-box rounded-none border border-solid invalid:border-red-500 border-black outline-none w-full placeholder:text-slate-400 readOnly:text-slate-300 p-4 min-h-80 align-top resize-y leading-9 whitespace-normal overflow-auto text-base'}
+          className={`
+            text-black
+            border-box
+            rounded-none
+            border
+            border-solid
+            invalid:border-red-500
+            border-black
+            outline-none
+            w-full
+            placeholder:text-slate-400
+            readOnly:text-slate-300
+            p-4
+            min-h-80
+            align-top
+            resize-y
+            leading-7
+            whitespace-normal
+            overflow-auto
+            text-base
+          `}
           placeholder="Message"
           id="contactMessage"
           {...register('message', {
@@ -219,13 +245,12 @@ To reply, email them at ${'aaa'}
           })}
         />
       </div>
-      <div className="text-center text-red h-7 mb-6">
+      <div className="text-center text-red h-7 my-6">
         <ErrorMessage errors={errors} name="topic" as="p" />
         <ErrorMessage errors={errors} name="senderEmail" as="p" />
         <ErrorMessage errors={errors} name="subject" as="p" />
         <ErrorMessage errors={errors} name="message" as="p" />
       </div>
-      {/* FIXME: disabled if errors */}
       <Button type="submit" disabled={!isValid}>Send</Button>
       <button
         className="flex items-center space-x-2 my-12 mx-auto uppercase"
