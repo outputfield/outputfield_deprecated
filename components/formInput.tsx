@@ -26,13 +26,22 @@ export default function FormInput({
   ...restProps
 }: InputProps) {
   return (
-    <div className="flex w-full">
-      {icon && <Image src='/fourpointstar.svg' alt='star' width='16' height='16' />}
-      <span className="w-full block">
+    <div className="flex w-5/6">
+      {icon && (
+        <div className="mt-8 mx-2">
+          <Image
+            src='/fourpointstar.svg'
+            alt='*'
+            width='16'
+            height='16'
+          />
+        </div>
+      )}
+      <span className="w-full">
         {label && (
           <label
             htmlFor={label}
-            className="block uppercase tracking-wide text-gray-700 text-xs mb-2">
+            className="block uppercase tracking-wide text-gray-700 text-sm mb-2">
             {label}
           </label>
         )}

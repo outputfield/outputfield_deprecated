@@ -117,28 +117,35 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
         {/* Full-screen container to center the panel */}
         <div className="fixed inset-0 flex items-center justify-center ">
           {/* The actual dialog panel  */}
-          <Dialog.Panel className="mx-auto max-w-sm bg-white min-h-screen min-w-full">
-            <div className="mt-2 sm:ml-4 flex justify-between px-4 pb-4">
-              <button onClick={(e) => {
-                e.preventDefault()
-                setUploadOpen(false)
-              }}>
+          <Dialog.Panel className="mx-auto max-w-sm bg-white h-screen min-w-full">
+            <div className="h-12 sm:ml-4 flex items-center justify-between relative">
+              <button
+                className='px-4'
+                onClick={(e) => {
+                  e.preventDefault()
+                  setUploadOpen(false)
+                }}
+              >
                 <Image src="/closeIcon.svg" alt="close" width={16} height={16} />
               </button>
             </div>
-            <div className='mb-4 px-5 py-8 border-y border-black border-dashed h-full'>
+            <div className='px-2 py-8 border-t border-black border-dashed'>
               <TabView headers={['Upload', 'Embed']}>
                 <UploadPanel handleUploadWork={handleUploadWork} uploadNum={uploadNum} />
                 <EmbedPanel handleEmbedWork={handleEmbedWork} />
               </TabView>
             </div>
+            <div className='w-full h-6 border-t border-dashed absolute bottom-0' />
           </Dialog.Panel>
         </div>
       </Dialog>
       
-      <form onSubmit={handleSubmit(
-        ((data: ISignUpInputs, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state))) as SubmitHandler<ISignUpInputs>)} className="w-full max-w-lg">
-        <div className="flex flex-wrap -mx-3 mb-6">
+      <form
+        onSubmit={handleSubmit(
+          ((data: ISignUpInputs, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state))) as SubmitHandler<ISignUpInputs>)}
+        className="w-full max-w-lg my-8"
+      >
+        <div className="flex flex-wrap -mx-3">
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <FormInput
               register={register}
@@ -225,8 +232,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           </div>
         </div>
 
-        <div className="flex flex-wrap -mx-3 mb-2">
-          <h2>Add Links</h2>
+        <div className="flex flex-wrap mx-3 mb-2">
+          <h2 className='ml-2 my-6 glow-black'>Add Links</h2>
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
             {fields.map((field, index) => (
               <div className="py-6 grid grid-cols-2 grid-flow-cols justify-items-stretch items-center" key={field.id}>
@@ -268,34 +275,32 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           </div>
         </div>
 
-        <div className="flex flex-wrap -mx-3 mb-2">
-          <h2>Upload Work</h2>
+        <div className="flex flex-wrap mx-3 mb-2">
+          <h2 className='ml-2 my-6 glow-black'>Upload Work</h2>
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
-            <div className="py-6 grid grid-cols-2 justify-items-center">
+            <div className="py-6 grid grid-cols-2 gap-20 justify-items-center">
               {[0,1,2,3,4,5].map((key) => {
                 const displayKey = key + 1
                 return (
-                  <div key={displayKey} className={`cols-span-${displayKey} `}>
+                  <span key={displayKey} className={`cols-span-${displayKey} `}>
                     <button
-                      className="appearance-none block w-10 h-10 text-gray-700 border border-black border-dashed rounded-full p-8 mb-3 leading-tight focus:outline-none focus:bg-white"
+                      className="appearance-none leading-none w-fit text-gray-700 border border-black border-dashed rounded-full p-8 mb-1 focus:outline-none focus:bg-white"
                       id={`grid-upload-work-${displayKey}`}
                       onClick={setUploadDialogOpen(key)}>
-                      <div>{state[key] ? 'file here!' : '+'}</div>
+                      {state[key] ? 'file here!' : <Image src="/plusLg.svg" alt='+' width="36" height="36" />}
                     </button>
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs text-center mb-2"
                       htmlFor={`grid-upload-work-${displayKey}`}>
                       {displayKey}
                     </label>
-                  </div>
+                  </span>
                 )
               })}
             </div>
           </div>
         </div>
-        <Button role="submit" loading={isSubmitting}>
-          Save Changes
-        </Button>
+        <Button role="submit" loading={isSubmitting}>Save</Button>
       </form>
     </>
   )

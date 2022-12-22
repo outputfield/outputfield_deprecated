@@ -30,11 +30,12 @@ export default function EmbedPanel({
   }
   return (
     <form
-      className='text-center'
+      className='text-center py-12 px-8'
       onSubmit={handleSubmit(onSubmit as SubmitHandler<EmbeddedWork>)}
     >
       <input
-        placeholder="Link Youtuboe, Vimeo, SoundCloud, etc."
+        className="w-full appearance-none text-gray-700 border border-black py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        placeholder="Link: Youtube, Vimeo, SoundCloud, etc."
         {...register('url', {
           required: true,
           validate: {
@@ -52,7 +53,8 @@ export default function EmbedPanel({
           Not a valid URL. 
         </p>
       )}
-      <input 
+      <input
+        className="w-full appearance-none text-gray-700 border border-black py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
         placeholder="Title"
         {...register('title', { required: true })} 
       />

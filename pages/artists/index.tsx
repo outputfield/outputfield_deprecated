@@ -70,7 +70,6 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
       <div
         className={`${'hidden peer-focus:block '} z-10 fixed inset-0 bg-gray-100 bg-opacity-75 transition-opacity w-full h-screen blurred border border-red-500`}
         aria-hidden="true">
-        bg
       </div>
       {/*  /////////////////////////////  */}
 

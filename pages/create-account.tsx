@@ -140,9 +140,14 @@ export default function CreateAccount() {
   }
 
   return (
-    <ProfileForm
-      onSubmit={handleSubmit}
-      isSubmitting={isSubmitting}
-    />
+    <>
+      <h1 className='glow-black text-[40px] ml-2'>
+        New Profile
+      </h1>
+      <ProfileForm
+        onSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
+      />
+    </>
   )
 }
