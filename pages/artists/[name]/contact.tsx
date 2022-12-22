@@ -119,14 +119,18 @@ To reply, email them at ${'aaa'}
   const onError: SubmitErrorHandler<FieldErrors> = (errors, e) => console.log(errors, e)
 
   const RELEVANT_TOPICS = useMemo(() => TOPICS.filter(({ authenticated }) => Boolean(user) === authenticated), [user])
+  
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
-      className={'w-full h-full pt-0 focus-within:outline-dotted'}>
+      className={`
+        w-full h-full pt-0
+      `}
+    >
       <div className="block pt-5 px-3 pb-3">Select a message topic:</div>
       <div
         id="topicSelector"
-        className={'text-center pt-8 px-3 mx-auto border-box grid justify-items-center grid-cols-' + RELEVANT_TOPICS.length}>
+        className={'text-center pt-8 px-3 mx-auto border-box grid justify-items-center grid-cols-3'}>
         {RELEVANT_TOPICS
           .map(({ label }) => (
             <div key={label}>
@@ -169,7 +173,7 @@ To reply, email them at ${'aaa'}
                 py-3.5
                 text-base
                 focus:outline-none
-                focus:ring-4
+                focus:glow-blue
               `}
               type="text"
               placeholder="Your email address"
@@ -204,6 +208,8 @@ To reply, email them at ${'aaa'}
             py-3.5
             text-base
             uppercase
+            focus:outline-none
+            focus:glow-blue
           `}
           type="text"
           placeholder="Subject"
@@ -236,6 +242,8 @@ To reply, email them at ${'aaa'}
             whitespace-normal
             overflow-auto
             text-base
+            focus:outline-none
+            focus:glow-blue
           `}
           placeholder="Message"
           id="contactMessage"
