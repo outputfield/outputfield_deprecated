@@ -7,15 +7,25 @@ export const getArtistWithUserAndWorkAndLinks = (artistName: any) => {
     where: {
       handle: artistName
     },
-    include: {
-      user: true,
+    select: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+        }
+      },
+      pronouns: true,
+      handle: true,
+      title: true,
+      mediums: true,
+      location: true,
       work: true,
       links: true,
     },
   })
 }
 
-export type ArtistWithWorkAndLinks = Prisma.PromiseReturnType<typeof getArtistWithUserAndWorkAndLinks>
+export type ArtistWithUserAndWorkAndLinks = Prisma.PromiseReturnType<typeof getArtistWithUserAndWorkAndLinks>
 
 export const getArtistWithUserAndNominatedByAndWorkAndLinks = (name: string) => {
   return prisma?.artist.findUnique({

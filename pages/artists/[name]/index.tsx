@@ -7,7 +7,7 @@ import { ParsedUrlQuery } from 'querystring'
 import { ArtistRow } from '../../../components/artists/artistRow.component'
 import Tabs from '../../../components/tabView/tabView.component'
 import WorkPanel from '../../../components/tabView/workPanel.component'
-import { InfoPanel } from '../../../components/tabView/infoPanel.component'
+import InfoPanel from '../../../components/tabView/infoPanel.component'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
 import Image from 'next/legacy/image'
 import { getArtistWithUserAndWorkAndLinks } from '../../api/artists/[name]'
@@ -49,18 +49,6 @@ const ArtistPage = ({ artist }: InferGetStaticPropsType<typeof getStaticProps>) 
     router.push('/artists')
   }
 
-  // if (artist == null || artist == undefined) {
-  //   /*
-  //     TODO: add more detailed 404 page, or just redirect back to list?
-  //     router.push("/artists");
-  //     return (null);
-  //   */
-  //   return (
-  //     <div className="w-full min-h-full flex items-center justify-center">
-  //       This artist does not exist
-  //     </div>
-  //   )
-  // } else {
   return (
     artist ? (
       <div>

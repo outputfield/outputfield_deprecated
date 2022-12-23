@@ -3,7 +3,7 @@ import { ErrorMessage } from '@hookform/error-message'
 import { Button } from '../../../components/Button'
 import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import { useUser } from '../../../lib/useUser'
-import { ArtistWithUserAndNominatedByAndWorkAndLinks } from '../../api/artists/[name]'
+import { ArtistWithUserAndWorkAndLinks } from '../../api/artists/[name]'
 
 // eslint-disable-next-line no-useless-escape
 const RE_EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -42,7 +42,7 @@ const TOPICS = [
 ]
 
 interface Props {
-  artistData: ArtistWithUserAndNominatedByAndWorkAndLinks,
+  artistData: ArtistWithUserAndWorkAndLinks,
   onClose: () => void
 }
 
@@ -88,23 +88,21 @@ To reply, email them at ${'aaa'}
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     trigger()
-    // FIXME:
-    const { user: { name: recipientName, email: recipientEmail }, title, mediums, location } = artistData
     const { subject, message } = data
 
     const senderName = 'Buddy'  // TODO: grab sender's name inside of this component...
 
     const body = {
-      recipientName,
-      recipientEmail,
+      recipientName: artistData?.user.name,
+      recipientEmail: artistData?.user.email,
+      senderEmail: user ? user.email : 'dummy@gmail.com',
       senderName,
       topic,
       subject,
-      title,
-      location,
-      mediums,
       message,
-      senderEmail: user ? user.email : 'dummy@gmail.com',
+      title: artistData?.title,
+      location: artistData?.location,
+      mediums: artistData?.mediums,
     }
     console.log('submitting email body to api/email/artist... ', body)
     await fetch('/api/email/artist', {
