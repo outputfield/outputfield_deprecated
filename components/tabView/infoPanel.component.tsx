@@ -9,7 +9,7 @@ interface Props {
   includeContact?: boolean;
 }
 
-export const InfoPanel: React.FC<Props> = ({
+const InfoPanel: React.FC<Props> = ({
   artist,
   className,
   includeContact = true,
@@ -96,3 +96,5 @@ export const InfoPanel: React.FC<Props> = ({
 
   )
 }
+
+export default InfoPanel
