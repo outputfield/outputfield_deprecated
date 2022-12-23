@@ -8,6 +8,7 @@ interface Props {
   role?: string;
   disabled?: boolean;
   loading?: boolean;
+  as?: 'a' | undefined;
 }
 
 export const Button = ({
@@ -16,8 +17,41 @@ export const Button = ({
   id,
   role,
   disabled,
-  loading
+  loading,
+  as,
 }: Props) => {
+  if (as === 'a') {
+    return (
+      <a
+        className={`
+          my-0px
+          mx-auto
+          py-4
+          px-16
+          flex
+          items-center
+          justify-center
+          w-52
+          h-14
+          bg-black
+          text-white
+          border
+          border-solid
+          border-black
+          border-box
+          uppercase
+          disabled:cursor-not-allowed
+          disabled:bg-gray-light
+          disabled:border-gray-med
+          disabled:text-gray-dark
+        `}
+        id={id}
+      >
+        {
+          loading ? <Spinner /> : children
+        }
+      </a>)
+  }
   return (
     <button
       className={`

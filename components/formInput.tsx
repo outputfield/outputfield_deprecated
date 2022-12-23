@@ -1,10 +1,12 @@
 import Image from 'next/legacy/image'
 import React from 'react'
-import { Path, UseFormRegister } from 'react-hook-form'
+import { FieldErrors, Path, UseFormRegister } from 'react-hook-form'
 import { ISignUpInputs } from './ProfileForm'
+import { ErrorMessage } from '@hookform/error-message'
 
 type InputProps = {
   register: UseFormRegister<ISignUpInputs>;
+  errors?: FieldErrors;
   name: Path<ISignUpInputs>;
   label?: string;
   placeholder?: string;
@@ -12,21 +14,24 @@ type InputProps = {
   required?: boolean;
   disabled?: boolean;
   icon?: boolean;
+  as?: 'textarea' | undefined;
 };
 
 export default function FormInput({
   label,
   register,
+  errors,
   name,
   placeholder,
   required,
   type,
   disabled,
   icon,
+  as,
   ...restProps
 }: InputProps) {
   return (
-    <div className="flex w-5/6">
+    <div className="flex w-5/6 mb-3 ">
       {icon && (
         <div className="mt-8 mx-2">
           <Image
@@ -45,15 +50,44 @@ export default function FormInput({
             {label}
           </label>
         )}
-        <input
-          id={label}
-          disabled={disabled || false}
-          className="w-full appearance-none text-gray-700 border border-black py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-          placeholder={placeholder || ''}
-          type={type || ''}
-          {...restProps}
-          {...register(name, { required })}
-        />
+        <div className='flex items-center justify-center relative'>
+          {
+            (as === 'textarea') ? (
+              <textarea
+                id={label}
+                disabled={disabled || false}
+                className="w-full appearance-none text-gray-700 border border-black py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                placeholder={placeholder || ''}
+                // type={type || ''}
+                {...restProps}
+                {...register(name, { required })}          
+              />
+            ) : (
+              <input
+                id={label}
+                disabled={disabled || false}
+                className="w-full appearance-none text-gray-700 border border-black py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                placeholder={placeholder || ''}
+                type={type || ''}
+                {...restProps}
+                {...register(name, { required })}          
+              />
+            )
+          }
+          {errors && errors[name] && (
+            <div className='float-right absolute -right-6 top-3'>
+              <Image src='/errorIcon.svg' alt='error icon' width={16} height={17} />
+            </div>
+          )}
+        </div>
+        {errors && <ErrorMessage
+          errors={errors}
+          name={name}
+          message='Please fill out this field.'
+          render={({message}) => (
+            <p className=' text-gray-dark text-sm'>{message}</p>
+          )}
+        />}
       </span>
     </div>
   )

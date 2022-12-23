@@ -1,12 +1,14 @@
-// TODO: Required: Name, Title, Pronoun, Location, At lest one link, at least one work
+// TODO: Required: Name, Title, Pronoun, Location, At laest one link, at least one work
 
 import React, { useReducer, useState, BaseSyntheticEvent } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
-import FormInput from '../formInput'
-import { Button } from '../Button'
-import TabView from '../tabView/tabView.component'
 import { Dialog } from '@headlessui/react'
 import Image from 'next/legacy/image'
+import { ErrorMessage } from '@hookform/error-message'
+
+import TabView from '../tabView/tabView.component'
+import FormInput from '../formInput'
+import { Button } from '../Button'
 import EmbedPanel from './embedPanel'
 import UploadPanel from './uploadPanel'
 
@@ -58,6 +60,9 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
   const { fields, append, remove } = useFieldArray({
     name: 'links',
     control,
+    rules: {
+      required: true,
+    }
   })
 
   const [uploadOpen, setUploadOpen] = useState(false)
@@ -96,13 +101,13 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
     closeUpload()
   }
 
-
-
   const setUploadDialogOpen = (key: number) => (e: BaseSyntheticEvent) => {
     e.preventDefault()
     setUploadNum(key)
     setUploadOpen(true)
   }
+
+  console.log(errors)
 
   return (
     <>
@@ -149,6 +154,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <FormInput
               register={register}
+              errors={errors}
               name="name"
               label="Name"
               placeholder="Enter your name"
@@ -156,23 +162,20 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
               required
               icon
             />
-            {errors['name'] && (
-              <p className="text-red-500 text-xs italic">
-                Please fill out this field.
-              </p>
-            )}
           </div>
         </div>
         <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full px-3">
             <FormInput
               register={register}
+              errors={errors}
               name="title"
               label="Title"
               placeholder="Witch Gambler"
               required
               icon
             />
+            
           </div>
           <div className="w-full px-3">
             <FormInput
@@ -186,12 +189,14 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           <div className="w-full px-3">
             <FormInput
               register={register}
+              errors={errors}
               name="pronouns"
               label="Pronouns"
               placeholder="ie. they/them"
               required
               icon
             />
+            
           </div>
           <div className="w-full px-3">
             <FormInput
@@ -214,12 +219,14 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           <div className="w-full px-3">
             <FormInput
               register={register}
+              errors={errors}
               name="location"
               label="Location"
               placeholder="ie. Berlin, Shanghai, etc."
               required
               icon
             />
+            
           </div>
           <div className="w-full px-3">
             <FormInput
@@ -227,28 +234,41 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
               name="bio"
               label="Bio"
               placeholder="Tell us something about yourself."
+              as='textarea'
               icon
             />
           </div>
         </div>
 
-        <div className="flex flex-wrap mx-3 mb-2">
+        <div className="flex flex-col mx-3 mb-2">
           <h2 className='ml-2 my-6 glow-black'>Add Links</h2>
+          <ErrorMessage
+            errors={errors}
+            name='links'
+            message='Please add at least one personal link.'
+            render={({message}) => (
+              <p className=' text-gray-dark text-sm mb-2'>{message}</p>
+            )}
+          />
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
             {fields.map((field, index) => (
               <div className="py-6 grid grid-cols-2 grid-flow-cols justify-items-stretch items-center" key={field.id}>
                 <div className='col-start-1 col-end-3'>
                   <FormInput
                     register={register}
+                    errors={errors}
                     name={`links.${index}.url`}
                     placeholder="Enter your website"
+                    required
                   />
                 </div>
                 <div className='cols-span-1'>
                   <FormInput
                     register={register}
+                    errors={errors}
                     name={`links.${index}.label`}
                     placeholder="Label"
+                    required
                   />
                 </div>
                 <div className='cols-span-1 justify-self-end'>
@@ -275,8 +295,11 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           </div>
         </div>
 
-        <div className="flex flex-wrap mx-3 mb-2">
+        <div className="flex flex-col mx-3 mb-2">
           <h2 className='ml-2 my-6 glow-black'>Upload Work</h2>
+          {Object.values(state).length === 0 && (
+            <p className=' text-gray-dark text-sm mb-2'>Please add at least one work.</p>
+          )}
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
             <div className="py-6 grid grid-cols-2 gap-20 justify-items-center">
               {[0,1,2,3,4,5].map((key) => {
