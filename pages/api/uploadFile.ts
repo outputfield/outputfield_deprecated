@@ -1,4 +1,3 @@
-import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { NextApiRequest, NextApiResponse } from 'next'
 import spaces from '../../lib/doSpaces'
 
@@ -11,39 +10,50 @@ export const config = {
   },
 }
 
+interface FileWithPath extends File { path: string; }
+
 export default async function uploadFile(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'PUT') {
-    // parse request to readable form
     const form = new formidable.IncomingForm()
     form.keepExtensions = true
-    form.parse(req, async (err: any, fields: any, formData: any) => {
-    // Account for parsing errors
+    // parse request to readable form
+    form.parse(req, async (err: any, fields: any, files: any) => {
+      const { artistHandle } = fields
+      const file = files.file as FileWithPath
+
+      // Account for parsing errors
       if (err) return res.status(500).send(`Error occured: ${err}`)
 
       try {
-        const { artistHandle } = fields
-        // Read file
-        const file = fs.readFileSync(formData.file.path) // Buffer
-        const bucketParams = {
-          Bucket: 'outputfieldartworks',
-          Key: `${artistHandle}/${formData.file.name}`, // Specify folder and file name
-          Body: file,
-          ACL: 'public-read'
-        }
-        const data = await spaces.send(new PutObjectCommand(bucketParams))
-        // console.log('after /uploadFile', data)
-
         const work = {
-          // FIXME: make url dynamic
-          link: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${artistHandle}/${formData.file.name}`
+          title: file.name,
+          // TODO: Put bucket name in .env, and make it dynamic
+          url: `https://outputfieldartworks.sfo3.digitaloceanspaces.com/${artistHandle}/${file.name}`
         }
 
-        return res.status(200).json(work)
+        spaces.putObject({
+          Bucket: 'outputfieldartworks',
+          Key: `${artistHandle}/${file.name}`, // Specify folder and file name
+          Body: fs.createReadStream(file.path),
+          ACL: 'public-read',
+          Metadata: {
+            'x-amz-acl': 'public-read'
+          }
+        }, async (err, data) => {
+          if (err) {
+            console.log(err, err.stack)
+            throw err
+          } else {
+            console.log('Successful upload to DigitalOcean! Data: ', data)
+            res.status(201).send(work)
+          }
+        })
       } catch (error) {
-        console.log('err', error)
         // Unlink file
-        fs.unlinkSync(formData.file.path)
-        return res.status(500).send(`Error occured: ${error}`)
+        fs.unlinkSync(file?.path)
+
+        console.log(`/api failed to upload file: ${error}`)
+        throw error
       }
     })
   } else {

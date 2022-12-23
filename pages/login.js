@@ -5,8 +5,14 @@ import Form from '../components/form'
 
 import { Magic, RPCError } from 'magic-sdk'
 
+/**
+ *  On login submit, query the db for user.
+ *     If user not found,  redirect to cheeky 404, NO ACCOUNT WITHOUT REFERRAL
+ *     else, continue to Magic login flow
+ * @returns React.FC
+ */
 const Login = () => {
-  useUser({ redirectTo: '/', redirectIfFound: true })
+  const user = useUser({ redirectTo: '/', redirectIfFound: true })
   const [errorMsg, setErrorMsg] = useState('')
 
   async function handleSubmit(e) {
@@ -14,8 +20,9 @@ const Login = () => {
     if (errorMsg) setErrorMsg('')
     const { currentTarget: { email: { value: email } } }  = e
 
-    // Query db for user on submit. If user not found, redirect to "sign-up" flow.
+    // TODO: write these try/catches as separate async helper functions, and call them from a main try catch
     try {
+      // const { currentTarget: { email: { value: email } } }  = e
       const result = await fetch('/api/user', {
         method: 'POST',
         headers: {
@@ -24,7 +31,7 @@ const Login = () => {
         body: JSON.stringify({ email }),
       })
       const { userExists } = await result.json()
-      console.log('user exists? ', userExists)
+      // console.log('user exists? ', user)
       if (!userExists) {
         Router.push('/sign-up')
       }
@@ -48,7 +55,7 @@ const Login = () => {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + didToken,
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: user.email }),
       })
       console.log('login RES ', res)
       if (res.status === 200) {
@@ -68,9 +75,10 @@ const Login = () => {
   return (
     <>
       <div className="login">
+        {/* TODO: Write the form here instead of in a separate component */}
         <Form errorMessage={errorMsg} onSubmit={handleSubmit} />
       </div>
-      <style jsx>{`
+      {/* <style jsx>{`
         .login {
           max-width: 21rem;
           margin: 0 auto;
@@ -78,7 +86,7 @@ const Login = () => {
           border: 1px solid #ccc;
           border-radius: 4px;
         }
-      `}</style>
+      `}</style> */}
     </>
   )
 }

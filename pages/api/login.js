@@ -6,8 +6,6 @@ export default async function login(req, res) {
     const didToken = req.headers.authorization.substr(7)
     const metadata = await magic.users.getMetadataByToken(didToken)
     const session = { ...metadata }
-    console.log('hello shithead', session)
-
     await setLoginSession(res, session)
 
     res.status(200).send({ done: true })

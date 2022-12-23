@@ -1,13 +1,14 @@
 import prisma from '../../lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export default async function signUp(req: NextApiRequest, res: NextApiResponse) {
-  console.log('/addUserWorks req.body... ', req.body)
+export default async function addArtistWorks(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'PUT') {
 
-  const {
-    artistHandle, works
-  } = JSON.parse(req.body)
-  try {
+    console.log('/addUserWorks req.body... ', req.body)
+
+    const {
+      artistHandle, works
+    } = JSON.parse(req.body)
     const result = await prisma.artist.update({
       where: {
         handle: artistHandle
@@ -19,8 +20,9 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
       }
     })
     return res.status(200).json(result)
-  } catch (error) {
-    console.log(`/api failed to create user: ${error}`)
-    throw error
+
+  } else {
+    res.status(405)
+    res.end()
   }
 }

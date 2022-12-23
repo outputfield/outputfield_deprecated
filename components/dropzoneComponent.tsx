@@ -1,15 +1,10 @@
-import Image from 'next/image'
-import React, { useState, useEffect, ChangeEvent } from 'react'
-import { useUser } from '../lib/useUser'
-
-interface FilePlus extends File {
-  preview: string
-}
+import React, { useState, ChangeEvent } from 'react'
+import { Button } from './Button'
 
 function DropzoneComponent({ handleDrop }: any) {
   const [file, setFile] = useState<File | undefined>()
 
-  // // FIXME: remove this 
+  // // TODO: Create preview thumbNail
   // const thumbNail = false && (
   //   <div key={file?.name}>
   //     <Image
@@ -27,16 +22,16 @@ function DropzoneComponent({ handleDrop }: any) {
   // }, [file])
 
   async function handleImageUpload(e: ChangeEvent<HTMLInputElement>) {
-    console.log('handleImageUpload')
+    e.preventDefault()
     const el = e.target as HTMLInputElement
     if (el.files != null) {
       const file = el.files[0]
       const formData = new FormData()
+      formData.append('workType', 'uploadedWork')
       formData.append('file', file)
-      // formData.append('id', userId) //FIXME: how to associate file to a user before user is created?
 
       // 1. set state locally, for fileWithPreview preview purposes.
-      // const fileWithPreview = {...file, preview: URL.createObjectURL(file)}
+      // TODO: const fileWithPreview = {...file, preview: URL.createObjectURL(file)}
       setFile(file)
 
       // 2. set state in ProfileForm, for form data collection
@@ -46,16 +41,16 @@ function DropzoneComponent({ handleDrop }: any) {
 
   return (
     <section>
-      <label htmlFor="file-upload">
+      <label htmlFor="file-upload" className='cursor-pointer'>
         <div>
-          {/* {thumbNail} */}
+          {/* TODO: {thumbNail} */}
           {file && (
             <p>{file.name} - {file.size}</p>
           )}
-          <div id="dashboard-image-hover" >Upload Image</div>
+          <Button as="a">Upload</Button>
         </div>
       </label>
-      <input id="file-upload" type="file" onChange={handleImageUpload}/>
+      <input id="file-upload" type="file" accept='.png, .jpeg, .jpg' onChange={handleImageUpload} className='hidden'/>
     </section>
   )
 }

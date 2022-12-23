@@ -1,11 +1,12 @@
 import React from 'react'
+import Layout from '../components/layout'
 import { useUser } from '../lib/useUser'
 
 const Home = () => {
   const user = useUser()
 
   return (
-    <>
+    <Layout>
       <h1 className="text-3xl font-bold underline">Home</h1>
 
       <p>Steps to test this authentication example:</p>
@@ -27,8 +28,7 @@ const Home = () => {
         <a
           href="https://docs.magic.link/"
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
           documentation
         </a>
         .
@@ -50,7 +50,7 @@ const Home = () => {
           word-wrap: break-word;
         }
       `}</style>
-    </>
+    </Layout>
   )
 }
 
