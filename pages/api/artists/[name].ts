@@ -18,6 +18,7 @@ export const getArtistWithUserAndWorkAndLinks = (artistName: any) => {
       handle: true,
       title: true,
       mediums: true,
+      mediumsOfInterest: true,
       location: true,
       work: true,
       links: true,

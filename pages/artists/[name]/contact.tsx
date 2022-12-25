@@ -73,10 +73,10 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     clearErrors()
 
     // TODO: side effect, set message text
-    const message = `${'aaa'} Here's their message:
-To reply, email them at ${'aaa'}
-    `
-    setValue('message', message)
+//     const message = `${'aaa'} Here's their message:
+// To reply, email them at ${'aaa'}
+//     `
+//     setValue('message', message)
   }
 
   function messageClick() {

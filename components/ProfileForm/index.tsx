@@ -1,5 +1,3 @@
-// TODO: Required: Name, Title, Pronoun, Location, At laest one link, at least one work
-
 import React, { useReducer, useState, BaseSyntheticEvent } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
 import { Dialog } from '@headlessui/react'
@@ -323,7 +321,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
             </div>
           </div>
         </div>
-        <Button role="submit" loading={isSubmitting}>Save</Button>
+        <Button type="submit" loading={isSubmitting}>Save</Button>
       </form>
     </>
   )

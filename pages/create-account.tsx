@@ -5,6 +5,7 @@ import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
 import { UserCreateInputWithArtist, UserWithArtist } from './api/signUp'
 import { partition } from '../lib/utils'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 export type Work = {
   title: string,
@@ -141,13 +142,18 @@ export default function CreateAccount() {
 
   return (
     <>
-      <h1 className='glow-black text-[40px] ml-2'>
+      <Head>
+        <title>Create Account | Output Field</title>
+      </Head>
+      <main>
+        <h1 className='glow-black text-[40px] ml-2'>
         New Profile
-      </h1>
-      <ProfileForm
-        onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-      />
+        </h1>
+        <ProfileForm
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+        />
+      </main>
     </>
   )
 }

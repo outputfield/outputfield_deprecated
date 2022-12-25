@@ -76,7 +76,7 @@ export default function FormInput({
           }
           {errors && errors[name] && (
             <div className='float-right absolute -right-6 top-3'>
-              <Image src='/errorIcon.svg' alt='error icon' width={16} height={17} />
+              <Image src='/errorIcon.svg' alt={`error icon ${label}`} width={16} height={17} />
             </div>
           )}
         </div>

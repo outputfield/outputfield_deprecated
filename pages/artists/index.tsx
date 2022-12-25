@@ -81,7 +81,7 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
             <button
               onClick={openFilters}
               className="uppercase flex flex-col items-center">
-              <p>filter <span className="text-blue"> {filters?.length ? `(${filters.length})` : ''}</span></p> 
+              <p>Filter <span className="text-blue"> {filters?.length ? `(${filters.length})` : ''}</span></p> 
               <div className="p-1">
                 {filters?.length ? (
                   <img src="/filterIconFilled.svg" alt="Filter icon" />
