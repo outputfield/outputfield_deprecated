@@ -33,12 +33,11 @@ const Login = () => {
       const { userExists } = await result.json()
       // console.log('user exists? ', user)
       if (!userExists) {
-        Router.push('/sign-up')
+        throw ReferenceError
       }
     } catch (error) {
       if (error instanceof ReferenceError) {
         // TODO: redirect to cheeky 404, NO ACCOUNT WITHOUT REFERRAL
-        Router.push('/sign-up')
       } else {
         console.log(error)
         setErrorMsg(error.message)

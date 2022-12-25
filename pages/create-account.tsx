@@ -130,9 +130,13 @@ export default function CreateAccount() {
       })
       const userId = newUser.artist? newUser.artist.handle : `artist${newUser.id}`
       const works = await uploadFiles(files, userId)
-      updateUserWithWorks(works as Work[], userId)
+      await updateUserWithWorks(works as Work[], userId)
+
+      // TODO: Call /revalidate, pass path to new Artist's page
+      // https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration#on-demand-revalidation
+
+      // Redirect to /login, where user will login for the first time
       router.push('/login')
-      // TODO: redirect to /login, where user will login for the first time
     } catch (error) {
       console.error(error)
     } finally {
