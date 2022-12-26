@@ -97,7 +97,6 @@ async function updateUserWithWorks(works: Work[], handle: string) {
 async function revalidateArtistPage(pathToRevalidate: string) {
   // TODO: pass a secret revalidation token from ENV
   try {
-    console.log(process.env.NEXT_PUBLIC_MY_SECRET_TOKEN)
     const params =  {
       'secret': process.env.NEXT_PUBLIC_MY_SECRET_TOKEN || 'no token found',
     }
@@ -158,7 +157,7 @@ export default function CreateAccount() {
       await revalidateArtistPage(`/artists/${newUser.artist?.handle}`)
 
       // Finally, redirect to /login, where user will login for the first time
-      // router.push('/login')
+      router.push('/login')
     } catch (error) {
       console.error(error)
     } finally {
@@ -173,7 +172,7 @@ export default function CreateAccount() {
       </Head>
       <main>
         <h1 className='glow-black text-[40px] ml-2'>
-        New Profile
+          New Profile
         </h1>
         <ProfileForm
           onSubmit={handleSubmit}
