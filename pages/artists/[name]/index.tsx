@@ -21,7 +21,7 @@ export const getStaticPaths = async () => {
   })
   return {
     paths,
-    fallback: false,
+    fallback: 'blocking',
   }
 }
 
@@ -32,13 +32,13 @@ interface IParams extends ParsedUrlQuery {
 export async function getStaticProps(context: GetStaticPropsContext) {
   const { name } = context.params as IParams
 
-  //FIXME: this needs to also return user's name
   const res = await getArtistWithUserAndWorkAndLinks(name)
   const artist = JSON.parse(JSON.stringify(res))
   return {
     props: {
       artist,
     },
+    // revalidate: 60,
   }
 }
 

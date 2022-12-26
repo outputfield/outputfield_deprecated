@@ -160,6 +160,8 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
   )
 }
 
+// TODO: Use getStaticPaths here in order to have prerendered,
+//  and then revalidate '/artists'?
 export async function getStaticProps() {
   const uniqueMediumsRes = await prisma.artist.findMany({
     select: {

@@ -92,6 +92,28 @@ async function updateUserWithWorks(works: Work[], handle: string) {
     throw new Error(`Failed to update user Works: ${error}`)
   }
 }
+
+// 4. Revalidate Artist's page
+async function revalidateArtistPage(pathToRevalidate: string) {
+  // TODO: pass a secret revalidation token from ENV
+  try {
+    console.log(process.env.NEXT_PUBLIC_MY_SECRET_TOKEN)
+    const params =  {
+      'secret': process.env.NEXT_PUBLIC_MY_SECRET_TOKEN || 'no token found',
+    }
+    await fetch('/api/revalidate'+ '?' + new URLSearchParams(params),
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          pathToRevalidate
+        })
+      }
+    )
+    console.log('successfully revalidated artist page!')
+  } catch (error) {
+    throw new Error(`Failed to revalidate: ${error}`)
+  }
+}
 // - - - END HELPER FNs - - -
 
 function makeid(length: number) {
@@ -116,27 +138,27 @@ export default function CreateAccount() {
     setIsSubmitting(true)
 
     try {
-      // FIXME: Grab new user email from URL
-      const _email = `${makeid(6)}@gmail.com`
-      // FIXME: get nominatorId from URL
-      const _nominatorId = 1
+      const params = new URLSearchParams(document.location.search)
+      const _email = params.get('email') || `${makeid(6)}@gmail.com`
+      const _nominatorId = params.get('nominatorId') || '1'
       const newUser: UserWithArtist = await createUser({
         ...data,
         name: data.name,
         handle: data.handle,
         links: data.links as Prisma.LinkCreateNestedManyWithoutArtistInput,
         email: _email,
-        nominatorId: _nominatorId,
+        nominatorId: parseInt(_nominatorId),
       })
       const userId = newUser.artist? newUser.artist.handle : `artist${newUser.id}`
       const works = await uploadFiles(files, userId)
       await updateUserWithWorks(works as Work[], userId)
 
-      // TODO: Call /revalidate, pass path to new Artist's page
-      // https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration#on-demand-revalidation
+      //FIXME:
+      // Trigger revalidation, on new artist's page only
+      await revalidateArtistPage(`/artists/${newUser.artist?.handle}`)
 
-      // Redirect to /login, where user will login for the first time
-      router.push('/login')
+      // Finally, redirect to /login, where user will login for the first time
+      // router.push('/login')
     } catch (error) {
       console.error(error)
     } finally {

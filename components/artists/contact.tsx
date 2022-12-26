@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react'
 import { ErrorMessage } from '@hookform/error-message'
-import { Button } from '../../../components/Button'
+import { Button } from '../Button'
 import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
-import { useUser } from '../../../lib/useUser'
-import { ArtistWithUserAndWorkAndLinks } from '../../api/artists/[name]'
+import { useUser } from '../../lib/useUser'
+import { ArtistWithUserAndWorkAndLinks } from '../../pages/api/artists/[name]'
 
 // eslint-disable-next-line no-useless-escape
 const RE_EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -73,10 +73,10 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     clearErrors()
 
     // TODO: side effect, set message text
-//     const message = `${'aaa'} Here's their message:
-// To reply, email them at ${'aaa'}
-//     `
-//     setValue('message', message)
+    //     const message = `${'aaa'} Here's their message:
+    // To reply, email them at ${'aaa'}
+    //     `
+    //     setValue('message', message)
   }
 
   function messageClick() {

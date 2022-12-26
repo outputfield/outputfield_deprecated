@@ -12,7 +12,7 @@ import UploadPanel from './uploadPanel'
 
 type ProfileLink = {
   url: string;
-  label: string;
+  title: string;
 };
 
 export type ISignUpInputs = {
@@ -264,7 +264,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                   <FormInput
                     register={register}
                     errors={errors}
-                    name={`links.${index}.label`}
+                    name={`links.${index}.title`}
                     placeholder="Label"
                     required
                   />
@@ -285,7 +285,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
               className="uppercase"
               onClick={(e) => {
                 e.preventDefault()
-                append({ url: '', label: '' }, { shouldFocus: true })
+                append({ url: '', title: '' }, { shouldFocus: true })
               }
               }>
               + Add

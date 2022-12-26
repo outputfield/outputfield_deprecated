@@ -13,7 +13,6 @@ test.beforeEach(async ({ page }) => {
 test.describe('Artists list', () => {
   test('should not have any automatically detectable accessibility issues', async ({ page }) => {
     const accessibilityScanResults = await new AxeBuilder({ page }).analyze()
-    
     expect(accessibilityScanResults.violations).toEqual([])
   })
 })
@@ -25,12 +24,11 @@ test.describe('Artists filter', () => {
   
   test('should not have any automatically detectable accessibility issues', async ({ page }) => {
     const accessibilityScanResults = await new AxeBuilder({ page }).analyze()
-      
     expect(accessibilityScanResults.violations).toEqual([])
   })
 
   test('should filter results by medium', async ({ page }) => {
-    // Expect full page of results to begin with
+    // Expect full page of results to begin
 
     // TODO: 
     await page.locator('#filter').getByText('code').click()
@@ -58,9 +56,12 @@ test.describe('Artists filter', () => {
 //    View
 //    Contact
 test.describe('Artist view', () => {
+  test.beforeEach(async ({ page }) => {
+    page.goto('/artists/newguyhere')
+  })
+
   test('should not have any automatically detectable accessibility issues', async ({ page }) => {
     const accessibilityScanResults = await new AxeBuilder({ page }).analyze()
-          
     expect(accessibilityScanResults.violations).toEqual([])
   })
 

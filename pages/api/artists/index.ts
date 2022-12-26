@@ -58,7 +58,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         Array.isArray(search) ? search.join('') : search as string,
         filters
       )
-     
+
       if (!data) {
         return res.status(404)
       } else {

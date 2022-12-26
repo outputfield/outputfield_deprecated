@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ArtistWithUserAndNominatedByAndWorkAndLinks } from '../../pages/api/artists/[name]'
 import { Button } from '../Button'
-import Contact from '../../pages/artists/[name]/contact'
+import Contact from '../artists/contact'
 
 interface Props {
   artist: ArtistWithUserAndNominatedByAndWorkAndLinks;
