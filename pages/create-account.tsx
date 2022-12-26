@@ -95,7 +95,6 @@ async function updateUserWithWorks(works: Work[], handle: string) {
 
 // 4. Revalidate Artist's page
 async function revalidateArtistPage(pathToRevalidate: string) {
-  // TODO: pass a secret revalidation token from ENV
   try {
     const params =  {
       'secret': process.env.NEXT_PUBLIC_MY_SECRET_TOKEN || 'no token found',
@@ -152,7 +151,6 @@ export default function CreateAccount() {
       const works = await uploadFiles(files, userId)
       await updateUserWithWorks(works as Work[], userId)
 
-      //FIXME:
       // Trigger revalidation, on new artist's page only
       await revalidateArtistPage(`/artists/${newUser.artist?.handle}`)
 

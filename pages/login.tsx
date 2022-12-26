@@ -1,10 +1,56 @@
 import React, { BaseSyntheticEvent, useState } from 'react'
 import Router from 'next/router'
-import { useUser } from '../lib/useUser'
-import Form from '../components/form'
 
 import { Magic, RPCError } from 'magic-sdk'
 import Layout from '../components/layout'
+
+// - - - HELPER FNs - - -
+async function queryUserExists(email: string) {
+  try {
+    const result = await fetch('/api/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    })
+    const { userExists } = await result.json()
+    console.log('user exists? ', userExists)
+    return userExists
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+async function loginUser(email: string) {
+  try {
+    const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY || '')
+    const didToken = await magic.auth.loginWithMagicLink({ email })
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + didToken,
+      },
+      body: JSON.stringify({ email }),
+    })
+    console.log('login RES ', res)
+    if (res.status === 200) {
+      Router.push('/')
+    } else {
+      throw new Error(await res.text())
+    }
+  } catch (error) {
+    if (error instanceof RPCError) {
+      // TODO: Redirect to /account-settings to update email.
+    }
+    console.error('An unexpected error happened occurred:', error)
+    // setErrorMsg(error.message)
+  }
+}
+
+// - - - - - - -
 
 /**
  *  On login submit, query the db for user.
@@ -13,80 +59,47 @@ import Layout from '../components/layout'
  * @returns React.FC
  */
 const Login = () => {
-  const user = useUser({ redirectTo: '/', redirectIfFound: true })
+  // const user = useUser({ redirectTo: '/', redirectIfFound: true })
   const [errorMsg, setErrorMsg] = useState('')
 
   async function handleSubmit(e: BaseSyntheticEvent) {
     e.preventDefault()
-    if (errorMsg) setErrorMsg('')
-    const { currentTarget: { email: { value: email } } }  = e
+    // if (errorMsg) setErrorMsg('')
+    const { currentTarget: { email: { value: email } } } = e
 
-    // TODO: write these try/catches as separate async helper functions, and call them from a main try catch
     try {
-      // const { currentTarget: { email: { value: email } } }  = e
-      const result = await fetch('/api/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      })
-      const { userExists } = await result.json()
-      // console.log('user exists? ', user)
-      if (!userExists) {
-        throw ReferenceError
-      }
-    } catch (error) {
-      if (error instanceof ReferenceError) {
+      const userExists = await queryUserExists(email)
+      if (userExists) {
+        await loginUser(email)
+      } else {
+        // handle user doesn't exist
         // TODO: redirect to cheeky 404, NO ACCOUNT WITHOUT REFERRAL
-      } else {
-        console.log(error)
-        // setErrorMsg(error.message)
-      }
-    }
-
-    // Login flow
-    try {
-      const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY || '')
-      const didToken = await magic.auth.loginWithMagicLink({ email })
-      const res = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + didToken,
-        },
-        body: JSON.stringify({ email: user.email }),
-      })
-      console.log('login RES ', res)
-      if (res.status === 200) {
-        Router.push('/')
-      } else {
-        throw new Error(await res.text())
+        setErrorMsg('User not found.')
+        console.log('user wasn not found in db')
       }
     } catch (error) {
-      if (error instanceof RPCError) {
-        // TODO: Redirect to /account-settings to update email.
-      }
-      console.error('An unexpected error happened occurred:', error)
-      // setErrorMsg(error.message)
+      console.log(error)
     }
+
   }
 
   return (
     <Layout>
-      <div className="login">
-        {/* TODO: Write the form here instead of in a separate component */}
-        <Form errorMessage={errorMsg} onSubmit={handleSubmit} />
+      <div className="">
+        <form onSubmit={handleSubmit}>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" required />
+          </label>
+
+          <div className="">
+            <button type="submit">Login</button>
+          </div>
+
+          {errorMsg && <p className="error">{errorMsg}</p>}
+
+        </form>
       </div>
-      {/* <style jsx>{`
-        .login {
-          max-width: 21rem;
-          margin: 0 auto;
-          padding: 1rem;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-        }
-      `}</style> */}
     </Layout>
   )
 }
