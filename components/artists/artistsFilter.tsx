@@ -1,37 +1,38 @@
 import React, { useEffect, useMemo, useReducer } from 'react'
-import Overlay from '../overlay'
-import Checkbox from '../checkbox'
-import { Button } from '../button/button.component'
+import Overlay from '../../components/overlay'
+import Checkbox from '../../components/checkbox'
+import { Button } from '../../components/Button'
+import Image from 'next/image'
 
 interface Props {
+  isOpen: boolean,
   onClose: () => void;
   onSubmit: (filters: string[]) => void;
   onUnmount: () => void;
   filterOptions: string[];
   selectedFilters: string[];
-  className?: string;
 }
 
-type FilterAction = ({ type: 'UPDATE', filterName: string }) | {type: 'CLEAR'}
+type FilterAction = ({ type: 'UPDATE', filterName: string, value: boolean }) | {type: 'CLEAR'}
 
 interface FilterState {
   [x: string]: boolean;
 }
 
 const ArtistsFilter: React.FC<Props> = ({
+  isOpen,
   onClose,
   onSubmit,
   onUnmount,
   filterOptions,
   selectedFilters,
-  className,
 }) => {
   const [state, dispatch] = useReducer(
     (state: FilterState, action: FilterAction) => {
       const _state = {...state}
       switch(action.type) {
       case 'UPDATE':
-        return { ..._state, [action.filterName]: !_state[action.filterName] }
+        return { ...state, [action.filterName]: action.value }
       case 'CLEAR':
         return Object.keys(_state).reduce((acc, curr) => ({[curr]: false, ...acc }), {})
       }
@@ -52,8 +53,9 @@ const ArtistsFilter: React.FC<Props> = ({
     return (() => onUnmount())
   }, [])
 
-  const onCheckChange = (name: string) => {
-    dispatch({ type: 'UPDATE', filterName: name })
+  const onCheckChange = (name: string, value: boolean) => {
+    console.log(name, value)
+    dispatch({ type: 'UPDATE', filterName: name, value })
   }
 
   const clearFilters = () => dispatch({ type: 'CLEAR' })
@@ -68,10 +70,10 @@ const ArtistsFilter: React.FC<Props> = ({
   }
 
   return (
-    <Overlay className={className}>
+    <Overlay className={`${isOpen? 'visible': 'hidden'}`}>
       <div className="mt-0 sm:mt-0 sm:ml-4 flex justify-between border-b border-black border-dashed px-4 pb-4">
         <button
-          className="underline uppercase leading-6 disabled:text-gray"
+          className={'underline uppercase leading-6 disabled:text-gray' + (filtersCount === 0 && 'cursor-not-allowed')}
           type="reset"
           onClick={clearFilters}
           disabled={filtersCount === 0}
@@ -79,13 +81,13 @@ const ArtistsFilter: React.FC<Props> = ({
           Clear Filters
         </button>
         <button onClick={onClose}>
-          <img src="/closeIcon.svg" alt="close overlay icon" />
+          <Image src="/closeIcon.svg" alt="close" width={16} height={16} />
         </button>
       </div>
       <div className="my-5 text-center">
         <form className="mx-auto max-w-fit">
           {filterOptions.map(( medium ) => {
-            const n = `filters[${medium}]`
+            // const n = `filters[${medium}]`
             return (
               <Checkbox
                 key={medium}
@@ -98,11 +100,11 @@ const ArtistsFilter: React.FC<Props> = ({
           })}
         </form>
         <div className="relative flex flex-col justify-center items-center mt-24 z-0">
-          <img src="/diagramLines.svg" className="absolute -z-10"/>
+          <img alt="diagram lines" src="/diagramLines.svg" className="absolute -z-10"/>
           <Button
             onClick={handleSubmit}
-            className="absolute w-48 inline-flex justify-center"
-            isDisabled={filtersCount === 0}>
+            // className="absolute w-48 inline-flex justify-center"
+            disabled={filtersCount === 0}>
             Filter <span className="glow-highlight text-highlight ml-1">{`(${filtersCount})`}</span>
           </Button>
         </div>

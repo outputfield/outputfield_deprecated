@@ -14,7 +14,7 @@ export default class Artist{
   mediums: string[]
   mediumsOfInterest: string[]
   links: Link[]
-  referredBy: string
+  nominatedBy: string
 
   constructor(
     name: string,
@@ -29,7 +29,7 @@ export default class Artist{
     mediums: string[],
     mediumsOfInterest: string[],
     links: Link[],
-    referredBy: string,
+    nominatedBy: string,
   ){
     this.name = name
     this.handle = handle
@@ -43,6 +43,6 @@ export default class Artist{
     this.mediums = mediums
     this.mediumsOfInterest = mediumsOfInterest
     this.links = links
-    this.referredBy = referredBy
+    this.nominatedBy = nominatedBy
   }
 }

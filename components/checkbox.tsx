@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 
 type Props = {
   name: string;
@@ -24,7 +24,7 @@ const Checkbox: React.FC<Props> = ({
   }, [value])
 
   return (
-    <div className="p-3 max-w-max flex items-center mr-4 mb-2 relative" key={name}>
+    <div className="p-3 max-w-max mr-4 mb-2 relative" key={name}>
       <input
         type="checkbox"
         id={name}
@@ -33,15 +33,15 @@ const Checkbox: React.FC<Props> = ({
         onChange={handleChange}
         checked={checked}
       />
-      <div className="relative flex justify-center z-0 mr-2 w-8 h-8">
-        <div className="absolute -z-10 bg-white border border-blue w-4 h-4 self-end focus:border-black bottom-1 left-1.5" />
-        {checked && (
-          <Image src="/checkIcon.svg" alt="checked icon" width="22" height="27" className="absolute" />
-        )}
-      </div>
       <label
         htmlFor={name}
-        className="relative pt-1 text-xl uppercase peer-checked:text-blue peer-checked:glow-blue">
+        className="flex items-center relative pt-1 text-xl uppercase peer-checked:text-blue peer-checked:glow-blue cursor-pointer">
+        <div className="relative flex justify-center z-0 mr-2 w-8 h-8">
+          <div className="absolute -z-10 bg-white border border-blue w-4 h-4 self-end focus:border-black bottom-1 left-1.5" />
+          {checked && (
+            <Image src="/checkIcon.svg" alt="checked icon" width="22" height="27" className="absolute" />
+          )}
+        </div>
         {label}
       </label>
     </div>

@@ -14,16 +14,32 @@
 }
 
 @layer utilities {
-  .glow-blue {
+  .glow-blue-text {
     /* Shadows/Text */
     text-shadow: 0px 0px 2px theme('colors.blue');  
+  }
+
+  .glow-blue {
+    filter: drop-shadow(0px 0px 2px theme('colors.blue'));
   }
 
   .glow-highlight {  
     text-shadow: 0px 0px 2px theme('colors.highlight');
   }
-  .glow-red-lg {
+
+  .glow-red-inner {
+    background-color: #fff;
     box-shadow: 0px 4px 8px rgba(255, 0, 15, 0.2), 0px 5px 8px rgba(255, 0, 31, 0.6);
+    padding: 8px 5px;
+  }
+  .glow-red-outer {
+    background: rgba(219, 37, 37, 0.25);
+    box-shadow: 0px 4px 4px rgba(224, 22, 34, 0.25), 0px 4px 4px rgba(208, 81, 89, 0.2);
+    filter: blur(8px);
+  }
+
+  .glow-black {
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   }
 }
 
@@ -32,4 +48,30 @@ input:checked + div {
 }
 input:checked + div svg {
   @apply block;
+}
+
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #000;
+  border-color: #000 transparent #000 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -4,13 +4,20 @@ import Header from './header'
 
 const Layout = ({ children }: any) => (
   <>
+    <Head>
+      <title>Output Field</title>
+    </Head>
     <Header />
 
     <main>
       <div className="container">{children}</div>
     </main>
 
-    <style jsx global>{`
+    <footer>
+Footer Here
+    </footer>
+
+    <style jsx>{`
       *,
       *::before,
       *::after {

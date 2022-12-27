@@ -53,12 +53,12 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     try {
       const data = await findArtists(
-        Array.isArray(_page) ? _page.join('') : _page,
-        Array.isArray(_limit) ? _limit.join('') : _limit,
-        Array.isArray(search) ? search.join('') : search,
+        Array.isArray(_page) ? _page.join('') : _page as string,
+        Array.isArray(_limit) ? _limit.join('') : _limit as string,
+        Array.isArray(search) ? search.join('') : search as string,
         filters
       )
-     
+
       if (!data) {
         return res.status(404)
       } else {

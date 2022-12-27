@@ -1,4 +1,5 @@
 import React from 'react'
+import { Tab } from '@headlessui/react'
 
 interface Props {
   headers?: string[];
@@ -7,8 +8,6 @@ interface Props {
 }
 
 const TabView: React.FC<Props> = ({ headers, children }) => {
-  const [openTab, setOpenTab] = React.useState(0)
-
   if (
     Array.isArray(headers) &&
     Array.isArray(children) &&
@@ -22,51 +21,39 @@ const TabView: React.FC<Props> = ({ headers, children }) => {
   }
 
   return (
-    <div className="flex flex-wrap">
-      <div className="w-full">
-        {/* TAB HEADER */}
-        <ul
-          className="flex mb-0 ml-6 ml-list-none flex-wrap pt-10 pb-4 flex-row"
-          role="tablist">
-          {headers?.map((header, index) => (
-            <li
-              key={header}
-              className="-mb-px mr-2 last:mr-0 flex-auto text-left">
+    <Tab.Group>
+      <Tab.List className="flex flex-row items-start mb-0 mx-6 pb-4">
+        {headers?.map((header) => (
+          <Tab
+            key={header}
+            className={'flex-1 text-left outline-none'}
+          >
+            {({ selected }) => (
               <a
                 className={
-                  'text-s font-bold uppercase px-5 py-3 block leading-normal underline-offset-4 decoration-blue-600 decoration-2 ' +
-                  (openTab === index
-                    ? 'underline text-blue'
-                    : 'no-underline')
+                  'px-4 py-0 mx-2 border rounded-full last:mr-0 font-bold uppercase leading-normal decoration-blue-600 decoration-2 ' +
+                  (selected
+                    ? 'border-blue text-blue'
+                    : 'border-black')
                 }
-                onClick={(e) => {
-                  e.preventDefault()
-                  setOpenTab(index)
-                }}
-                data-toggle="tab"
-                href={`#${header}`}
-                role="tablist">
+              >
                 {header}
               </a>
-            </li>
-          ))}
-        </ul>
-        {/* TAB HEADERS END */}
-
-        {/* TAB PANELS */}
-        <div className="relative flex flex-col break-words w-full px-4 pb-5">
-          {children.map((panel, index) => (
-            <div
-              className={`m-2 glow-red-lg shadow-lg ${openTab === index ? 'block' : 'hidden'}`}
-              id={'index'}
-              key={index}
-            >
-              {panel}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+            )}
+          </Tab>
+        ))}
+      </Tab.List>
+      <Tab.Panels>
+        {children.map((panel, index) => (
+          <Tab.Panel
+            id={`${index}`}
+            key={index}
+          >
+            {panel}
+          </Tab.Panel>
+        ))}
+      </Tab.Panels>
+    </Tab.Group>
   )
 }
 
