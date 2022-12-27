@@ -41,7 +41,7 @@ const ArtistsFilter: React.FC<Props> = ({
   )
 
   const filtersCount = useMemo(() => {
-    if (state && Object.values(state).some((f) => f === true)) {
+    if (state) {
       return Object.values(state).filter((f) => f === true).length
     } else {
       return 0
