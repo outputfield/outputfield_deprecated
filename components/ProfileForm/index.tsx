@@ -9,6 +9,7 @@ import FormInput from '../formInput'
 import { Button } from '../Button'
 import EmbedPanel from './embedPanel'
 import UploadPanel from './uploadPanel'
+import Spinner from '../spinner'
 
 type ProfileLink = {
   url: string;
@@ -51,7 +52,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitted },
   } = useForm<ISignUpInputs>({
     defaultValues: profileData
   })
@@ -322,6 +323,10 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           </div>
         </div>
         <Button type="submit" loading={isSubmitting}>Save</Button>
+        <div className="text-center py-4">
+          {isSubmitting && <Spinner />}
+          {isSubmitted && !isValid && 'Please correct the errors above.'}
+        </div>
       </form>
     </>
   )

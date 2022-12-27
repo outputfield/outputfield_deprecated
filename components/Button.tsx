@@ -82,7 +82,7 @@ export const Button = ({
       disabled={disabled || loading || false}
     >
       {
-        loading ? <Spinner /> : children
+        loading ? '...' : children
       }
     </button>
   )

@@ -1,7 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
-// TODO: replace querystring usage with URLSearchParams API
 import { ParsedUrlQuery } from 'querystring'
 
 import { ArtistRow } from '../../../components/artists/artistRow.component'
@@ -38,7 +37,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     props: {
       artist,
     },
-    // revalidate: 60,
   }
 }
 

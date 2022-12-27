@@ -127,6 +127,7 @@ function makeid(length: number) {
 
 export default function CreateAccount() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
+  const [ message, setMessage ] = useState('')
   const router = useRouter()
 
   // Pass submit handler fn into ProfileForm
@@ -154,8 +155,11 @@ export default function CreateAccount() {
       // Trigger revalidation, on new artist's page only
       await revalidateArtistPage(`/artists/${newUser.artist?.handle}`)
 
-      // Finally, redirect to /login, where user will login for the first time
-      router.push('/login')
+      setMessage('Account successfully created! Redirecting to Login shortly...')
+      setTimeout(() => {
+        // Finally, redirect to /login, where user will login for the first time
+        router.push('/login')
+      }, 3000)
     } catch (error) {
       console.error(error)
     } finally {
@@ -176,6 +180,9 @@ export default function CreateAccount() {
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
         />
+        <div className="text-center text-sm text-blue">
+          {message}
+        </div>
       </main>
     </>
   )
