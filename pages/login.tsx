@@ -7,7 +7,7 @@ import Head from 'next/head'
 import { Button } from '../components/Button'
 import Spinner from '../components/spinner'
 import { useUser } from '../lib/useUser'
-import { magicClient } from '../lib/magicClient'
+// import { magicClient } from '../lib/magicClient'
 
 // - - - HELPER FNs - - -
 async function queryUserExists(email: string) {
@@ -30,6 +30,10 @@ async function queryUserExists(email: string) {
 
 async function loginUser(email: string) {
   try {
+    const magicClient = new Magic(
+      process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY || '',
+      { testMode: process.env.NEXT_PUBLIC_STAGING === '1' }
+    )
     const didToken = await magicClient.auth.loginWithMagicLink({ email })
     const res = await fetch('/api/login', {
       method: 'POST',

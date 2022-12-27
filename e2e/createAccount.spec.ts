@@ -3,7 +3,7 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
-test.describe.only('Create Account', () => {
+test.describe('Create Account', () => {
   test.beforeEach(async ({ page }) => {
     const nominatorId = 0
     const email = 'team@outputfield.com'

@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
   page.goto('/artists')
 })
 
-test.describe('Artists list', () => {
+test.describe.skip('Artists list', () => {
   test('should not have any automatically detectable accessibility issues', async ({ page }) => {
     const accessibilityScanResults = await new AxeBuilder({ page }).analyze()
     expect(accessibilityScanResults.violations).toEqual([])
@@ -55,7 +55,7 @@ test.describe('Artists filter', () => {
 // ArtistsScreens
 //    View
 //    Contact
-test.describe('Artist view', () => {
+test.describe.skip('Artist view', () => {
   test.beforeEach(async ({ page }) => {
     page.goto('/artists/newguyhere')
   })
@@ -66,7 +66,7 @@ test.describe('Artist view', () => {
   })
 
   // TODO:
-  test.describe('Artist contact', () => {
+  test.describe.skip('Artist contact', () => {
     // test.beforeEach navigate to INFO > Contact
 
     test('Non-user contacts artist', async ({ page }) => {
