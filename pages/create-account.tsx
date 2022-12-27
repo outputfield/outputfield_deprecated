@@ -97,7 +97,7 @@ async function updateUserWithWorks(works: Work[], handle: string) {
 async function revalidateArtistPage(pathToRevalidate: string) {
   try {
     const params =  {
-      'secret': process.env.NEXT_PUBLIC_MY_SECRET_TOKEN || 'no token found',
+      'secret': process.env.NEXT_PUBLIC_NEXT_REVALIDATION_TOKEN || 'no token found',
     }
     await fetch('/api/revalidate'+ '?' + new URLSearchParams(params),
       {

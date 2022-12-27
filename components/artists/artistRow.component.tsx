@@ -14,6 +14,7 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
 
   const row = (
     <div
+    data-test-id='artistRow'
       className={`${type === 'detail' ? 'border-y' : ''} ${
         type === 'list' ? 'border-t' : ''
       } border-black border-dashed w-full flex flex-col relative pt-[11px] pl-[13px] pb-[8px] pr-[11px]`}>

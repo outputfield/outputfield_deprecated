@@ -61,13 +61,13 @@ const ArtistPage = ({ artist }: InferGetStaticPropsType<typeof getStaticProps>) 
           <WorkPanel works={artist.work} />
           <InfoPanel artist={artist} />
         </Tabs>
-      </div>) :  (
+      </div>
+    ) : (
       <div className="w-full min-h-full flex items-center justify-center">
           This artist does not exist
       </div>
     )
   )
-  
 }
 
 export default ArtistPage

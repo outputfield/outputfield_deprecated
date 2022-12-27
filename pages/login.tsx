@@ -6,6 +6,8 @@ import Layout from '../components/layout'
 import Head from 'next/head'
 import { Button } from '../components/Button'
 import Spinner from '../components/spinner'
+import { useUser } from '../lib/useUser'
+import { magicClient } from '../lib/magicClient'
 
 // - - - HELPER FNs - - -
 async function queryUserExists(email: string) {
@@ -28,8 +30,7 @@ async function queryUserExists(email: string) {
 
 async function loginUser(email: string) {
   try {
-    const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY || '')
-    const didToken = await magic.auth.loginWithMagicLink({ email })
+    const didToken = await magicClient.auth.loginWithMagicLink({ email })
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: {
@@ -61,7 +62,7 @@ async function loginUser(email: string) {
  * @returns React.FC
  */
 const Login = () => {
-  // const user = useUser({ redirectTo: '/', redirectIfFound: true })
+  useUser({ redirectTo: '/', redirectIfFound: true })
   const [errorMsg, setErrorMsg] = useState('')
   const [loading, setLoading] = useState(false)
 

@@ -1,10 +1,10 @@
-import { magic } from '../../lib/magic'
+import { magicAdmin } from '../../lib/magicAdmin'
 import { setLoginSession } from '../../lib/auth'
 
 export default async function login(req, res) {
   try {
     const didToken = req.headers.authorization.substr(7)
-    const metadata = await magic.users.getMetadataByToken(didToken)
+    const metadata = await magicAdmin.users.getMetadataByToken(didToken)
     const session = { ...metadata }
     await setLoginSession(res, session)
 
