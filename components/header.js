@@ -17,7 +17,7 @@ const LINKS = [
     label: 'Artists'
   }, {
     href: '/profile',
-    label: 'Account'
+    label: 'Profile'
   }, {
     href: 'api/logout',
     label: 'Logout'

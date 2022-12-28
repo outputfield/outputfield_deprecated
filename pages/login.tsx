@@ -32,9 +32,9 @@ async function loginUser(email: string) {
   try {
     const magicClient = new Magic(
       process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY || '',
-      { testMode: process.env.NEXT_PUBLIC_STAGING === '1' }
+      { testMode: process.env.STAGING === '1' }
     )
-    const didToken = await magicClient.auth.loginWithMagicLink({ email })
+    const didToken = await magicClient.auth.loginWithMagicLink({ email, showUI: true })
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: {
@@ -45,7 +45,7 @@ async function loginUser(email: string) {
     })
     console.log('login RES ', res)
     if (res.status === 200) {
-      Router.push('/')
+      Router.reload()
     } else {
       throw new Error(await res.text())
     }
@@ -130,12 +130,13 @@ const Login = () => {
               />
             </label>
           </div>
-          <div className="text-center ">
+          <div className="text-center relative">
             <Button type="submit">
               {loading ? '...' : 'Login'}
             </Button>
             <p className="py-4">{errorMsg}</p>
             {loading && <Spinner />}
+            {loading && <div className='absolute h-screen w-full opacity-50 bg-gray-dark'></div>}
           </div>
         </form>
       </div>

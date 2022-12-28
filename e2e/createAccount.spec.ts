@@ -92,11 +92,11 @@ test.describe('Create Account', () => {
     // TODO: (passes up to here)
     // - - - SUBMISSION - - -
     // expect redirect to /login
-    // const navigationPromise = page.waitForNavigation()
-    // const saveButton = page.getByText('SAVE')
-    // await saveButton.click()
-    // await navigationPromise
-    // expect(page).toHaveURL(/.*login/)
+    const navigationPromise = page.waitForNavigation()
+    const saveButton = page.getByText('SAVE')
+    await saveButton.click()
+    await navigationPromise
+    expect(page).toHaveURL(/.*login/)
 
     // expect API POST req with body... {}
   })

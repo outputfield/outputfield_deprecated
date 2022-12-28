@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "postinstall": "prisma generate",
-    "test:e2e": "playwright test"
+    "test:e2e": "set STAGING=1&& npx playwright test"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.150.0",
