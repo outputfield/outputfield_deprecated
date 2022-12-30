@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useState } from 'react'
+import React, { BaseSyntheticEvent, useEffect, useState } from 'react'
 import { Prisma } from '@prisma/client'
 
 import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
@@ -97,7 +97,7 @@ async function updateUserWithWorks(works: Work[], handle: string) {
 async function revalidateArtistPage(pathToRevalidate: string) {
   try {
     const params =  {
-      'secret': process.env.NEXT_PUBLIC_MY_SECRET_TOKEN || 'no token found',
+      'secret': process.env.NEXT_PUBLIC_NEXT_REVALIDATION_TOKEN || 'no token found',
     }
     await fetch('/api/revalidate'+ '?' + new URLSearchParams(params),
       {
@@ -129,6 +129,10 @@ export default function CreateAccount() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
   const [ message, setMessage ] = useState('')
   const router = useRouter()
+
+  useEffect(() => {
+    // TODO: show error if query params doesnt include email
+  }, [])
 
   // Pass submit handler fn into ProfileForm
   const handleSubmit = async (event: BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => {

@@ -2,62 +2,84 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
-// TODO:
-// Steps:
-//  1. Run a 'seed' for DB (test.beforeAll)
-
-test.beforeEach(async ({ page }) => {
-  page.goto('/artists')
-})
-
 test.describe('Artists list', () => {
   test('should not have any automatically detectable accessibility issues', async ({ page }) => {
+    await page.goto('/artists')
     const accessibilityScanResults = await new AxeBuilder({ page }).analyze()
     expect(accessibilityScanResults.violations).toEqual([])
   })
 })
 
-test.describe('Artists filter', () => {
+test.describe.only('Artists filter', () => {
   test.beforeEach(async ({ page }) => {
-    await page.getByRole('button', { name: 'Filter Filter icon' }).click()
+    await page.goto('/artists')
   })
-  
+
   test('should not have any automatically detectable accessibility issues', async ({ page }) => {
+    await page.getByRole('button', { name: 'Filter Filter icon' }).click()
     const accessibilityScanResults = await new AxeBuilder({ page }).analyze()
     expect(accessibilityScanResults.violations).toEqual([])
   })
 
   test('should filter results by medium', async ({ page }) => {
-    // Expect full page of results to begin
+    await expect(page.getByTestId('artistRow')).toHaveCount(5)
 
-    // TODO: 
-    await page.locator('#filter').getByText('code').click()
-    await page.locator('#filter').getByText('toys').click()
+    await page.getByRole('button', { name: 'Filter Filter icon' }).click()
+    await page.locator('#filter').getByText('tattoo').click()
+    await page.getByRole('button', { name: 'Filter (1)' }).click()
+    await expect(page.getByTestId('artistRow')).toHaveCount(1)  
+
+    await page.getByRole('button', { name: 'Filter (1) Filter icon' }).click()
+    await page.locator('#filter').getByText('photo / film').click()
     await page.getByRole('button', { name: 'Filter (2)' }).click()
-
-    expect(page.getByTestId('artistRow')).toHaveLength(3)  
+    await expect(page.getByTestId('artistRow')).toHaveCount(3)
   })
 
-  // TODO:
-  test('clear filters', async ({ page }) => {
-    // open FILTER
-    // click 'clear filters'
+  test('clear filters', async ({ page }) => {   
+    await page.getByRole('button', { name: 'Filter Filter icon' }).click()
+    await page.locator('#filter').getByText('tattoo').click()
+    await page.locator('#filter').getByText('photo / film').click()
+    
+    // expect two filters to be checked
+    expect(page.locator('label').filter({ hasText: 'tattoo' }).getByRole('img', { name: 'checked icon' })).toBeVisible
+    expect(page.locator('label').filter({ hasText: 'photo / film' }).getByRole('img', { name: 'checked icon' })).toBeVisible
+
+    await page.getByRole('button', { name: 'Clear Filters' }).click()
+    expect(page.getByRole('img', { name: 'checked icon' })).toBeHidden
   })
 
-  // TODO:
   test('should filter results by search term', async ({ page }) => {
-    // click on search bar
-    // fill search term
-    // expect matching results
+    await expect(page.getByTestId('artistRow')).toHaveCount(5)
+
+    await page.getByPlaceholder('Search').fill('Chicago')
+    await expect(page.getByTestId('artistRow')).toHaveCount(2)
+  })
+
+  test('reset all', async ({ page }) => {
+    // check and submit two filters
+    await page.getByRole('button', { name: 'Filter Filter icon' }).click()
+    await page.locator('#filter').getByText('photo / film').click()
+    await page.getByRole('button', { name: 'Filter (1)' }).click()
+    await expect(page.getByTestId('artistRow')).toHaveCount(2)
+
+    // enter a search term
+    await page.getByPlaceholder('Search').fill('New York')
+    await expect(page.getByTestId('artistRow')).toHaveCount(1)
+
+    // click on 'reset all'
+    await page.getByRole('button', { name: 'reset all' }).click()
+
+    await expect(page.getByTestId('artistRow')).toHaveCount(5)
   })
 })
 
 // ArtistsScreens
 //    View
 //    Contact
-test.describe('Artist view', () => {
+test.describe.only('Artist view', () => {
   test.beforeEach(async ({ page }) => {
-    page.goto('/artists/newguyhere')
+    page.goto('/artists')
+    await page.getByTestId('artistRow').first().click()
   })
 
   test('should not have any automatically detectable accessibility issues', async ({ page }) => {
@@ -66,8 +88,12 @@ test.describe('Artist view', () => {
   })
 
   // TODO:
-  test.describe('Artist contact', () => {
+  test.describe.skip('Artist contact', () => {
     // test.beforeEach navigate to INFO > Contact
+    test.beforeEach(async ({ page }) => {
+      await page.getByRole('tab', { name: 'Info' }).click()
+      await page.getByRole('button', { name: 'contact' }).click()
+    })
 
     test('Non-user contacts artist', async ({ page }) => {
     // expect SEND button is disabled

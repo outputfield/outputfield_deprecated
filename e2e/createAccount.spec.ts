@@ -3,7 +3,7 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
-test.describe.only('Create Account', () => {
+test.describe('Create Account', () => {
   test.beforeEach(async ({ page }) => {
     const nominatorId = 0
     const email = 'team@outputfield.com'
@@ -92,11 +92,11 @@ test.describe.only('Create Account', () => {
     // TODO: (passes up to here)
     // - - - SUBMISSION - - -
     // expect redirect to /login
-    // const navigationPromise = page.waitForNavigation()
-    // const saveButton = page.getByText('SAVE')
-    // await saveButton.click()
-    // await navigationPromise
-    // expect(page).toHaveURL(/.*login/)
+    const navigationPromise = page.waitForNavigation()
+    const saveButton = page.getByText('SAVE')
+    await saveButton.click()
+    await navigationPromise
+    expect(page).toHaveURL(/.*login/)
 
     // expect API POST req with body... {}
   })

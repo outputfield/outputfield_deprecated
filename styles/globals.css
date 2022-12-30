@@ -43,6 +43,19 @@
   }
 }
 
+@layer components {
+  .profile-picture {
+    border: 0.5px solid rgba(0, 0, 0, 0.24);
+    filter: drop-shadow(0px 0px 8px #D91919);
+    @apply rounded-full;
+  }
+  .profile-ellipse {
+    border: 1px dashed rgba(255, 0, 0, 0.24);
+    filter: blur(2.4px);
+    @apply h-32 w-20 absolute rounded-full;
+  }
+}
+
 input:checked + div {
   @apply border-blue;
 }

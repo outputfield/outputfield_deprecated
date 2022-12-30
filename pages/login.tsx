@@ -6,6 +6,8 @@ import Layout from '../components/layout'
 import Head from 'next/head'
 import { Button } from '../components/Button'
 import Spinner from '../components/spinner'
+import { useUser } from '../lib/useUser'
+// import { magicClient } from '../lib/magicClient'
 
 // - - - HELPER FNs - - -
 async function queryUserExists(email: string) {
@@ -28,8 +30,11 @@ async function queryUserExists(email: string) {
 
 async function loginUser(email: string) {
   try {
-    const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY || '')
-    const didToken = await magic.auth.loginWithMagicLink({ email })
+    const magicClient = new Magic(
+      process.env.NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY || '',
+      { testMode: process.env.STAGING === '1' }
+    )
+    const didToken = await magicClient.auth.loginWithMagicLink({ email, showUI: true })
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: {
@@ -40,7 +45,7 @@ async function loginUser(email: string) {
     })
     console.log('login RES ', res)
     if (res.status === 200) {
-      Router.push('/')
+      Router.reload()
     } else {
       throw new Error(await res.text())
     }
@@ -61,7 +66,7 @@ async function loginUser(email: string) {
  * @returns React.FC
  */
 const Login = () => {
-  // const user = useUser({ redirectTo: '/', redirectIfFound: true })
+  useUser({ redirectTo: '/', redirectIfFound: true })
   const [errorMsg, setErrorMsg] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -125,12 +130,13 @@ const Login = () => {
               />
             </label>
           </div>
-          <div className="text-center ">
+          <div className="text-center relative">
             <Button type="submit">
               {loading ? '...' : 'Login'}
             </Button>
             <p className="py-4">{errorMsg}</p>
             {loading && <Spinner />}
+            {loading && <div className='absolute h-screen w-full opacity-50 bg-gray-dark'></div>}
           </div>
         </form>
       </div>
