@@ -22,7 +22,7 @@ export default async function uploadFile(req: NextApiRequest, res: NextApiRespon
       const file = files.file as FileWithPath
 
       // Account for parsing errors
-      if (err) return res.status(500).send(`Error occured: ${err}`)
+      if (err) return res.status(500).send(`Parsing error occured: ${err}`)
 
       try {
         const work = {
