@@ -166,6 +166,7 @@ export default function CreateAccount() {
       }, 3000)
     } catch (error) {
       console.error(error)
+      setMessage('Sorry, something went wrong.')
     } finally {
       setIsSubmitting(false)
     }

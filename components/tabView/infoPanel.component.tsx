@@ -55,7 +55,7 @@ const InfoPanel: React.FC<Props> = ({
 
             <div id="artistLinks" className="relative mb-24 h-32">
               <img src="/dashedEllipses4.svg" className="absolute" />
-              <div className="absolute flex flex-col space-y-4 mt-4">
+              <div className="absolute flex flex-col space-y-4 mt-4 ml-4">
                 {artist?.links.map(({ title, url }) => (
                   <a
                     key={url}
