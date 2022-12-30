@@ -46,9 +46,10 @@ async function loginUser(email: string) {
     console.log('login RES ', res)
     if (res.status === 200) {
       Router.reload()
-    } else {
-      throw new Error(await res.text())
-    }
+    } 
+    // else {
+    //   throw new Error(await res.text())
+    // }
   } catch (error) {
     if (error instanceof RPCError) {
       // TODO: Redirect to /account-settings to update email.

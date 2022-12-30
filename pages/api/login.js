@@ -12,7 +12,7 @@ export default async function login(req, res) {
     res.status(200).send({ done: true })
   } catch (error) {
     // res.status(error.status || 500).end(error.message)
-    console.log(`/api failed to create user: ${error}`)
+    console.log(`/api failed to login user: ${error}`)
     throw error
   }
 }
