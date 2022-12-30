@@ -4,6 +4,7 @@ import { Button } from '../Button'
 import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
 import { useUser } from '../../lib/useUser'
 import { ArtistWithUserAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import Image from 'next/image'
 
 // eslint-disable-next-line no-useless-escape
 const RE_EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -261,7 +262,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
       <button
         className="flex items-center space-x-2 my-12 mx-auto uppercase"
         onClick={onClose}>
-        <span><img src="/backArrow.svg" /></span>
+        <span><Image src="/backArrow.svg" alt='back arrow' width={44} height={1}/></span>
         <span>Back to artist info</span>
       </button>
     </form>

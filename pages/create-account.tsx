@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useState } from 'react'
+import React, { BaseSyntheticEvent, useEffect, useState } from 'react'
 import { Prisma } from '@prisma/client'
 
 import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
@@ -129,6 +129,10 @@ export default function CreateAccount() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
   const [ message, setMessage ] = useState('')
   const router = useRouter()
+
+  useEffect(() => {
+    // TODO: show error if query params doesnt include email
+  }, [])
 
   // Pass submit handler fn into ProfileForm
   const handleSubmit = async (event: BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => {

@@ -1,8 +1,7 @@
 import React from 'react'
-import Image from 'next/legacy/image'
 import Link from 'next/link'
 import { ArtistWithUserAndWorkAndLinks } from '../../pages/api/artists/[name]'
-import ProfilePicture from './profilePicture';
+import ProfilePicture from './profilePicture'
 
 export interface ArtistRowProps {
   artist: ArtistWithUserAndWorkAndLinks;
@@ -15,7 +14,7 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
 
   const row = (
     <div
-      data-test-id='artistRow'
+      data-testid='artistRow'
       className={`${type === 'detail' ? 'border-y' : ''} ${
         type === 'list' ? 'border-t' : ''
       } border-black border-dashed w-full flex flex-col relative pt-[11px] pl-[13px] pb-[8px] pr-[11px]`}>

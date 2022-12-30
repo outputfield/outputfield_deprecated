@@ -70,7 +70,7 @@ const ArtistsFilter: React.FC<Props> = ({
   }
 
   return (
-    <Overlay className={`${isOpen? 'visible': 'hidden'}`}>
+    <Overlay aria-label="Artists Filter" className={`${isOpen? 'visible': 'hidden'}`}>
       <div className="mt-0 sm:mt-0 sm:ml-4 flex justify-between border-b border-black border-dashed px-4 pb-4">
         <button
           className={'underline uppercase leading-6 disabled:text-gray' + (filtersCount === 0 && 'cursor-not-allowed')}
@@ -87,7 +87,6 @@ const ArtistsFilter: React.FC<Props> = ({
       <div className="my-5 text-center">
         <form className="mx-auto max-w-fit">
           {filterOptions.map(( medium ) => {
-            // const n = `filters[${medium}]`
             return (
               <Checkbox
                 key={medium}
@@ -100,10 +99,9 @@ const ArtistsFilter: React.FC<Props> = ({
           })}
         </form>
         <div className="relative flex flex-col justify-center items-center mt-24 z-0">
-          <img alt="diagram lines" src="/diagramLines.svg" className="absolute -z-10"/>
+          <Image alt="diagram lines" src="/diagramLines.svg" className="absolute -z-10" width={140} height={160}/>
           <Button
             onClick={handleSubmit}
-            // className="absolute w-48 inline-flex justify-center"
             disabled={filtersCount === 0}>
             Filter <span className="glow-highlight text-highlight ml-1">{`(${filtersCount})`}</span>
           </Button>

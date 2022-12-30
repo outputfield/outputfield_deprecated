@@ -12,6 +12,16 @@ export const getArtistWithUserAndWorkAndLinks = (artistName: any) => {
         select: {
           name: true,
           email: true,
+          nominatedBy: {
+            select: {
+              name: true,
+              artist: {
+                select: {
+                  handle: true,
+                }
+              }
+            }
+          },
         }
       },
       pronouns: true,

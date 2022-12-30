@@ -53,7 +53,7 @@ test.describe.only('User', () => {
     test.describe('in artist Contact', () => {
       test('can send topics: "Collab", "Business", and "Other"', async ({ page }) => {
         await page.goto('/artists')
-        await page.locator('[data-test-id="artistRow"]').first().click()
+        await page.getByTestId('artistRow').first().click()
         await page.getByText('Info').click()
         await page.getByRole('button', { name: 'contact' }).click()
       
