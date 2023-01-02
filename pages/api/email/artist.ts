@@ -37,10 +37,11 @@ export default async function sendArtistEmail(req: NextApiRequest, res: NextApiR
     console.log('msg', msg)
 
     await sgClient.send(msg)
-  } catch (error: any) {
-    // console.log(error);
-    return res.status(error.statusCode || 500).json({ error: error.message })
+    return res.status(200).json({ error: '' })
+  } catch (error) {
+    console.log(error)
+    throw error
+    // return res.status(error.statusCode || 500).json({ error: error.message })
   }
 
-  return res.status(200).json({ error: '' })
 }
