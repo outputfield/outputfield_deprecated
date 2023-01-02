@@ -89,30 +89,34 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     trigger()
-    const { subject, message } = data
+    try {
+      const { subject, message } = data
 
-    const senderName = 'Buddy'  // TODO: grab sender's name inside of this component...
+      const senderName = 'Buddy'  // TODO: grab sender's name inside of this component...
 
-    const body = {
-      recipientName: artistData?.user.name,
-      recipientEmail: artistData?.user.email,
-      senderEmail: user ? user.email : 'dummy@gmail.com',
-      senderName,
-      topic,
-      subject,
-      message,
-      title: artistData?.title,
-      location: artistData?.location,
-      mediums: artistData?.mediums,
+      const body = {
+        recipientName: artistData?.user.name,
+        recipientEmail: artistData?.user.email,
+        senderEmail: user ? user.email : 'dummy@gmail.com',
+        senderName,
+        topic,
+        subject,
+        message,
+        title: artistData?.title,
+        location: artistData?.location,
+        mediums: artistData?.mediums,
+      }
+      console.log('submitting email body to api/email/artist... ', body)
+      await fetch('/api/email/artist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+    } catch (error) {
+      console.log('contact onSubmit failed with ', error)
     }
-    console.log('submitting email body to api/email/artist... ', body)
-    await fetch('/api/email/artist', {
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    })
   }
 
   const onError: SubmitErrorHandler<FieldErrors> = (errors, e) => console.log(errors, e)
