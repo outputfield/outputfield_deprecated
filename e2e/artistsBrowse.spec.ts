@@ -10,7 +10,7 @@ test.describe('Artists list', () => {
   })
 })
 
-test.describe.only('Artists filter', () => {
+test.describe('Artists filter', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/artists')
   })

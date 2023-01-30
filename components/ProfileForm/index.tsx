@@ -1,6 +1,6 @@
 import React, { useReducer, useState, BaseSyntheticEvent } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
-import { Dialog } from '@headlessui/react'
+import { Dialog, Combobox, Transition } from '@headlessui/react'
 import Image from 'next/legacy/image'
 import { ErrorMessage } from '@hookform/error-message'
 
@@ -10,6 +10,119 @@ import { Button } from '../Button'
 import EmbedPanel from './embedPanel'
 import UploadPanel from './uploadPanel'
 import Spinner from '../spinner'
+import { makeid } from '../../lib/utils'
+
+type MediumOption = {
+  id: number,
+  label: string
+}
+// TODO: separate component
+type MediumsComboboxProps = {
+  name: string,
+  label: string,
+  options: MediumOption[],
+  selectedMediums: MediumOption[],
+  setSelectedMediums: (mediums: MediumOption[]) => void,
+}
+
+function MediumsCombobox({
+  name,
+  label,
+  options,
+  selectedMediums,
+  setSelectedMediums
+}: MediumsComboboxProps) {
+  const [query, setQuery] = useState('')
+  const filteredOptions =
+    query === ''
+      ? options
+      : options.filter((medium) => {
+        return medium.label.toLowerCase().includes(query.toLowerCase())
+      })
+  return (
+    <Combobox
+      multiple
+      nullable
+      value={selectedMediums}
+      onChange={setSelectedMediums}
+      name={name}
+    >
+      <Combobox.Label>{label}</Combobox.Label>
+      <div className="relative mt-1">
+        <div className="relative w-full cursor-default overflow-hidden rounded bg-white text-left border border-color-[#D5D8DC] focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+          <div>
+            {selectedMediums.map((medium) => (
+              <span
+                key={medium.id}
+                className={'border border-black rounded-sm ml-1 p-1'}
+              >
+                {medium.label}
+                <button
+                  onClick={() => setSelectedMediums(selectedMediums.filter(({ id }) => id !== medium.id))}
+                  className='font-gray ml-1'>
+                    x
+                </button>
+              </span>
+            ))}
+          </div>
+            
+          <Combobox.Button as='div' className="flex items-center">
+            <Combobox.Input
+              className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
+              placeholder="--Select--"
+              onChange={(event) => {
+                const value = event.target.value.includes(',') ? event.target.value.split(selectedMediums.join(','))[1] : event.target.value
+                setQuery(value)
+              }}
+              value={query}
+            />
+            <span className="absolute right-2">
+                downarrow
+            </span>
+          </Combobox.Button>
+        </div>
+      </div>
+      <Transition
+        enter="transition duration-100 ease-out"
+        enterFrom="transform scale-95 opacity-0"
+        enterTo="transform scale-100 opacity-100"
+        leave="transition duration-75 ease-out"
+        leaveFrom="transform scale-100 opacity-100"
+        leaveTo="transform scale-95 opacity-0"
+      ></Transition>
+      <Combobox.Options
+        className={`
+          absolute
+          ring-1
+          border
+          border-purple
+          w-full
+          bg-white
+          z-50
+          cursor-pointer
+        `}
+      >
+        {query.length > 0 && !selectedMediums.filter(({ label }) => label === query).length && (
+          <Combobox.Option value={{ id: makeid(3), label: query}} onClick={() => setQuery('')}> 
+            + Add &quot;{query}&quot;
+          </Combobox.Option>
+        )}
+        {filteredOptions.map((medium) => (
+          <Combobox.Option
+            key={medium.id}
+            value={medium}
+            disabled={selectedMediums.filter(({ label }) => label === medium.label).length !== 0}
+            // className=""
+          >
+            {({ active, selected, disabled }) => (
+              <div className={`cursor-pointer ${disabled && 'cursor-not-allowed bg-orange'} ${active && 'bg-blue'} ${selected && 'bg-pink'}`}>{medium.label}</div>
+            )}
+          </Combobox.Option>
+        ))}
+      </Combobox.Options>
+    </Combobox>
+  )
+}
 
 type ProfileLink = {
   url: string;
@@ -21,8 +134,8 @@ export type ISignUpInputs = {
   title: string;
   handle: string;
   bio: string;
-  mediums: string[];
-  mediumsOfInterest: string[];
+  mediums: MediumOption[];
+  mediumsOfInterest: MediumOption[];
   pronouns: string;
   location: string;
   links: ProfileLink[];
@@ -52,6 +165,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
     register,
     handleSubmit,
     control,
+    watch,
+    setValue,
     formState: { errors, isValid, isSubmitted },
   } = useForm<ISignUpInputs>({
     defaultValues: profileData
@@ -198,21 +313,57 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
             
           </div>
           <div className="w-full px-3">
-            <FormInput
+            {/* <FormInput
               register={register}
               name="mediums"
               label="Mediums"
               placeholder="wood, sound"
               icon
+            /> */}
+            <MediumsCombobox
+              name="mediums"
+              label="Mediums"
+              options={[
+                {
+                  id: 1,
+                  label: 'wood'
+                }, {
+                  id: 2, 
+                  label: 'metal'
+                }, {
+                  id: 3, 
+                  label: 'sculpture'
+                }
+              ]}
+              selectedMediums={watch('mediums') || []}
+              setSelectedMediums={(values) => setValue('mediums', values)}
             />
           </div>
           <div className="w-full px-3">
-            <FormInput
+            {/* <FormInput
               register={register}
               name="mediumsOfInterest"
               label="Mediums of Interest"
               placeholder="graphite, metal sculpture"
               icon
+            /> */}
+            <MediumsCombobox
+              name="mediumsOfInterest"
+              label="Mediums of Interest"
+              options={[
+                {
+                  id: 1,
+                  label: 'wood'
+                }, {
+                  id: 2, 
+                  label: 'metal'
+                }, {
+                  id: 3, 
+                  label: 'sculpture'
+                }
+              ]}
+              selectedMediums={watch('mediumsOfInterest') || []}
+              setSelectedMediums={(values) => setValue('mediumsOfInterest', values)}
             />
           </div>
           <div className="w-full px-3">

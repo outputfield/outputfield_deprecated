@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client'
 
 import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
 import { UserCreateInputWithArtist, UserWithArtist } from './api/signUp'
-import { partition } from '../lib/utils'
+import { makeid, partition } from '../lib/utils'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
@@ -113,17 +113,6 @@ async function revalidateArtistPage(pathToRevalidate: string) {
   }
 }
 // - - - END HELPER FNs - - -
-
-function makeid(length: number) {
-  let result           = ''
-  const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  const charactersLength = characters.length
-  for ( let i = 0; i < length; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * 
-    charactersLength))
-  }
-  return result
-}
 
 export default function CreateAccount() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)

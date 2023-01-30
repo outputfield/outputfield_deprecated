@@ -51,7 +51,6 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
   const {
     register,
     handleSubmit,
-    setValue,
     setError,
     clearErrors,
     trigger,
@@ -90,14 +89,14 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     trigger()
     try {
-      const { subject, message } = data
+      const { senderEmail, subject, message } = data
 
-      const senderName = 'Buddy'  // TODO: grab sender's name inside of this component...
+      const senderName = user.name || 'Anonymous'  // FIXME: grab sender's name inside of this component...
 
       const body = {
         recipientName: artistData?.user.name,
         recipientEmail: artistData?.user.email,
-        senderEmail: user ? user.email : 'dummy@gmail.com',
+        senderEmail: user ? user.email : senderEmail,
         senderName,
         topic,
         subject,
@@ -127,27 +126,39 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     <form
       onSubmit={handleSubmit(onSubmit, onError)}
       className={`
-        w-full h-full pt-0
+        w-full
+        h-full
+        pt-0
       `}
     >
       <div className="block pt-5 px-3 pb-3">Select a message topic:</div>
       <div
         id="topicSelector"
-        className={'text-center pt-8 px-3 mx-auto border-box grid justify-items-center grid-cols-3'}>
+        className={`
+          text-center
+          pt-8
+          px-3
+          mx-auto
+          border-box
+          grid
+          justify-items-center
+          grid-cols-3
+        `}>
         {RELEVANT_TOPICS
           .map(({ label }) => (
             <div key={label}>
               <button
                 value={label}
                 className={`
-                uppercase
-                py-2
-                px-4
-                border-2
-                rounded-full
-                ${label === topic ? 'border-blue/80 bg-gray-light' : 'border-black'}
-              `}
-                onClick={selectTopic}>
+                  uppercase
+                  py-2
+                  px-4
+                  border-2
+                  rounded-full
+                  ${label === topic ? 'border-blue/80 bg-gray-light' : 'border-black'}
+                `}
+                onClick={selectTopic}
+              >
                 {label}
               </button>
             </div>

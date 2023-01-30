@@ -1,6 +1,11 @@
 # Output Field
 
-`/components` - reusable, and page-specific components
+
+
+## Intro to the Folders
+
+`/components` - reusable and page-specific components
+`/e2e` - Playwright end-to-end test suite
 `/lib` - utility functions
 `/pages` - page components. Routing [docs](https://nextjs.org/docs/routing/introduction)
 `/pages/api` - "server side" code. [Docs](https://nextjs.org/docs/api-routes/introduction)
@@ -10,8 +15,35 @@
 `/styles` - style sheets
 `/types` - general use Typescript types
 
+## Configuration
 
-# Technology Stack
+You'll need `.env` and `.env.local`. Contact an admin for these.
+
+
+## Run in development
+
+Clone the repo, then navigate to the root of the project (where `package.json` lives) and run:
+
+```
+> npm install
+```
+
+
+Finally, run 
+```
+> npm run dev
+```
+ in a terminal window, and in browser your navigate to *localhost:3000*. Currently the project is best viewed in mobile (open the web Inspector and toggle device view).
+
+## Migrate the DB after schema change
+```
+> npx prisma migrate dev
+```
+This will also seed the database using *prisma/seed.ts*
+
+--- 
+
+## Learn more about the stack
 
 * [Next.js](https://nextjs.org/) statically generated site
 * Authentication with [Magic](https://magic.link/docs/introduction/what-is-magic)
@@ -21,16 +53,3 @@
 * Email contact built with [SendGrid](https://www.freecodecamp.org/news/how-to-build-a-working-contact-form-with-sendgrid-and-next-js/)
 * Deploy on [Vercel](https://vercel.com/solutions/nextjs)
 * Figma wireframes [here](https://www.figma.com/file/nOVN00JxxMrwsn8sGB6oVW/OF-Overview?node-id=219%3A2879)
-
-# Development
-
-Clone the repo, then navigate to the root of the project (where `package.json` lives) and run:
-```
-> npm install
-> npm run dev
-```
-In the browser,  The project is best viewed in mobile mode (open the Inspector and toggle device view).
-
-## Configuration
-
-You'll also need `.env` and `.env.local`. Contact an admin for these.
