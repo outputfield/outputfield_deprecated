@@ -20,26 +20,30 @@
 You'll need `.env` and `.env.local`. Contact an admin for these.
 
 
-## Seed the Database
-
-From root, run `npm run seed` in a terminal window.
-Check by running `npx prisma studio`.
-
-
-## Run Development
+## Run in development
 
 Clone the repo, then navigate to the root of the project (where `package.json` lives) and run:
+
 ```
 > npm install
+```
+
+
+Finally, run 
+```
 > npm run dev
 ```
-In the browser,  The project is best viewed in mobile mode (open the Inspector and toggle device view).
+ in a terminal window, and in browser your navigate to *localhost:3000*. Currently the project is best viewed in mobile (open the web Inspector and toggle device view).
 
-
+## Migrate the DB after schema change
+```
+> npx prisma migrate dev
+```
+This will also seed the database using *prisma/seed.ts*
 
 --- 
 
-## Learn the Stack
+## Learn more about the stack
 
 * [Next.js](https://nextjs.org/) statically generated site
 * Authentication with [Magic](https://magic.link/docs/introduction/what-is-magic)
