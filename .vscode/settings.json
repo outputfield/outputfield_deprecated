@@ -1,0 +1,6 @@
+{
+    "tailwindCSS.emmetCompletions": true,
+    "path-intellisense.showHiddenFiles": true,
+    "eslint.alwaysShowStatus": true,
+    "eslint.options.overrideConfigFile": "/Users/tinyherocarrot/projects/outputfield/.eslintrc.js",
+}
