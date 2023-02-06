@@ -391,13 +391,13 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
         </div>
 
         <div className="flex flex-col mx-3 mb-2">
-          <h2 className='ml-2 my-6 glow-black'>Add Links</h2>
+          <h2 className='text-lg ml-2 my-6 glow-black'>Add Links</h2>
           <ErrorMessage
             errors={errors}
             name='links'
             message='Please add at least one personal link.'
             render={({message}) => (
-              <p className=' text-gray-dark text-sm mb-2'>{message}</p>
+              <p className=' text-gray-dark text-base mb-2'>{message}</p>
             )}
           />
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
@@ -410,6 +410,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                     name={`links.${index}.url`}
                     placeholder="Enter your website"
                     required
+                    innerShadow
                   />
                 </div>
                 <div className='cols-span-1'>
@@ -428,7 +429,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                       e.preventDefault()
                       remove(index)}
                     }>
-                  - Remove
+                    <Image src="/removeIcon.svg" alt="-" height={13} width={13} /> Remove
                   </button>
                 </div>
               </div>
@@ -440,15 +441,15 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                 append({ url: '', title: '' }, { shouldFocus: true })
               }
               }>
-              + Add
+              <Image src="/addIcon.svg" alt="+" height={13} width={13} /> Add
             </button>
           </div>
         </div>
 
         <div className="flex flex-col mx-3 mb-2">
-          <h2 className='ml-2 my-6 glow-black'>Upload Work</h2>
+          <h2 className='text-lg ml-2 my-6 glow-black'>Upload Work</h2>
           {Object.values(state).length === 0 && (
-            <p className=' text-gray-dark text-sm mb-2'>Please add at least one work.</p>
+            <p className='text-gray-dark text-base mb-2'>Please add at least one work.</p>
           )}
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
             <div className="py-6 grid grid-cols-2 gap-20 justify-items-center">
@@ -457,10 +458,32 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                 return (
                   <span key={displayKey} className={`cols-span-${displayKey} `}>
                     <button
-                      className="appearance-none leading-none w-fit text-gray-700 border border-black border-dashed rounded-full p-8 mb-1 focus:outline-none focus:bg-white"
+                      className={`
+                        appearance-none
+                        leading-none
+                        w-fit
+                        text-gray-700
+                        border
+                        border-black
+                        border-dashed
+                        rounded-full
+                        p-8
+                        mb-1
+                        focus:outline-none
+                        focus:bg-white
+                        add-button__radial-gradient
+                      `}
                       id={`grid-upload-work-${displayKey}`}
                       onClick={setUploadDialogOpen(key)}>
-                      {state[key] ? 'file here!' : <Image src="/plusLg.svg" alt='+' width="36" height="36" />}
+                      {state[key] ? 'file here!' : (
+                        <Image
+                          src="/plusLg.svg"
+                          alt='+'
+                          width="36"
+                          height="36"
+                          className='add-button__drop-shadow'
+                        />
+                      )}
                     </button>
                     <label
                       className="block uppercase tracking-wide text-gray-700 text-xs text-center mb-2"
@@ -476,7 +499,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
         <Button type="submit" loading={isSubmitting}>Save</Button>
         <div className="text-center py-4">
           {isSubmitting && <Spinner />}
-          {isSubmitted && !isValid && 'Please correct the errors above.'}
+          {isSubmitted && !isValid && <p className='text-error-red'>Please correct the errors above.</p>}
         </div>
       </form>
     </>

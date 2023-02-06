@@ -167,9 +167,11 @@ export default function CreateAccount() {
         <title>Create Account | Output Field</title>
       </Head>
       <main>
-        <h1 className='glow-black text-[40px] ml-2'>
+        <h1 className='glow-black text-xl ml-4 mt-16'>
           New Profile
         </h1>
+        {/* TODO: use this full width Divider Component everywhere*/}
+        <div className='w-full mt-5 border-t border-dashed'></div>
         <ProfileForm
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}

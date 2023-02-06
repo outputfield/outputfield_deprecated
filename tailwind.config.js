@@ -18,12 +18,13 @@ module.exports = {
       'gray-ultralight': '#F8F8F8',
       'white': '#fff',
       'black': '#000',
+      'error-red': '#EE0004'
     },
     fontSize: {
       sm: ['10px'],
-      base: ['12px'],
-      lg: ['15px'],
-      xl: ['22px'],
+      base: ['13px'],
+      lg: ['19px'],
+      xl: ['25px'],
     },
     extend: {
       'textShadow': {

@@ -15,6 +15,7 @@ type InputProps = {
   disabled?: boolean;
   icon?: boolean;
   as?: 'textarea' | undefined;
+  innerShadow?: boolean;
 };
 
 export default function FormInput({
@@ -28,12 +29,13 @@ export default function FormInput({
   disabled,
   icon,
   as,
+  innerShadow,
   ...restProps
 }: InputProps) {
   return (
     <div className="flex w-5/6 mb-3 ">
       {icon && (
-        <div className="mt-8 mx-2">
+        <div className="mt-8 ml-3 mr-2">
           <Image
             src='/fourpointstar.svg'
             alt='*'
@@ -56,7 +58,20 @@ export default function FormInput({
               <textarea
                 id={label}
                 disabled={disabled || false}
-                className="w-full appearance-none text-gray-700 border border-black py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                className={`
+                  text-base
+                  w-full
+                  appearance-none
+                  text-gray-700
+                  border
+                  border-black
+                  py-4
+                  px-3
+                  leading-tight
+                  focus:outline-none
+                  focus:bg-white
+                  ${innerShadow && 'form-input__linear-gradient'}
+                `}
                 placeholder={placeholder || ''}
                 // type={type || ''}
                 {...restProps}
@@ -66,7 +81,20 @@ export default function FormInput({
               <input
                 id={label}
                 disabled={disabled || false}
-                className="w-full appearance-none text-gray-700 border border-black py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+                className={`
+                  text-base
+                  w-full
+                  appearance-none
+                  text-gray-700
+                  border
+                  border-black
+                  py-4
+                  px-3
+                  leading-tight
+                  focus:outline-none
+                  focus:bg-white
+                  ${innerShadow && 'form-input__linear-gradient'}
+                `}
                 placeholder={placeholder || ''}
                 type={type || ''}
                 {...restProps}
@@ -85,7 +113,7 @@ export default function FormInput({
           name={name}
           message='Please fill out this field.'
           render={({message}) => (
-            <p className=' text-gray-dark text-sm'>{message}</p>
+            <p className='text-gray-dark text-base mt-1'>{message}</p>
           )}
         />}
       </span>

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow-y: scroll;
+}
+
 .blurred {
   /* Any browser which supports CSS3 */
   filter: blur(1px);
@@ -44,15 +48,26 @@
 }
 
 @layer components {
-  .profile-picture {
+  .profile-pic__image {
     border: 0.5px solid rgba(0, 0, 0, 0.24);
     filter: drop-shadow(0px 0px 8px #D91919);
     @apply rounded-full;
   }
-  .profile-ellipse {
+  .profile-pic__ellipse {
     border: 1px dashed rgba(255, 0, 0, 0.24);
     filter: blur(2.4px);
     @apply h-32 w-20 absolute rounded-full;
+  }
+
+  .add-button__drop-shadow {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  }
+  .add-button__radial-gradient {
+    background: radial-gradient(50% 50% at 50% 50%, #EEEEF0 0%, rgba(238, 238, 240, 0) 100%);
+  }
+
+  .form-input__linear-gradient {
+    background: linear-gradient(185.66deg, #EEEEF0 -31.99%, rgba(238, 238, 240, 0) 96.55%);
   }
 }
 

@@ -43,7 +43,7 @@ const TabView: React.FC<Props> = ({ headers, children }) => {
           </Tab>
         ))}
       </Tab.List>
-      <Tab.Panels>
+      <Tab.Panels className='h-full'>
         {children.map((panel, index) => (
           <Tab.Panel
             id={`${index}`}
