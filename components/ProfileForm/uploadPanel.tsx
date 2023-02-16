@@ -19,7 +19,7 @@ export default function UploadPanel({
   })
   MemoDropzoneComponent.displayName = 'MemoDropzoneComponent'
   return (
-    <div className="text-center">
+    <div className="pt-24 text-center">
       <p>
         We support:
       </p>

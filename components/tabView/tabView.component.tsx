@@ -22,7 +22,7 @@ const TabView: React.FC<Props> = ({ headers, children }) => {
 
   return (
     <Tab.Group>
-      <Tab.List className="flex flex-row items-start mb-0 mx-6 pb-4">
+      <Tab.List className="flex flex-row items-start mb-0 mx-4 pb-4">
         {headers?.map((header) => (
           <Tab
             key={header}
@@ -31,10 +31,10 @@ const TabView: React.FC<Props> = ({ headers, children }) => {
             {({ selected }) => (
               <a
                 className={
-                  'px-4 py-0 mx-2 border rounded-full last:mr-0 font-bold uppercase leading-normal decoration-blue-600 decoration-2 ' +
+                  'px-3 py-0.5 mx-2 border rounded-full last:mr-0 font-bold uppercase leading-normal decoration-blue-600 decoration-2 ' +
                   (selected
-                    ? 'border-blue text-blue'
-                    : 'border-black')
+                    ? 'border-blue text-blue drop-shadow-sm'
+                    : 'border-none')
                 }
               >
                 {header}
@@ -45,9 +45,6 @@ const TabView: React.FC<Props> = ({ headers, children }) => {
       </Tab.List>
       <Tab.Panels className={`
         h-full
-        flex
-        items-center
-        justify-center
       `}>
         {children.map((panel, index) => (
           <Tab.Panel

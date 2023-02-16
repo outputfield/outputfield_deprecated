@@ -26,6 +26,9 @@ module.exports = {
       lg: ['19px'],
       xl: ['25px'],
     },
+    dropShadow: {
+      sm: ['0px 0px 4px 0px rgba(0, 0, 0, 0.25)']
+    },
     extend: {
       'textShadow': {
         'blue': '0px 0px 4px #001AFF'

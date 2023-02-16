@@ -184,7 +184,8 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
                 placeholder:text-slate-400
                 disabled:text-slate-300
                 disabled:placeholder:text-slate-300
-                py-3.5
+                py-4
+                px-3
                 text-base
                 focus:outline-none
                 focus:glow-blue
@@ -218,8 +219,8 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
             placeholder:text-slate-400
             disabled:text-slate-300
             disabled:placeholder:text-slate-300
+            py-4
             px-3
-            py-3.5
             text-base
             uppercase
             focus:outline-none
@@ -248,7 +249,8 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
             w-full
             placeholder:text-slate-400
             readOnly:text-slate-300
-            p-4
+            py-4
+            px-3
             min-h-80
             align-top
             resize-y

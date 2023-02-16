@@ -30,11 +30,11 @@ export default function EmbedPanel({
   }
   return (
     <form
-      className='text-center py-12 px-8'
+      className='text-left mt-16 px-8'
       onSubmit={handleSubmit(onSubmit as SubmitHandler<EmbeddedWork>)}
     >
       <input
-        className="w-full appearance-none text-gray-700 border border-black py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        className="w-full py-4 px-3 appearance-none text-base text-gray-700 border border-black mb-3 leading-tight focus:outline-none focus:bg-white"
         placeholder="Link: Youtube, Vimeo, SoundCloud, etc."
         {...register('url', {
           required: true,
@@ -54,7 +54,7 @@ export default function EmbedPanel({
         </p>
       )}
       <input
-        className="w-full appearance-none text-gray-700 border border-black py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+        className="w-3/5 py-4 px-3 appearance-none text-base text-gray-700 border border-black mb-3 leading-tight focus:outline-none focus:bg-white"
         placeholder="Title"
         {...register('title', { required: true })} 
       />
@@ -63,10 +63,14 @@ export default function EmbedPanel({
           Please fill out this field.
         </p>
       )}
-      <Button type='submit'>
+      <div className='mt-24 mb-10'>
+        <Button type='submit'>
         Embed
-      </Button>
-      
+        </Button>
+      </div>
+      <p className='text-center'>
+        List of supported embeds (+++)
+      </p>
     </form>
   )
 }
