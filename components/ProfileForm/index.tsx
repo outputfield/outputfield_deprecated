@@ -236,7 +236,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
         {/* Full-screen container to center the panel */}
         <div className="fixed inset-0 flex items-center justify-center ">
           {/* The actual dialog panel  */}
-          <Dialog.Panel className="mx-auto max-w-sm bg-white h-screen min-w-full">
+          <Dialog.Panel className="flex flex-col mx-auto max-w-sm bg-white h-screen min-w-full">
             <div className="h-12 sm:ml-4 flex items-center justify-between relative">
               <button
                 className='px-4'
@@ -248,7 +248,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                 <Image src="/closeIcon.svg" alt="close" width={16} height={16} />
               </button>
             </div>
-            <div className='px-2 py-8 border-t border-black border-dashed'>
+            <div className='h-full px-2 py-8 border-t border-black border-dashed'>
               <TabView headers={['Upload', 'Embed']}>
                 <UploadPanel handleUploadWork={handleUploadWork} uploadNum={uploadNum} />
                 <EmbedPanel handleEmbedWork={handleEmbedWork} />
