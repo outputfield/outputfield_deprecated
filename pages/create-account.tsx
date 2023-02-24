@@ -171,7 +171,7 @@ export default function CreateAccount() {
           New Profile
         </h1>
         {/* TODO: use this full width Divider Component everywhere*/}
-        <div className='w-full mt-5 border-t border-dashed'></div>
+        <div className='w-full mt-5 border-long-dashed-t'></div>
         <ProfileForm
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
