@@ -33,7 +33,7 @@ export default function FormInput({
   ...restProps
 }: InputProps) {
   return (
-    <div className="flex w-5/6 mb-3 ">
+    <div className="flex w-5/6 mb-3">
       {icon && (
         <div className="mt-8 ml-3 mr-2">
           <Image
