@@ -4,6 +4,9 @@ import Header from './header'
 
 const Layout = ({ children }: any) => (
   <>
+    <Head>
+      <title>Output Field</title>
+    </Head>
     <Header />
 
     <main>

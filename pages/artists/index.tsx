@@ -6,6 +6,7 @@ import ArtistsFilter from '../../components/artists/artistsFilter'
 import prisma from '../../lib/prisma'
 import { usePaginatedArtists } from '../../lib/usePaginatedArtists'
 import Layout from '../../components/layout'
+import Image from 'next/image'
 
 const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
   const [filterOpen, setFilterOpen] = useState(false)
@@ -66,14 +67,6 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
 
   return (
     <Layout>
-      {/* FIXME: on search focus, blur bg */}
-      <div
-        className={`${'hidden peer-focus:block '} z-10 fixed inset-0 bg-gray-100 bg-opacity-75 transition-opacity w-full h-screen blurred border border-red-500`}
-        aria-hidden="true">
-        bg
-      </div>
-      {/*  /////////////////////////////  */}
-
       <div className="text-base">
         {/* Artist search & ArtistsFilter */}
         <div className="relative min-h-44 px-4 pb-4 flex flex-col space-y-14">
@@ -82,14 +75,14 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
             <button
               onClick={openFilters}
               className="uppercase flex flex-col items-center">
-              <p>filter <span className="text-blue"> {filters?.length ? `(${filters.length})` : ''}</span></p> 
-              <div className="p-1">
+              <p>Filter <span className="text-blue"> {filters?.length ? `(${filters.length})` : ''}</span></p> 
+              <span className="p-1">
                 {filters?.length ? (
-                  <img src="/filterIconFilled.svg" alt="Filter icon" />
+                  <Image src="/filterIconFilled.svg" alt="Filter icon" width={32} height={32} />
                 ) : (
-                  <img src="/filterIcon.svg" alt="Filter icon" />
+                  <Image src="/filterIcon.svg" alt="Filter icon" width={32} height={32} />
                 )}
-              </div>
+              </span>
             </button>
           </div>
 
@@ -99,8 +92,22 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
               <span className="sr-only">Search</span>
               <input
                 placeholder="Search"
-                className={
-                  'text-base block z-0 border border-black uppercase shadow focus:border-blue transition pr-4 focus:pl-8 motion-reduce:transition-none motion-reduce:hover:transform-none peer rounded-none w-full'
+                className={`
+                  text-base
+                  block
+                  z-0
+                  border
+                  border-black
+                  uppercase
+                  shadow
+                  focus:border-blue
+                  transition
+                  pr-0
+                  focus:pl-8
+                  motion-reduce:transition-none
+                  motion-reduce:hover:transform-none
+                  peer
+                  rounded-none w-full`
                 }
                 type="text"
                 value={searchTerm}
@@ -111,9 +118,9 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
                   'absolute inset-y-0 max-w-max bottom-0.5 right-3 peer-focus:left-0 flex items-center pl-2 z-20'
                 }>
                 {searchTerm?.length ? (
-                  <img src="/searchIconFilled.svg" alt="Search icon" />
+                  <Image src="/searchIconFilled.svg" alt="Search icon" width={16} height={16} />
                 ) : (
-                  <img src="/searchIcon.svg" alt="Search icon" />
+                  <Image src="/searchIcon.svg" alt="Search icon" width={16} height={16} />
                 )}
               </span>
               {Boolean(searchTerm?.length) && (
@@ -122,9 +129,29 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
                   className={
                     'absolute inset-y-0 right-0 opacity-0 items-center px-2 peer-focus:opacity-100 z-10'
                   }>
-                  <img src="/clearInputIcon.svg" alt="Clear search input" />
+                  <Image src="/clearInputIcon.svg" alt="Clear search input" width={12} height={12} />
                 </button>
               )}
+              {/* FIXME: on search focus, blur bg */}
+              <div
+                className={`
+                  hidden
+                  peer-focus:block
+                  z-50
+                  fixed
+                  inset-0
+                  bg-gray-100
+                  bg-opacity-75
+                  transition-opacity
+                  w-full
+                  h-screen
+                  blurred
+                  border
+                  border-red-500
+                `}
+                aria-hidden="true">
+              </div>
+              {/*  /////////////////////////////  */}
             </label>
 
             <div className="flex flex-col justify-around">

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow-y: scroll;
+}
+
 .blurred {
   /* Any browser which supports CSS3 */
   filter: blur(1px);
@@ -14,16 +18,74 @@
 }
 
 @layer utilities {
-  .glow-blue {
+  .glow-blue-text {
     /* Shadows/Text */
     text-shadow: 0px 0px 2px theme('colors.blue');  
+  }
+
+  .glow-blue {
+    filter: drop-shadow(0px 0px 2px theme('colors.blue'));
   }
 
   .glow-highlight {  
     text-shadow: 0px 0px 2px theme('colors.highlight');
   }
-  .glow-red-lg {
+
+  .glow-red-inner {
+    background-color: #fff;
     box-shadow: 0px 4px 8px rgba(255, 0, 15, 0.2), 0px 5px 8px rgba(255, 0, 31, 0.6);
+    padding: 8px 5px;
+  }
+  .glow-red-outer {
+    background: rgba(219, 37, 37, 0.25);
+    box-shadow: 0px 4px 4px rgba(224, 22, 34, 0.25), 0px 4px 4px rgba(208, 81, 89, 0.2);
+    filter: blur(8px);
+  }
+
+  .glow-black {
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Generated with https://kovart.github.io/dashed-border-generator/. 
+     Native CSS properties don't support the customization of border-style. Therefore, we use a trick with an SVG image inside background-image property. */
+  .border-long-dashed {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23333' stroke-width='1' stroke-dasharray='4' stroke-dashoffset='4' stroke-linecap='butt'/%3e%3c/svg%3e");
+  }
+
+  /* TODO: top and bottom only custom dashed border */
+  .border-long-dashed-x {}
+
+  /* TODO: top and bottom only custom dashed border */
+  .border-long-dashed-y {}
+
+  /* TODO: top only custom dashed border */
+  .border-long-dashed-t {}
+  
+  /* TODO: bottom only custom dashed border */
+  .border-long-dashed-b {}
+}
+
+@layer components {
+  .profile-pic__image {
+    border: 0.5px solid rgba(0, 0, 0, 0.24);
+    filter: drop-shadow(0px 0px 8px #D91919);
+    @apply rounded-full;
+  }
+  .profile-pic__ellipse {
+    border: 1px dashed rgba(255, 0, 0, 0.24);
+    filter: blur(2.4px);
+    @apply h-32 w-20 absolute rounded-full;
+  }
+
+  .add-button__drop-shadow {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  }
+  .add-button__radial-gradient {
+    background: radial-gradient(50% 50% at 50% 50%, #EEEEF0 0%, rgba(238, 238, 240, 0) 100%);
+  }
+
+  .form-input__linear-gradient {
+    background: linear-gradient(185.66deg, #EEEEF0 -31.99%, rgba(238, 238, 240, 0) 96.55%);
   }
 }
 
@@ -33,31 +95,29 @@ input:checked + div {
 input:checked + div svg {
   @apply block;
 }
-.lds-circle {
-    display: inline-block;
-    transform: translateZ(1px);
+
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #000;
+  border-color: #000 transparent #000 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
   }
-  .lds-circle > div {
-    display: inline-block;
-    width: 64px;
-    height: 64px;
-    margin: 8px;
-    border-radius: 50%;
-    background: #fff;
-    animation: lds-circle 2.4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  100% {
+    transform: rotate(360deg);
   }
-  @keyframes lds-circle {
-    0%, 100% {
-      animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
-    }
-    0% {
-      transform: rotateY(0deg);
-    }
-    50% {
-      transform: rotateY(1800deg);
-      animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
-    }
-    100% {
-      transform: rotateY(3600deg);
-    }
-  }
+}

@@ -7,7 +7,7 @@ import sgClient from '../../../lib/sendgridClient'
 export default async function sendArtistEmail(req: NextApiRequest, res: NextApiResponse) {
   try {
     const {
-      senderName = '',
+      senderName = 'Anonymous',
       senderEmail,
       recipientName,
       recipientEmail,
@@ -18,28 +18,30 @@ export default async function sendArtistEmail(req: NextApiRequest, res: NextApiR
       mediums,
       message,
     } = req.body
-    // console.log("REQ.BODY", req.body);
     const msg = {
-      to: recipientEmail, // Change to your recipient
+      to: recipientEmail,
       from: 'team@outputfield.com',
-      templateId: 'd-9cf2d11178ee4095ac907bde7a085a46',
+      templateId: 'd-f0bff8d23784404aa5fa8108a9c0e0ad',
       dynamic_template_data: {
-        senderName, // TODO: get this from Prisma onSubmit from 'contact.tsx'
+        senderName,
         topic,
-        subject : `[${topic}]: ${subject}`,
+        subject,
         title,
         location,
-        mediums,
+        mediums: mediums.length <= 1 ? mediums[0] : mediums.join(', '),
         message,
         recipientName,
         senderEmail,
       },
     }
+    console.log('msg', msg)
+
     await sgClient.send(msg)
-  } catch (error: any) {
-    // console.log(error);
-    return res.status(error.statusCode || 500).json({ error: error.message })
+    return res.status(200).json({ error: '' })
+  } catch (error) {
+    console.log(error)
+    throw error
+    // return res.status(error.statusCode || 500).json({ error: error.message })
   }
 
-  return res.status(200).json({ error: '' })
 }

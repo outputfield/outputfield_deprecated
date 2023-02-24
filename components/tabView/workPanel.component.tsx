@@ -27,9 +27,7 @@ const WorkPanel: React.FC<Props> = ({
       className='h-72'>
       {works ? 
         works.map(({id, url}) => {
-          const playable = ReactPlayer.canPlay(url)
-          console.log(playable, url)
-          
+          const playable = ReactPlayer.canPlay(url)          
           return (
             <SwiperSlide key={id}>
               {

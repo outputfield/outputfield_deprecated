@@ -19,13 +19,18 @@ export default function UploadPanel({
   })
   MemoDropzoneComponent.displayName = 'MemoDropzoneComponent'
   return (
-    <div className="text-center">
-                   We currently support:
+    <div className="pt-24 text-center">
+      <p>
+        We support:
+      </p>
       <br /><br />
       <ul>
         <li>images (jpg, png, gif, tiff)</li>
+        <li>video (mp4, mov)</li>
+        <li>audio (mp3)</li>
+        <li>documents (pdf)</li>
       </ul>
-      <br />
+      <br /><br /><br />
       <MemoDropzoneComponent uploadNum={uploadNum} />
     </div>
   )

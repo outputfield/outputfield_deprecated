@@ -17,7 +17,7 @@ const LINKS = [
     label: 'Artists'
   }, {
     href: '/profile',
-    label: 'Account'
+    label: 'Profile'
   }, {
     href: 'api/logout',
     label: 'Logout'
@@ -30,8 +30,8 @@ const Header = () => {
 
   const currentPage = useMemo(() => {
     console.log(router.pathname)
-    const [{ label: page = '' }] = LINKS.filter(({href}) => router.pathname === href)
-    return page
+    const [{ label = '' }] = LINKS.filter(({href}) => router.pathname === href)
+    return label
   }, [router.pathname])
 
   return (
@@ -61,9 +61,7 @@ const Header = () => {
                 <>
                   <li>
                     <Link href="/profile" passHref className="block px-4 py-2 hover:bg-gray">
-                      
                         Profile
-                      
                     </Link>
                   </li>
                   <li>

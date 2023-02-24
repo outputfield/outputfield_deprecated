@@ -19,7 +19,6 @@ export type ArtistsWithUserAndWorkAndLinks = Prisma.PromiseReturnType<typeof get
 const findArtists = (page: string, limit: string, search: string, filters: any) => {
   const take: number = limit ? parseInt(limit) : 0
   const skip: number = (page && limit) ? parseInt(limit) * (parseInt(page) - 1) : 0
-  // console.log(JSON.stringify(prismaQuery, null, 2))
   return prisma.artist.findMany({
     take,
     skip,
@@ -59,7 +58,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         Array.isArray(search) ? search.join('') : search as string,
         filters
       )
-     
+
       if (!data) {
         return res.status(404)
       } else {

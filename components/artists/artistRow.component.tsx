@@ -1,10 +1,10 @@
 import React from 'react'
-import Image from 'next/legacy/image'
 import Link from 'next/link'
-import { ArtistWithWorkAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithUserAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import ProfilePicture from './profilePicture'
 
 export interface ArtistRowProps {
-  artist: ArtistWithWorkAndLinks;
+  artist: ArtistWithUserAndWorkAndLinks;
   type: 'list' | 'detail';
   className?: string;
 }
@@ -14,19 +14,14 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
 
   const row = (
     <div
-      className={`${type === 'detail' ? 'border-y' : ''} ${
-        type === 'list' ? 'border-t' : ''
-      } border-black border-dashed w-full flex flex-col relative pt-[11px] pl-[13px] pb-[8px] pr-[11px]`}>
+      data-testid='artistRow'
+      className={`
+        ${type === 'detail' ? 'border-long-dashed-y' : ''} 
+        ${type === 'list' ? 'border-long-dashed-t' : ''} 
+        w-full flex flex-col relative pt-[11px] pl-[13px] pb-[8px] pr-[11px]`}>
       <div className="grow relative flex justify-center self-start items-center">
         <div className="mx-[10px] my-[24px]">
-          <Image
-            alt="Artist profile pic"
-            src="https://via.placeholder.com/100"
-            // layout="fill"
-            height={100}
-            width={100}
-            className="rounded-full"
-          />
+          <ProfilePicture />
           {type == 'detail' && <div className="text-center font-serif">{artist?.pronouns}</div>}
         </div>
         <div className="ml-3 py-auto text-lg">
@@ -47,7 +42,7 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
     return (
       <Link
         href={uri}
-        className="last-of-type:border last-of-type:border-black last-of-type:border-dashed"
+        className="last-of-type:border-long-dashed-y"
         legacyBehavior>
         {row}
       </Link>

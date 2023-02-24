@@ -5,14 +5,15 @@ type Props = {
   children?: React.ReactNode;
 }
 
-const Overlay: React.FC<Props> = ({ className, children })  => {
+const Overlay: React.FC<Props> = ({ className, children, ...restProps })  => {
   return (
     <div
       id="filter"
       className={`fixed z-50 inset-0 overflow-y-auto ${className}`}
-      aria-labelledby="filters-modal"
       role="dialog"
-      aria-modal="true">
+      aria-modal="true"
+      {...restProps}
+    >
       <div className="flex justify-center min-h-screen text-center sm:block sm:p-0">
         {/* <!--
                 Modal panel, show/hide based on modal state.

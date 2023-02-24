@@ -3,9 +3,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function addArtistWorks(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'PUT') {
-
-    console.log('/addUserWorks req.body... ', req.body)
-
     const {
       artistHandle, works
     } = JSON.parse(req.body)

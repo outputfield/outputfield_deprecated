@@ -1,14 +1,18 @@
-import React, { BaseSyntheticEvent, useState } from 'react'
+import React, { BaseSyntheticEvent, useEffect, useState } from 'react'
 import { Prisma } from '@prisma/client'
 
 import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
 import { UserCreateInputWithArtist, UserWithArtist } from './api/signUp'
-import { partition } from '../lib/utils'
+import { makeid, partition } from '../lib/utils'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 export type Work = {
   title: string,
   url: string,
 }
+
+// - - - HELPER FNs - - -
 
 // 1. create user
 async function createUser(data: UserCreateInputWithArtist): Promise<UserWithArtist> {
@@ -89,19 +93,35 @@ async function updateUserWithWorks(works: Work[], handle: string) {
   }
 }
 
-function makeid(length: number) {
-  let result           = ''
-  const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  const charactersLength = characters.length
-  for ( let i = 0; i < length; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * 
-    charactersLength))
+// 4. Revalidate Artist's page
+async function revalidateArtistPage(pathToRevalidate: string) {
+  try {
+    const params =  {
+      'secret': process.env.NEXT_PUBLIC_NEXT_REVALIDATION_TOKEN || 'no token found',
+    }
+    await fetch('/api/revalidate'+ '?' + new URLSearchParams(params),
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          pathToRevalidate
+        })
+      }
+    )
+    console.log('successfully revalidated artist page!')
+  } catch (error) {
+    throw new Error(`Failed to revalidate: ${error}`)
   }
-  return result
 }
+// - - - END HELPER FNs - - -
 
-export default function SignUp() {
+export default function CreateAccount() {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
+  const [ message, setMessage ] = useState('')
+  const router = useRouter()
+
+  useEffect(() => {
+    // TODO: show error if query params doesnt include email
+  }, [])
 
   // Pass submit handler fn into ProfileForm
   const handleSubmit = async (event: BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => {
@@ -110,23 +130,34 @@ export default function SignUp() {
     setIsSubmitting(true)
 
     try {
-      // FIXME: Grab new user email from URL
-      const _email = `${makeid(6)}@gmail.com`
-      // FIXME: get nominatorId from URL
-      const _nominatorId = 1
+      const params = new URLSearchParams(document.location.search)
+      const _email = params.get('email') || `${makeid(6)}@gmail.com`
+      const _nominatorId = params.get('nominatorId') || '1'
       const newUser: UserWithArtist = await createUser({
         ...data,
         name: data.name,
         handle: data.handle,
+        mediums: data.mediums.map(({ label }) => label),
+        mediumsOfInterest: data.mediumsOfInterest.map(({ label }) => label),
         links: data.links as Prisma.LinkCreateNestedManyWithoutArtistInput,
         email: _email,
-        nominatorId: _nominatorId,
+        nominatorId: parseInt(_nominatorId),
       })
       const userId = newUser.artist? newUser.artist.handle : `artist${newUser.id}`
       const works = await uploadFiles(files, userId)
-      updateUserWithWorks(works as Work[], userId)
+      await updateUserWithWorks(works as Work[], userId)
+
+      // Trigger revalidation, on new artist's page only
+      await revalidateArtistPage(`/artists/${newUser.artist?.handle}`)
+
+      setMessage('Account successfully created! Redirecting to Login shortly...')
+      setTimeout(() => {
+        // Finally, redirect to /login, where user will login for the first time
+        router.push('/login')
+      }, 3000)
     } catch (error) {
       console.error(error)
+      setMessage('Sorry, something went wrong.')
     } finally {
       setIsSubmitting(false)
     }
@@ -134,10 +165,23 @@ export default function SignUp() {
 
   return (
     <>
-      <ProfileForm
-        onSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-      />
+      <Head>
+        <title>Create Account | Output Field</title>
+      </Head>
+      <main>
+        <h1 className='glow-black text-xl ml-4 mt-16'>
+          New Profile
+        </h1>
+        {/* TODO: use this full width Divider Component everywhere*/}
+        <div className='w-full mt-5 border-long-dashed-t'></div>
+        <ProfileForm
+          onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+        />
+        <div className="text-center text-sm text-blue">
+          {message}
+        </div>
+      </main>
     </>
   )
 }

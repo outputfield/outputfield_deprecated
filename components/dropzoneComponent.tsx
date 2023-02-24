@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react'
+import { Button } from './Button'
 
 function DropzoneComponent({ handleDrop }: any) {
   const [file, setFile] = useState<File | undefined>()
@@ -40,13 +41,13 @@ function DropzoneComponent({ handleDrop }: any) {
 
   return (
     <section>
-      <label htmlFor="file-upload" className='pointer cursor-pointer'>
+      <label htmlFor="file-upload" className='cursor-pointer'>
         <div>
           {/* TODO: {thumbNail} */}
           {file && (
             <p>{file.name} - {file.size}</p>
           )}
-          <div id="dashboard-image-hover" >Upload Image</div>
+          <Button as="a">Upload</Button>
         </div>
       </label>
       <input id="file-upload" type="file" accept='.png, .jpeg, .jpg' onChange={handleImageUpload} className='hidden'/>

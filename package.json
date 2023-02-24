@@ -6,36 +6,45 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test:e2e": "set STAGING=1&& npx playwright test",
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.150.0",
     "@hapi/iron": "6.0.0",
     "@headlessui/react": "^1.7.4",
     "@hookform/error-message": "^2.0.0",
-    "@magic-sdk/admin": "1.0.0",
+    "@magic-sdk/admin": "1.8.0",
     "@prisma/client": "^3.8.1",
     "@sendgrid/mail": "^7.6.0",
     "@tailwindcss/forms": "^0.4.1",
     "aws-sdk": "^2.1181.0",
     "cookie": "0.4.0",
+    "form-data": "^4.0.0",
     "formidable-serverless": "^1.1.1",
     "html-react-parser": "^1.4.6",
-    "magic-sdk": "1.0.1",
+    "magic-sdk": "11.0.0",
     "next": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-easy-swipe": "^0.0.22",
     "react-hook-form": "^7.26.1",
     "react-player": "^2.11.0",
+    "sharp": "^0.31.3",
     "swiper": "^8.1.5",
     "swr": "latest"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.5.2",
     "@next/eslint-plugin-next": "^12.1.5",
+    "@playwright/test": "^1.29.1",
     "@prisma/client": "^3.13.0",
     "@types/cookie": "^0.4.1",
-    "@types/node": "^17.0.30",
+    "@types/node": "^17.0.45",
     "@types/react": "^17.0.44",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
     "@typescript-eslint/parser": "^5.18.0",
@@ -45,6 +54,7 @@
     "postcss": "^8.4.5",
     "prisma": "^3.13.0",
     "tailwindcss": "^3.0.18",
-    "typescript": "^4.6.3"
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
   }
 }
