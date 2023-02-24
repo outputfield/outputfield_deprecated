@@ -137,6 +137,8 @@ export default function CreateAccount() {
         ...data,
         name: data.name,
         handle: data.handle,
+        mediums: data.mediums.map(({ label }) => label),
+        mediumsOfInterest: data.mediumsOfInterest.map(({ label }) => label),
         links: data.links as Prisma.LinkCreateNestedManyWithoutArtistInput,
         email: _email,
         nominatorId: parseInt(_nominatorId),
