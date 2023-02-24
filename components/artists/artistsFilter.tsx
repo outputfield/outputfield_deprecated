@@ -71,7 +71,16 @@ const ArtistsFilter: React.FC<Props> = ({
 
   return (
     <Overlay aria-label="Artists Filter" className={`${isOpen? 'visible': 'hidden'}`}>
-      <div className="mt-0 sm:mt-0 sm:ml-4 flex justify-between border-b border-black border-dashed px-4 pb-4">
+      <div className={`
+        px-4
+        pb-4
+        mt-0
+        sm:mt-0
+        sm:ml-4
+        flex
+        justify-between
+        border-long-dashed-b
+      `}>
         <button
           className={'underline uppercase leading-6 disabled:text-gray' + (filtersCount === 0 && 'cursor-not-allowed')}
           type="reset"

@@ -136,13 +136,13 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                 <Image src="/closeIcon.svg" alt="close" width={16} height={16} />
               </button>
             </div>
-            <div className='h-full px-2 py-8 border-t border-black border-dashed'>
+            <div className='h-full px-2 py-8 border-long-dashed-t'>
               <TabView headers={['Upload', 'Embed']}>
                 <UploadPanel handleUploadWork={handleUploadWork} uploadNum={uploadNum} />
                 <EmbedPanel handleEmbedWork={handleEmbedWork} />
               </TabView>
             </div>
-            <div className='w-full h-6 border-t border-dashed absolute bottom-0' />
+            <div className='w-full h-6 border-long-dashed-t absolute bottom-0' />
           </Dialog.Panel>
         </div>
       </Dialog>
@@ -273,7 +273,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
               <p className=' text-gray-dark text-base mb-2'>{message}</p>
             )}
           />
-          <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
+          <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border-long-dashed">
             {fields.map((field, index) => (
               <div className="py-6 grid grid-cols-2 grid-flow-cols justify-items-stretch items-center" key={field.id}>
                 <div className='col-start-1 col-end-3'>
@@ -324,7 +324,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
           {Object.values(state).length === 0 && (
             <p className='text-gray-dark text-base mb-2'>Please add at least one work.</p>
           )}
-          <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border border-dashed border-black">
+          <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border-long-dashed">
             <div className="py-6 grid grid-cols-2 gap-20 justify-items-center">
               {[0,1,2,3,4,5].map((key) => {
                 const displayKey = key + 1

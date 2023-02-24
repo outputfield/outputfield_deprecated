@@ -129,6 +129,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
         w-full
         h-full
         pt-0
+        text-[12px]
       `}
     >
       <div className="block pt-5 px-3 pb-3">Select a message topic:</div>
@@ -203,7 +204,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
                 }
               })}
             />
-            <div className="h-6 border-x border-dashed border-black" />
+            <div className="h-6 border-long-dashed-x" />
           </>
         )}
         <input
@@ -235,7 +236,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
             disabled: topic === null,
           })}
         />
-        <div className="h-6 border-x border-dashed border-black" />
+        <div className="h-6 border-long-dashed-x" />
         <textarea
           className={`
             text-black
