@@ -1,52 +1,52 @@
 import React from 'react'
-import Artist from '../data/artist'
+import Link from 'next/link'
+import { ArtistWithUserAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import ProfilePicture from './profilePicture'
 
 export interface ArtistRowProps {
-  artist: Artist;
+  artist: ArtistWithUserAndWorkAndLinks;
   type: 'list' | 'detail';
-  onClick?: (event: any) => any;
+  className?: string;
 }
 
-export const ArtistRow = ({
-  artist,
-  type,
-  onClick,
-}:ArtistRowProps) => {
+export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
+  const uri = `/artists/${encodeURIComponent(artist?.handle || '')}`
+
   const row = (
-    <div>
-      <div/>
-      <div>
-        <h1>
-          {artist.name}
-        </h1><br/>
-        <div>
-          {artist.handle}
+    <div
+      data-testid='artistRow'
+      className={`${type === 'detail' ? 'border-y' : ''} ${
+        type === 'list' ? 'border-t' : ''
+      } border-black border-dashed w-full flex flex-col relative pt-[11px] pl-[13px] pb-[8px] pr-[11px]`}>
+      <div className="grow relative flex justify-center self-start items-center">
+        <div className="mx-[10px] my-[24px]">
+          <ProfilePicture />
+          {type == 'detail' && <div className="text-center font-serif">{artist?.pronouns}</div>}
         </div>
-        <div/>
-        <div>
-          {artist.location}
-        </div><br/>
-        {type == 'detail' ?
-          (
-            <div>
-              {artist.pronouns}
-            </div>
-          ):''
-        }
+        <div className="ml-3 py-auto text-lg">
+          <p className="text-[18px]">{artist?.user.name}</p>
+          <span className="italic lowercase font-serif">{`'${artist?.title}'`}</span>
+          {artist?.title && artist?.location && (
+            <span className="text-3xl font-light mx-1 align-sub">&#9702;</span>
+          )}
+          <span>{artist?.location}</span>
+        </div>
       </div>
-      <div>
-        {artist.medium}
-      </div>
+      <span className="text-right text-lg uppercase absolute right-[13px] bottom-[8px]">
+        {artist?.mediums}
+      </span>
     </div>
   )
-
-  if(type=='detail'){
-    return row
-  } else {
+  if (type === 'list') {
     return (
-      <a onClick={onClick}>
+      <Link
+        href={uri}
+        className="last-of-type:border last-of-type:border-black last-of-type:border-dashed"
+        legacyBehavior>
         {row}
-      </a>
+      </Link>
     )
-  }
+  } 
+
+  return row
 }

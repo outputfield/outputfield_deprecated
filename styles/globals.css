@@ -1,3 +1,90 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.blurred {
+  /* Any browser which supports CSS3 */
+  filter: blur(1px);
+
+  /* Firefox version 34 and earlier */
+  filter: url("../assets/blur.svg#gaussian_blur");
+
+  /* Webkit in Chrome 52, Safari 9, Opera 39, and earlier */
+  -webkit-filter: blur(1px);
+}
+
+@layer utilities {
+  .glow-blue-text {
+    /* Shadows/Text */
+    text-shadow: 0px 0px 2px theme('colors.blue');  
+  }
+
+  .glow-blue {
+    filter: drop-shadow(0px 0px 2px theme('colors.blue'));
+  }
+
+  .glow-highlight {  
+    text-shadow: 0px 0px 2px theme('colors.highlight');
+  }
+
+  .glow-red-inner {
+    background-color: #fff;
+    box-shadow: 0px 4px 8px rgba(255, 0, 15, 0.2), 0px 5px 8px rgba(255, 0, 31, 0.6);
+    padding: 8px 5px;
+  }
+  .glow-red-outer {
+    background: rgba(219, 37, 37, 0.25);
+    box-shadow: 0px 4px 4px rgba(224, 22, 34, 0.25), 0px 4px 4px rgba(208, 81, 89, 0.2);
+    filter: blur(8px);
+  }
+
+  .glow-black {
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  }
+}
+
+@layer components {
+  .profile-picture {
+    border: 0.5px solid rgba(0, 0, 0, 0.24);
+    filter: drop-shadow(0px 0px 8px #D91919);
+    @apply rounded-full;
+  }
+  .profile-ellipse {
+    border: 1px dashed rgba(255, 0, 0, 0.24);
+    filter: blur(2.4px);
+    @apply h-32 w-20 absolute rounded-full;
+  }
+}
+
+input:checked + div {
+  @apply border-blue;
+}
+input:checked + div svg {
+  @apply block;
+}
+
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #000;
+  border-color: #000 transparent #000 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

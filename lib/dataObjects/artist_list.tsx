@@ -16,7 +16,7 @@ bio?:               string;
 mediums?:           string[];
 mediumsOfInterest?: string[];
 links?:             Link[];
-referredBy?:        Artist;
+nominatedBy?:        Artist;
 */
 
 /*

@@ -1,64 +1,84 @@
+// TODO: rename to create-account
 import prisma from '../../lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { Prisma } from '@prisma/client'
 
-export default async function signUp(req: NextApiRequest, res: NextApiResponse) {
-  console.log(req.body)
+export type UserCreateInputWithArtist = Prisma.UserCreateInput & Prisma.ArtistCreateWithoutUserInput & { nominatorId: number }
 
-  const {
-    Name: name,
-    Title: title,
-    Handle: handle,
-    Pronouns: pronoun,
-    Location: location,
-    Mediums: mediums,
-    'Mediums of Interest': mediumsOfInterest,
-    links,
-    works,
-    Bio: bio, 
-    email,
-    referrerId
-  } = req.body
-  try {
-    // 1. Create user in DB (as an Artist), along with artist's Works, and Links. Return user's email
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        artist: {
-          create: {
-            title,
-            pronoun,
-            bio,
-            location,
-            handle,
-            mediums,
-            mediumsOfInterest,
-            work: {
-              createMany: {
-                data: works
-              }
-            },
-            links: {
-              createMany: {
-                data: links
-              }
-            },
-            referredBy: { connect: { referrerId } }
+function createUserAndIncludeArtist(d: UserCreateInputWithArtist) {
+  return prisma.user.create({
+    data: {
+      name: d.name,
+      email: d.email,
+      nominatorId: d.nominatorId,
+      artist: {
+        create: {
+          title: d.title,
+          pronouns: d.pronouns,
+          bio: d.bio,
+          location: d.location,
+          handle: d.handle,
+          mediums: d.mediums,
+          mediumsOfInterest: d.mediumsOfInterest,
+          links: {
+            createMany: {
+              data: d.links as Prisma.LinkCreateManyArtistInput
+            }
           },
         },
       },
-      select: {
-        email: true
+    },
+    select: {
+      id: true,
+      artist: {
+        select: {
+          id: true,
+          handle: true
+        }
       }
-    })
-    
-    // 2. (TODO:) Using, returned user obj, create connection to nominating user (referrerId)
-    const { email: nomineeEmail } = user
+    }
+  })
+}
 
-    return user
+export type UserWithArtist = Prisma.PromiseReturnType<typeof createUserAndIncludeArtist>
 
-  } catch (error) {
-    console.log(error)
-    throw error
+// Create user in DB (as an Artist), along with artist's Works, and Links. Return artist handle
+export default async function signUp(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'POST') {
+    try {
+      const {
+        name,
+        title,
+        handle,
+        pronouns,
+        location,
+        mediums,
+        mediumsOfInterest,
+        links,
+        bio,
+        email,
+        nominatorId,
+      } = req.body
+      const newUser: UserWithArtist = await createUserAndIncludeArtist({
+        name,
+        title,
+        handle,
+        pronouns,
+        location,
+        mediums, // FIXME: (v2) parse this into String[]
+        mediumsOfInterest, // FIXME: (v2) parse this into String[]
+        links,
+        bio,
+        email,
+        nominatorId,
+      })
+      return res.status(200).json(newUser)
+    } catch (error) {
+      console.log(`/api failed to create user: ${error}`)
+      throw error
+    }
+  } else {
+    res.status(405)
+    res.end()
   }
 }

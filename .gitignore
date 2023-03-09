@@ -18,6 +18,7 @@
 # misc
 .DS_Store
 *.pem
+sendgrid.env
 
 # debug
 npm-debug.log*
@@ -30,8 +31,13 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env.sample
+.env.local.sample
 
 # vercel
 .vercel
 
 sendgrid.env
+/test-results/
+/playwright-report/
+/playwright/.cache/

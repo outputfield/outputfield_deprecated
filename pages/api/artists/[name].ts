@@ -1,17 +1,69 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { Prisma } from '@prisma/client'
 import prisma from '../../../lib/prisma'
 
-export const getArtist = (artistName: any) => {
+export const getArtistWithUserAndWorkAndLinks = (artistName: any) => {
   return prisma?.artist.findUnique({
     where: {
       handle: artistName
     },
-    include: {
+    select: {
+      user: {
+        select: {
+          name: true,
+          email: true,
+          nominatedBy: {
+            select: {
+              name: true,
+              artist: {
+                select: {
+                  handle: true,
+                }
+              }
+            }
+          },
+        }
+      },
+      pronouns: true,
+      handle: true,
+      title: true,
+      mediums: true,
+      mediumsOfInterest: true,
+      location: true,
       work: true,
-      links: true
+      links: true,
     },
   })
 }
+
+export type ArtistWithUserAndWorkAndLinks = Prisma.PromiseReturnType<typeof getArtistWithUserAndWorkAndLinks>
+
+export const getArtistWithUserAndNominatedByAndWorkAndLinks = (name: string) => {
+  return prisma?.artist.findUnique({
+    where: {
+      handle: name,
+    },
+    include: {
+      user: {
+        include: {
+          nominatedBy: {
+            include: {
+              artist: {
+                select: {
+                  handle: true
+                }
+              }
+            }
+          },
+        }
+      },
+      work: true,
+      links: true,
+    },
+  })
+}
+
+export type ArtistWithUserAndNominatedByAndWorkAndLinks = Prisma.PromiseReturnType<typeof getArtistWithUserAndNominatedByAndWorkAndLinks>
 
 export default async function (
   req: NextApiRequest,
@@ -22,7 +74,7 @@ export default async function (
   const { name }: { name?: string } = req.query
   if (req.method === 'GET') {
     try {
-      const artist = await getArtist(name)
+      const artist = await getArtistWithUserAndWorkAndLinks(name)
       if (!artist) {
         return res.status(404)
       } else {
