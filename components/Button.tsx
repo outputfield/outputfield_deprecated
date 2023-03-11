@@ -24,6 +24,7 @@ export const Button = ({
     return (
       <a
         className={`
+          text-[15px]
           my-0px
           mx-auto
           py-4
