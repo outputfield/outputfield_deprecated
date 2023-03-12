@@ -8,15 +8,20 @@ datasource db {
 }
 
 model Application {
-  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name         String     @db.VarChar(255)
-  email        String     @db.VarChar(255)
-  url          String     @db.VarChar(255)
+  id           String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String @db.VarChar(255)
+  statement    String @db.Text
+  email        String @db.VarChar(255)
+  requiredLink String @db.VarChar(255)
+  link2        String @db.VarChar(255)
+  link3        String @db.VarChar(255)
+
   invitation   Invitation @relation(fields: [invitationId], references: [id])
   invitationId String     @db.Uuid
-  createdAt    DateTime   @default(now()) @db.Timestamptz(6)
-  archivedAt   DateTime   @db.Timestamptz(6)
-  User         User[]
+
+  createdAt  DateTime @default(now()) @db.Timestamptz(6)
+  archivedAt DateTime @db.Timestamptz(6)
+  User       User[]
 
   ApplicationStatus ApplicationStatus[]
   @@unique([email, invitationId])
