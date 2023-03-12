@@ -129,6 +129,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
         w-full
         h-full
         pt-0
+        text-[12px]
       `}
     >
       <div className="block pt-5 px-3 pb-3">Select a message topic:</div>
@@ -184,7 +185,8 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
                 placeholder:text-slate-400
                 disabled:text-slate-300
                 disabled:placeholder:text-slate-300
-                py-3.5
+                py-4
+                px-3
                 text-base
                 focus:outline-none
                 focus:glow-blue
@@ -202,7 +204,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
                 }
               })}
             />
-            <div className="h-6 border-x border-dashed border-black" />
+            <div className="h-6 border-long-dashed-x" />
           </>
         )}
         <input
@@ -218,8 +220,8 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
             placeholder:text-slate-400
             disabled:text-slate-300
             disabled:placeholder:text-slate-300
+            py-4
             px-3
-            py-3.5
             text-base
             uppercase
             focus:outline-none
@@ -234,7 +236,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
             disabled: topic === null,
           })}
         />
-        <div className="h-6 border-x border-dashed border-black" />
+        <div className="h-6 border-long-dashed-x" />
         <textarea
           className={`
             text-black
@@ -248,7 +250,8 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
             w-full
             placeholder:text-slate-400
             readOnly:text-slate-300
-            p-4
+            py-4
+            px-3
             min-h-80
             align-top
             resize-y

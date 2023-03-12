@@ -45,7 +45,7 @@ const ArtistsList: React.FC<Props> = ({
       )
       )}
       <div
-        className="w-full text-center border-t border-dashed uppercase py-2">
+        className="w-full text-center border-long-dashed-t uppercase py-2">
         {isLoadingMore
           ? 'Loading...'
           : isReachingEnd

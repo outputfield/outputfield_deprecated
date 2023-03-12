@@ -135,8 +135,12 @@ export default function CreateAccount() {
       const _nominatorId = params.get('nominatorId') || '1'
       const newUser: UserWithArtist = await createUser({
         ...data,
+        mediums: data.mediums.map(({ label }) => label),
+        mediumsOfInterest: data.mediumsOfInterest.map(({ label }) => label),
         name: data.name,
         handle: data.handle,
+        mediums: data.mediums.map(({ label }) => label),
+        mediumsOfInterest: data.mediumsOfInterest.map(({ label }) => label),
         links: data.links as Prisma.LinkCreateNestedManyWithoutArtistInput,
         email: _email,
         nominatorId: parseInt(_nominatorId),
@@ -167,9 +171,11 @@ export default function CreateAccount() {
         <title>Create Account | Output Field</title>
       </Head>
       <main>
-        <h1 className='glow-black text-[40px] ml-2'>
+        <h1 className='glow-black text-xl ml-4 mt-16'>
           New Profile
         </h1>
+        {/* TODO: use this full width Divider Component everywhere*/}
+        <div className='w-full mt-5 border-long-dashed-t'></div>
         <ProfileForm
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}

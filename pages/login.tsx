@@ -100,7 +100,7 @@ const Login = () => {
       <h1 className='glow-black text-[40px] ml-2'>
         Login
       </h1>
-      <div className="h-3/5 py-8 my-4 border-y border-dashed border-gray-dark">
+      <div className="h-3/5 py-8 my-4 border-long-dashed-y">
         <form onSubmit={handleSubmit}>
           <div className="flex py-4 w-full justify-center">
             <label>
