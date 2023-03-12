@@ -135,8 +135,6 @@ export default function CreateAccount() {
       const _nominatorId = params.get('nominatorId') || '1'
       const newUser: UserWithArtist = await createUser({
         ...data,
-        mediums: data.mediums.map(({ label }) => label),
-        mediumsOfInterest: data.mediumsOfInterest.map(({ label }) => label),
         name: data.name,
         handle: data.handle,
         mediums: data.mediums.map(({ label }) => label),
