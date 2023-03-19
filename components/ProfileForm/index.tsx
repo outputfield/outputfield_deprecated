@@ -1,4 +1,4 @@
-import React, { useReducer, useState, BaseSyntheticEvent } from 'react'
+import React, { useReducer, useState, BaseSyntheticEvent, useMemo } from 'react'
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form'
 import { Dialog } from '@headlessui/react'
 import Image from 'next/legacy/image'
@@ -45,7 +45,7 @@ type UploadWorksAction = {
 }
 
 interface UploadWorksState {
-  [x: number]: FormData;
+  [key: number]: FormData;
 }
 
 export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Props) {
@@ -90,10 +90,23 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
     profileData?.works || [],
     init
   )
-  console.log('profileForm state', state)
+  
+  const filenames = useMemo(() => Object.values(state).map((formData: FormData) => {
+    if (formData) {
+      if (formData.get('workType') === 'embeddedWork') {
+        const filename = formData.get('title')
+        return filename
+      } else if (formData.get('workType') === 'uploadedWork') {
+        const file = formData.get('file')
+        const filename = file instanceof File ? file.name : ''
+        return filename
+      }
+    } else {
+      return ''
+    }
+  }), [state])
 
   const handleUploadWork = (uploadNum: number) => (file: FormData) => {
-    console.log('uploadFileCallback', uploadNum, file)
     dispatch({ type: 'UPDATE', key: uploadNum, work: file })
     closeUpload()
   }
@@ -332,9 +345,12 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                   <span key={displayKey} className={`cols-span-${displayKey} `}>
                     <button
                       className={`
+                        relative
+                        inline-block
                         appearance-none
                         leading-none
-                        w-fit
+                        w-28
+                        h-28
                         text-gray-700
                         border
                         border-black
@@ -348,7 +364,22 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                       `}
                       id={`grid-upload-work-${displayKey}`}
                       onClick={setUploadDialogOpen(key)}>
-                      {state[key] ? 'file here!' : (
+                      {state[key] ? (
+                        <p className={`
+                          absolute
+                          -left-4
+                          top-12
+                          w-36
+                          p-0.5
+                          border
+                          border-black
+                          bg-white
+                          truncate
+                          text-sm
+                        `}>
+                          {filenames[key]}
+                        </p>
+                      ) : (
                         <Image
                           src="/plusLg.svg"
                           alt='+'
