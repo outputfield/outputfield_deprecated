@@ -22,11 +22,11 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
       <div className="grow relative flex justify-center self-start items-center">
         <div className="mx-[10px] my-[24px]">
           <ProfilePicture />
-          {type == 'detail' && <div className="text-center font-serif">{artist?.pronouns}</div>}
+          {type == 'detail' && <div className="text-center font-serif mt-1">{artist?.pronouns}</div>}
         </div>
         <div className="ml-3 py-auto text-lg">
           <p className="text-[18px]">{artist?.user.name}</p>
-          <span className="italic lowercase font-serif">{`'${artist?.title}'`}</span>
+          <span className="lowercase font-serif">{`'${artist?.title}'`}</span>
           {artist?.title && artist?.location && (
             <span className="text-3xl font-light mx-1 align-sub">&#9702;</span>
           )}

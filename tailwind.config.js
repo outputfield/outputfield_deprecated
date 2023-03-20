@@ -1,5 +1,9 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { fontFamily } = require('tailwindcss/defaultTheme')
+
+/** @type {import('tailwindcss').Config} \*/
 module.exports = {
-  content: [
+  content:  [
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
   ],
@@ -20,6 +24,9 @@ module.exports = {
       'black': '#000',
       'error-red': '#EE0004'
     },
+    fontFamily: {
+      sans: ['Arial', ...fontFamily.sans],
+    },
     fontSize: {
       sm: ['10px'],
       base: ['13px'],
@@ -32,10 +39,13 @@ module.exports = {
     extend: {
       'textShadow': {
         'blue': '0px 0px 4px #001AFF'
-      }
+      },
+      'fontFamily': {
+        serif: ['var(--font-migra)', ...fontFamily.serif]
+      },
     },
   },
   plugins: [
     require('@tailwindcss/forms')
-  ],
+  ]
 }
