@@ -15,3 +15,8 @@ export function makeid(length: number) {
   }
   return result
 }
+
+export function removeProperty(obj: any, propertyName: string) {
+  const { [propertyName]: _, ...result } = obj
+  return result
+}

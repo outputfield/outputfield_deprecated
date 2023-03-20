@@ -11,6 +11,7 @@ import EmbedPanel from './embedPanel'
 import UploadPanel from './uploadPanel'
 import Spinner from '../spinner'
 import MediumsCombobox, { MediumOptionT } from './MediumsCombobox'
+import { removeProperty } from '../../lib/utils'
 
 type ProfileLink = {
   url: string;
@@ -38,11 +39,18 @@ interface Props {
   profileData?: ISignUpInputsAndWorks | undefined;
 }
 
-type UploadWorksAction = {
-  type: 'UPDATE',
+type Add = {
+  type: 'ADD',
   key: number,
   work: FormData
 }
+
+type Delete = {
+  type: 'DELETE',
+  key: number,
+}
+
+type UploadWorksAction = Add | Delete
 
 interface UploadWorksState {
   [key: number]: FormData;
@@ -83,37 +91,47 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
     (state: UploadWorksState, action: UploadWorksAction): UploadWorksState => {
       const _state = { ...state }
       switch (action.type) {
-      case 'UPDATE':
+      case 'ADD':
         return { ..._state, [action.key]: action.work }
+      case 'DELETE':
+        return removeProperty(_state, `${action.key}`)
       }
     },
     profileData?.works || [],
     init
   )
   
-  const filenames = useMemo(() => Object.values(state).map((formData: FormData) => {
+  const filenames = useMemo(() => Object.keys(state).reduce((acc:any, key:any) => {
+    const formData = state[key] as FormData
     if (formData) {
       if (formData.get('workType') === 'embeddedWork') {
         const filename = formData.get('title')
-        return filename
+        return {...acc, [key]: filename}
       } else if (formData.get('workType') === 'uploadedWork') {
         const file = formData.get('file')
         const filename = file instanceof File ? file.name : ''
-        return filename
+        return {...acc, [key]: filename}
       }
     } else {
-      return ''
+      return {...acc, [key]: ''}
     }
-  }), [state])
+  }, {}), [state])
+  console.log(filenames)
 
   const handleUploadWork = (uploadNum: number) => (file: FormData) => {
-    dispatch({ type: 'UPDATE', key: uploadNum, work: file })
+    dispatch({ type: 'ADD', key: uploadNum, work: file })
     closeUpload()
   }
 
   const handleEmbedWork = (work: FormData) => {
-    dispatch({ type: 'UPDATE', key: uploadNum, work })
+    dispatch({ type: 'ADD', key: uploadNum, work })
     closeUpload()
+  }
+
+  const handleDeleteWork = (uploadNum: number) => (e: BaseSyntheticEvent) => {
+    e.stopPropagation()
+    e.preventDefault()
+    dispatch({ type: 'DELETE', key: uploadNum })
   }
 
   const setUploadDialogOpen = (key: number) => (e: BaseSyntheticEvent) => {
@@ -365,7 +383,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                       id={`grid-upload-work-${displayKey}`}
                       onClick={setUploadDialogOpen(key)}>
                       {state[key] ? (
-                        <p className={`
+                        <>
+                          <p className={`
                           absolute
                           -left-4
                           top-12
@@ -376,9 +395,20 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                           bg-white
                           truncate
                           text-sm
-                        `}>
-                          {filenames[key]}
-                        </p>
+                          `}>
+                            {filenames[key]}
+                          </p>
+                          <button
+                            onClick={handleDeleteWork(key)}
+                            className={`
+                              absolute
+                              top-0
+                              right-0
+                            `}
+                          >
+                            <Image src='/trashIcon.svg' alt='x' height='24' width='24' />
+                          </button>
+                        </>
                       ) : (
                         <Image
                           src="/plusLg.svg"
