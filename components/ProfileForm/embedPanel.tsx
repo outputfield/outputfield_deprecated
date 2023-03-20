@@ -68,9 +68,22 @@ export default function EmbedPanel({
         Embed
         </Button>
       </div>
-      <p className='text-center'>
-        List of supported embeds (+++)
-      </p>
+      <div className='text-center'>
+        <p>
+        Supported embeds:
+        </p>
+        <br />
+        <ul>
+          <li>YouTube</li>
+          <li>Facebook</li>
+          <li>SoundCloud</li>
+          <li>Vimeo</li>
+          <li>Twitch</li>
+          <li>DailyMotion</li>
+          <li>Wistia</li>
+          <li>Vidyard</li>
+        </ul>
+      </div>
     </form>
   )
 }
