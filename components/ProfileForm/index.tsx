@@ -352,8 +352,8 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
 
         <div className="flex flex-col mx-3 mb-2">
           <h2 className='text-lg ml-2 my-6 glow-black'>Upload Work</h2>
-          {Object.values(state).length === 0 && (
-            <p className='text-gray-dark text-base mb-2'>Please add at least one work.</p>
+          {Object.values(state).length < 3 && (
+            <p className='text-gray-dark text-base mb-2'>Please add at least three works.</p>
           )}
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border-long-dashed">
             <div className="py-6 grid grid-cols-2 gap-20 justify-items-center">
