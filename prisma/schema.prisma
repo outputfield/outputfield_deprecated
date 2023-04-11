@@ -44,7 +44,6 @@ enum AppStatus {
 
 model Invitation {
   id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  inviter     User          @relation(fields: [inviterId], references: [id])
   inviterId   String        @unique @db.Uuid
   createdAt   DateTime      @default(now()) @db.Timestamptz(6)
   Application Application[]
@@ -63,9 +62,8 @@ model User {
   artist        Artist?
   // curator     Curator?
   // venue     Venue?
-  application   Application  @relation(fields: [applicationId], references: [id])
-  applicationId String       @unique @db.Uuid
-  Invitation    Invitation[]
+  application   Application @relation(fields: [applicationId], references: [id])
+  applicationId String      @unique @db.Uuid
   @@unique([email, applicationId])
 }
 
