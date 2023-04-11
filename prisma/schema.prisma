@@ -80,7 +80,6 @@ model Artist {
   mediumsOfInterest String[]
 
   // Relation fields
-  work  Work[]
   links Link[]
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -122,10 +121,11 @@ model Artist {
 //   contributors  User[]
 // }
 
-model Work {
-  id    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title String @db.VarChar(255)
-  url   String @db.VarChar(255)
+model Link {
+  id    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title String   @db.VarChar(255)
+  url   String   @db.VarChar(255)
+  type  LinkType @default(OTHER)
 
   artist    Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
   artistId  String   @db.Uuid
@@ -133,15 +133,9 @@ model Work {
   @@unique([url, artistId])
 }
 
-model Link {
-  id    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title String @db.VarChar(255)
-  url   String @db.VarChar(255)
-
-  artist    Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
-  artistId  String   @db.Uuid
-  createdAt DateTime @default(now()) @db.Timestamptz(6)
-  @@unique([url, artistId])
+enum LinkType {
+  WORK
+  OTHER
 }
 
 // enum TokenType {
