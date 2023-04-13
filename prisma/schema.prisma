@@ -12,9 +12,9 @@ model Application {
   name         String @db.VarChar(255)
   statement    String @db.Text
   email        String @db.VarChar(255)
-  requiredLink String @db.VarChar(255)
-  link2        String @db.VarChar(255)
-  link3        String @db.VarChar(255)
+  requiredLink String @db.Text
+  link2        String @db.Text
+  link3        String @db.Text
 
   invitation   Invitation @relation(fields: [invitationId], references: [id])
   invitationId String     @db.Uuid
@@ -74,13 +74,13 @@ model User {
 
 model Artist {
   id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title             String   @db.VarChar(255)
+  title             String   @db.Text
   pronouns          String   @db.VarChar(50)
   createdAt         DateTime @default(now()) @db.Timestamptz(6)
   bio               String   @db.Text
   location          String   @db.VarChar(255)
   iconColor         String   @db.VarChar(50)
-  handle            String   @unique @db.VarChar(255)
+  handle            String   @unique @db.Text
   mediums           String[]
   mediumsOfInterest String[]
 
@@ -108,8 +108,8 @@ model Artist {
 
 model Link {
   id    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title String   @db.VarChar(255)
-  url   String   @db.VarChar(255)
+  title String   @db.Text
+  url   String   @db.Text
   type  LinkType @default(OTHER)
 
   artist    Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
