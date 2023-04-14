@@ -8,19 +8,19 @@ datasource db {
 }
 
 model Application {
-  id           String @id @db.Uuid
-  name         String @db.VarChar(255)
-  statement    String @db.Text
-  email        String @db.VarChar(255)
-  requiredLink String @db.Text
-  link2        String @db.Text
-  link3        String @db.Text
+  id           String  @id @db.Uuid
+  name         String  @db.VarChar(255)
+  statement    String  @db.Text
+  email        String  @db.VarChar(255)
+  requiredLink String  @db.Text
+  link2        String? @db.Text
+  link3        String? @db.Text
 
   invitation   Invitation @relation(fields: [invitationId], references: [id])
   invitationId String     @db.Uuid
 
-  createdAt  DateTime @default(now()) @db.Timestamptz(6)
-  archivedAt DateTime @db.Timestamptz(6)
+  createdAt  DateTime  @default(now()) @db.Timestamptz(6)
+  archivedAt DateTime? @db.Timestamptz(6)
   User       User[]
 
   ApplicationStatus ApplicationStatus[]
@@ -31,15 +31,9 @@ model ApplicationStatus {
   id            String      @id @db.Uuid
   application   Application @relation(fields: [applicationId], references: [id])
   applicationId String      @db.Uuid
-  status        AppStatus   @default(PENDING_REVIEW)
+  status        String      @db.VarChar(50) // PENDING_REVIEW, APPROVED, REJECTED
 
   @@unique([applicationId, status])
-}
-
-enum AppStatus {
-  PENDING_REVIEW
-  APPROVED
-  REJECTED
 }
 
 model Invitation {
@@ -78,8 +72,8 @@ model Artist {
   pronouns          String   @db.VarChar(50)
   createdAt         DateTime @default(now()) @db.Timestamptz(6)
   bio               String   @db.Text
-  location          String   @db.VarChar(255)
-  iconColor         String   @db.VarChar(50)
+  location          String?  @db.VarChar(255)
+  iconColor         String?  @db.VarChar(50)
   handle            String   @unique @db.Text
   mediums           String[]
   mediumsOfInterest String[]
@@ -107,18 +101,13 @@ model Artist {
 // }
 
 model Link {
-  id    String   @id @db.Uuid
-  title String   @db.Text
-  url   String   @db.Text
-  type  LinkType @default(OTHER)
+  id    String @id @db.Uuid
+  title String @db.Text
+  url   String @db.Text
+  type  String @db.VarChar(50) // OTHER, WORK, etc.
 
   artist    Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
   artistId  String   @db.Uuid
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   @@unique([url, artistId])
-}
-
-enum LinkType {
-  WORK
-  OTHER
 }

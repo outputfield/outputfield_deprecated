@@ -1,0 +1,8 @@
+-- AlterTable
+ALTER TABLE "Application" ALTER COLUMN "link2" DROP NOT NULL,
+ALTER COLUMN "link3" DROP NOT NULL,
+ALTER COLUMN "archivedAt" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Artist" ALTER COLUMN "location" DROP NOT NULL,
+ALTER COLUMN "iconColor" DROP NOT NULL;
