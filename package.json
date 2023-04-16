@@ -11,7 +11,8 @@
     "seed": "ts-node prisma/seed.ts",
     "p:format": "prisma format",
     "p:studio": "prisma studio",
-    "p:migrate": "prisma migrate dev --create-only"
+    "p:migrate:create": "prisma migrate dev --create-only",
+    "p:migrate:up": "prisma migrate dev"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
