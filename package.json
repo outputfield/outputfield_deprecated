@@ -8,7 +8,11 @@
     "start": "next start",
     "postinstall": "prisma generate",
     "test:e2e": "set STAGING=1&& npx playwright test",
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node prisma/seed.ts",
+    "p:format": "prisma format",
+    "p:studio": "prisma studio",
+    "p:migrate:create": "prisma migrate dev --create-only",
+    "p:migrate:up": "prisma migrate dev"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
