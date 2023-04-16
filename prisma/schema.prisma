@@ -53,8 +53,6 @@ model User {
   createdAt DateTime @default(now()) @db.Timestamptz(6)
 
   // Relation fields
-  // tokens    Token[]
-  // projects  Project[]
   artist        Artist?
   // curator     Curator?
   // venue     Venue?
