@@ -3,14 +3,14 @@ import prisma from '../../lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Prisma } from '@prisma/client'
 
-export type UserCreateInputWithArtist = Prisma.UserCreateInput & Prisma.ArtistCreateWithoutUserInput & { nominatorId: number }
+export type UserCreateInputWithArtist = Prisma.UserCreateInput & Prisma.ArtistCreateWithoutUserInput
 
 function createUserAndIncludeArtist(d: UserCreateInputWithArtist) {
   return prisma.user.create({
     data: {
+      id: d.id,
       name: d.name,
       email: d.email,
-      nominatorId: d.nominatorId,
       artist: {
         create: {
           title: d.title,
@@ -25,7 +25,7 @@ function createUserAndIncludeArtist(d: UserCreateInputWithArtist) {
               data: d.links as Prisma.LinkCreateManyArtistInput
             }
           },
-        },
+        } as Prisma.ArtistCreateInput,
       },
     },
     select: {
@@ -47,6 +47,7 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
   if (req.method === 'POST') {
     try {
       const {
+        id,
         name,
         title,
         handle,
@@ -57,9 +58,9 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
         links,
         bio,
         email,
-        nominatorId,
       } = req.body
       const newUser: UserWithArtist = await createUserAndIncludeArtist({
+        id,
         name,
         title,
         handle,
@@ -70,7 +71,6 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
         links,
         bio,
         email,
-        nominatorId,
       })
       return res.status(200).json(newUser)
     } catch (error) {

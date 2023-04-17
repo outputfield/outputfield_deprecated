@@ -11,7 +11,7 @@ export default async function addArtistWorks(req: NextApiRequest, res: NextApiRe
         handle: artistHandle
       },
       data: {
-        work: {
+        links: {
           create: works
         }
       }

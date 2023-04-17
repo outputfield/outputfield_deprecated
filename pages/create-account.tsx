@@ -1,5 +1,6 @@
 import React, { BaseSyntheticEvent, useEffect, useState } from 'react'
 import { Prisma } from '@prisma/client'
+import { v4 as uuidv4 } from 'uuid'
 
 import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
 import { UserCreateInputWithArtist, UserWithArtist } from './api/signUp'
@@ -72,7 +73,7 @@ async function uploadFiles(files: FormData[], handle: string) {
     throw new Error(`Failed to /uploadFile: ${error}`)
   } 
   
-  return works
+  return works.map((w: {title: string, url: string }) => ({...w, type: 'WORK'}))
 }
 
 // 3. Update user with added works
@@ -132,16 +133,16 @@ export default function CreateAccount() {
     try {
       const params = new URLSearchParams(document.location.search)
       const _email = params.get('email') || `${makeid(6)}@gmail.com`
-      const _nominatorId = params.get('nominatorId') || '1'
+      const id = uuidv4()
       const newUser: UserWithArtist = await createUser({
         ...data,
+        id,
         name: data.name,
         handle: data.handle,
         mediums: data.mediums.map(({ label }) => label),
         mediumsOfInterest: data.mediumsOfInterest.map(({ label }) => label),
         links: data.links as Prisma.LinkCreateNestedManyWithoutArtistInput,
         email: _email,
-        nominatorId: parseInt(_nominatorId),
       })
       const userId = newUser.artist? newUser.artist.handle : `artist${newUser.id}`
       const works = await uploadFiles(files, userId)

@@ -4,12 +4,12 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
-import { Work } from '@prisma/client'
+import { Link } from '@prisma/client'
 import ReactPlayer from 'react-player'
 import Image from 'next/legacy/image'
 
 interface Props {
-  works: Work[];
+  works: Link[];
   className?: string;
 }
 

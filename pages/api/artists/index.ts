@@ -8,7 +8,6 @@ export const getArtistsWithUserAndWorkAndLinks = () => {
   return prisma?.artist.findMany({
     include: {
       user: true,
-      work: true,
       links: true
     },
   })
@@ -24,7 +23,6 @@ const findArtists = (page: string, limit: string, search: string, filters: any) 
     skip,
     include: {
       user: true,
-      work: true,
       links: true,
     },
     where: {

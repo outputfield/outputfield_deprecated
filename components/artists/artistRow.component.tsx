@@ -1,10 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
-import { ArtistWithUserAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
 import ProfilePicture from './profilePicture'
 
 export interface ArtistRowProps {
-  artist: ArtistWithUserAndWorkAndLinks;
+  artist: ArtistWithInviterAndUserAndLinks;
   type: 'list' | 'detail';
   className?: string;
 }

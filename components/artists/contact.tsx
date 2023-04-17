@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react'
 import { ErrorMessage } from '@hookform/error-message'
 import { Button } from '../Button'
-import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { useUser } from '../../lib/useUser'
-import { ArtistWithUserAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
 import Image from 'next/image'
 
 // eslint-disable-next-line no-useless-escape
@@ -43,7 +43,7 @@ const TOPICS = [
 ]
 
 interface Props {
-  artistData: ArtistWithUserAndWorkAndLinks,
+  artistData: ArtistWithInviterAndUserAndLinks,
   onClose: () => void
 }
 
@@ -118,7 +118,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     }
   }
 
-  const onError: SubmitErrorHandler<FieldErrors> = (errors, e) => console.log(errors, e)
+  const onError = (errors:any, e: any) => console.log(errors, e)
 
   const RELEVANT_TOPICS = useMemo(() => TOPICS.filter(({ authenticated }) => Boolean(user) === authenticated), [user])
   
