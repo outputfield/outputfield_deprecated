@@ -1,6 +1,10 @@
 import React from 'react'
 import Head from 'next/head'
+import localFont from '@next/font/local'
+
 import Header from './header'
+
+const migra = localFont({ src: '../styles/fonts/MigraItalic-ExtralightItalic.woff2', variable: '--font-migra'})
 
 const Layout = ({ children }: any) => (
   <>
@@ -8,13 +12,11 @@ const Layout = ({ children }: any) => (
       <title>Output Field</title>
     </Head>
     <Header />
-
-    <main>
+    <main className={`${migra.variable} font-sans`} role="main">
       <div className="container">{children}</div>
     </main>
-
-    <footer>
-Footer Here
+    <footer role="contentinfo">
+      Footer Here
     </footer>
 
     <style jsx>{`

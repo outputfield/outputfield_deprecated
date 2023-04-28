@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { useUser } from '../lib/useUser'
 import Image from 'next/image'
 
+// List of static pages and their titles to be displayed in the header Navbar
 const LINKS = [
   {
     href: '/',
@@ -21,6 +22,12 @@ const LINKS = [
   }, {
     href: 'api/logout',
     label: 'Logout'
+  }, {
+    href: '/account',
+    label: 'Account'
+  }, {
+    href: '/account/invitation',
+    label: 'Account/Invitation'
   }
 ]
 
@@ -49,6 +56,7 @@ const Header = () => {
             />
           </button>
           <nav
+            role="navigation"
             tabIndex="0"
             className="z-50 border border-black bg-white invisible w-full absolute left-0 top-full transition-all opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-focus-within:translate-y-1">
             <ul className="py-1">
@@ -58,6 +66,7 @@ const Header = () => {
                 </Link>
               </li>
               {user ? (
+                // Logged-in Pages
                 <>
                   <li>
                     <Link href="/profile" passHref className="block px-4 py-2 hover:bg-gray">
@@ -73,11 +82,21 @@ const Header = () => {
                   </li>
                 </>
               ) : (
-                <li>
-                  <Link href="/login" passHref className="block px-4 py-2 hover:bg-gray">
+                // Logged-out Pages
+                <>
+                  <li>
+                    <Link href="/login" passHref className="block px-4 py-2 hover:bg-gray">
                     Login
-                  </Link>
-                </li>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/account"
+                      className="block px-4 py-2 hover:bg-gray">
+                  Account
+                    </Link>
+                  </li>
+                </>
               )}
             </ul>
           </nav>
