@@ -87,6 +87,10 @@ html {
   .form-input__linear-gradient {
     background: linear-gradient(185.66deg, #EEEEF0 -31.99%, rgba(238, 238, 240, 0) 96.55%);
   }
+
+  .link__linear-gradient {
+    background: linear-gradient(265.72deg, #FFFFFF -14.51%, rgba(253, 255, 226, 0.972778) 8.06%, rgba(255, 255, 255, 0.84) 118.15%);
+  }
 }
 
 input:checked + div {

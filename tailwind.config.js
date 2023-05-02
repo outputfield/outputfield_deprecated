@@ -1,5 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { fontFamily } = require('tailwindcss/defaultTheme')
+const plugin = require('tailwindcss/plugin')
 
 /** @type {import('tailwindcss').Config} \*/
 module.exports = {
@@ -15,6 +16,7 @@ module.exports = {
       'orange': '#ff7849',
       'green': '#13ce66',
       'highlight': '#E7F263',
+      'highlight-glow': '#C9DB00',
       'yellow': '#ffc82c',
       'gray-dark': '#5C5C5C',
       'gray-med': '##828282',
@@ -38,7 +40,8 @@ module.exports = {
     },
     extend: {
       'textShadow': {
-        'blue': '0px 0px 4px #001AFF'
+        'DEFAULT': '0px 0px 4px var(--tw-shadow-color)',
+        'lg': '0px 0px 8px var(--tw-shadow-color)'
       },
       'fontFamily': {
         serif: ['var(--font-migra)', ...fontFamily.serif]
@@ -46,6 +49,16 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/forms')
-  ]
+    require('@tailwindcss/forms'),
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          'text-shadow': (value) => ({
+            textShadow: value,
+          }),
+        },
+        { values: theme('textShadow') }
+      )
+    }),
+  ],
 }

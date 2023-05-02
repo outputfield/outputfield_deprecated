@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Layout from '../../components/layout'
 import { GetStaticPropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
+import Image from 'next/image'
 
 type Props = {}
 
@@ -83,34 +84,90 @@ const Invitation: React.FC<Props> = ({ invites, url }) => {
       <Head>
         <title>My Account | Output Field</title>
       </Head>
-      <h1 className='glow-black text-[40px] ml-2'>
-        Invitation
+      <h1 className={`
+        text-xl 
+        glow-black 
+        ml-2 
+        p-4 
+        border-long-dashed-b
+        border-b
+      `}>
+        Nominate an Artist
       </h1>
-      <p data-testid="invitation-remaining">
-        {invitesRemaining && `You have ${invitesRemaining} invites remaining.`}
-      </p>
+      <div className="p-4">
+
+        <div className='flex items-start'>
+          <Image
+            src="/fourpointstar.svg"
+            alt="star"
+            width="16"
+            height="16"
+            className='m-1'
+          />
+          <h2 className='text-lg w-3/5'>
+        Who would you like to join Output Field?
+          </h2>
+        </div>
       
-      {url && (
-        <div className={`
+        {url && (
+          <div className={`
+        text-base
         border
         border-grey
         rounded-full
+        px-5
+        py-3
+        my-12
+        bg-blue
     `}
-        onClick={() => copyToClipBoard(url)}
-        >
-          <input
-            readOnly
-            aria-label="invitation-link"
-            id="invitation-link" 
-            value={url}
-          />
-          <span className="cursor-pointer" id="copy">
+          onClick={() => copyToClipBoard(url)}
+          >
+            <input
+              readOnly
+              aria-label="invitation-link"
+              id="invitation-link" 
+              value={url}
+              className={`
+              w-4/5
+              rounded
+              px-2
+              py-3
+              overflow-auto
+              link__linear-gradient
+              drop-shadow-sm
+              outline-0
+            `}
+            />
+            <button className={`
+              cursor-pointer 
+              rounded
+              drop-shadow-sm 
+              text-shadow-lg
+              shadow-highlight-glow
+              bg-black 
+              text-white 
+              uppercase 
+              p-2 
+              ml-2 
+              h-full
+            `} id="copy">
             copy
-          </span>
-        </div>
-      )}
-      {/* after copying see the message here */}
-      {copySuccess}
+            </button>
+          </div>
+        )}
+
+        {/* after copying see the message here */}
+        {copySuccess}
+
+        <p data-testid="invitation-remaining" className='px-6'>
+          {invitesRemaining && (
+            <>
+            Please note, you have only have <span className='text-blue font-bold underline underline-offset-2'>{`${invitesRemaining}`}</span> referrals left. <a className='text-blue hover:underline'>View referral history.</a>
+            </>
+          )}
+        </p>
+      </div>
+
     </Layout>
   )
 }

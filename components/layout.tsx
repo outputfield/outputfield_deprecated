@@ -7,7 +7,8 @@ import Header from './header'
 const migra = localFont({ src: '../styles/fonts/MigraItalic-ExtralightItalic.woff2', variable: '--font-migra'})
 
 const Layout = ({ children }: any) => (
-  <>
+  <div className="flex flex-col h-screen">
+
     <Head>
       <title>Output Field</title>
     </Head>
@@ -15,7 +16,7 @@ const Layout = ({ children }: any) => (
     <main className={`${migra.variable} font-sans`} role="main">
       <div className="container">{children}</div>
     </main>
-    <footer role="contentinfo">
+    <footer className='sticky top-[100vh]' role="contentinfo">
       Footer Here
     </footer>
 
@@ -33,7 +34,7 @@ const Layout = ({ children }: any) => (
           "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
       }
     `}</style>
-  </>
+  </div>
 )
 
 export default Layout
