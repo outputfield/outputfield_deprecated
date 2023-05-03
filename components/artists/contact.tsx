@@ -204,7 +204,6 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
                 }
               })}
             />
-            <div className="h-6 border-long-dashed-x" />
           </>
         )}
         <input
@@ -236,7 +235,6 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
             disabled: topic === null,
           })}
         />
-        <div className="h-6 border-long-dashed-x" />
         <textarea
           className={`
             text-black

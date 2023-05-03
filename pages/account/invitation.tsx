@@ -4,7 +4,7 @@ import Layout from '../../components/layout'
 import { GetStaticPropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import Image from 'next/image'
-import Divider from '../../components/Divider'
+import Divider from '../../components/dashedDivider'
 import { useRouter } from 'next/router'
 
 type Props = {}

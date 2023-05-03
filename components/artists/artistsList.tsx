@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 
 import { ArtistRow } from './artistRow.component'
 import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
+import DashedDivider from '../dashedDivider'
 
 interface Props {
   artists: ArtistWithInviterAndUserAndLinks[];
@@ -44,6 +45,7 @@ const ArtistsList: React.FC<Props> = ({
         />
       )
       )}
+      <DashedDivider />
       <div
         className="w-full text-center border-long-dashed-t uppercase py-2">
         {isLoadingMore
