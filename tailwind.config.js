@@ -41,7 +41,7 @@ module.exports = {
     extend: {
       'textShadow': {
         'DEFAULT': '0px 0px 4px var(--tw-shadow-color)',
-        'lg': '0px 0px 8px var(--tw-shadow-color)'
+        'lg': '0px 0px 8px var(--tw-shadow-color), 0px 0px 8px var(--tw-shadow-color)'
       },
       'fontFamily': {
         serif: ['var(--font-migra)', ...fontFamily.serif]

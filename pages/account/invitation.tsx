@@ -4,6 +4,8 @@ import Layout from '../../components/layout'
 import { GetStaticPropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import Image from 'next/image'
+import Divider from '../../components/Divider'
+import { useRouter } from 'next/router'
 
 type Props = {}
 
@@ -16,7 +18,7 @@ async function getInvite(name: string) {
       },
       'url': 'outputfield.com/applications?i=1abc-123'
     }
-    //   const res = await fetch('/api/signUp', {
+    //   const res = await fetch('/api/invitations', {
     //     method: 'POST',
     //     headers: {
     //       'Content-Type': 'application/json'
@@ -50,6 +52,8 @@ const Invitation: React.FC<Props> = ({ invites, url }) => {
   const [invitationLink, setInvitationLink] = useState('')
   const [invitesRemaining, setInvitesRemaining] = useState('')
   const [copySuccess, setCopySuccess] = useState('')
+  const router = useRouter()
+
   
   //   const generateInvitationLink = async (event: BaseSyntheticEvent) => {
   //     event.preventDefault()
@@ -84,16 +88,19 @@ const Invitation: React.FC<Props> = ({ invites, url }) => {
       <Head>
         <title>My Account | Output Field</title>
       </Head>
-      <h1 className={`
+      <div className="p-4">
+        <button onClick={() => router.back()}>
+          <Image src='/backArrowLg.svg' width='38' height='6' alt='back' /></button>
+        <h1 className={`
         text-xl 
         glow-black 
-        ml-2 
-        p-4 
-        border-long-dashed-b
-        border-b
-      `}>
+        ml-2
+        mt-12 
+        `}>
         Nominate an Artist
-      </h1>
+        </h1>
+      </div>
+      <Divider />
       <div className="p-4">
 
         <div className='flex items-start'>
@@ -128,6 +135,7 @@ const Invitation: React.FC<Props> = ({ invites, url }) => {
               id="invitation-link" 
               value={url}
               className={`
+              h-12
               w-4/5
               rounded
               px-2
@@ -149,7 +157,7 @@ const Invitation: React.FC<Props> = ({ invites, url }) => {
               uppercase 
               p-2 
               ml-2 
-              h-full
+              h-12
             `} id="copy">
             copy
             </button>

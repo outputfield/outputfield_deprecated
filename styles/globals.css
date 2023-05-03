@@ -62,7 +62,9 @@ html {
   .border-long-dashed-t {}
   
   /* TODO: bottom only custom dashed border */
-  .border-long-dashed-b {}
+  .border-long-dashed-b {
+    background-image: url('../public/longDash.svg');
+  }
 }
 
 @layer components {
