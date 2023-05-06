@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react'
+import React, { BaseSyntheticEvent, useMemo, useState } from 'react'
 import { ErrorMessage } from '@hookform/error-message'
 import { Button } from '../Button'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useUser } from '../../lib/useUser'
 import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
 import Image from 'next/image'
@@ -66,6 +66,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
   })
   const [topic, setTopic] = useState(null)
   const user = useUser()
+  const pendingForms = new WeakMap()
 
   function selectTopic(event: any) {
     const { value } = event.target
@@ -86,10 +87,19 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     }
   }
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit = async (data: any, e: BaseSyntheticEvent) => {
     trigger()
     try {
       const { senderEmail, subject, message } = data
+      const form = e.currentTarget
+      const previousController = pendingForms.get(form)
+
+      if (previousController) {
+        previousController.abort()
+      }
+
+      const controller = new AbortController()
+      pendingForms.set(form, controller)
 
       const senderName = user.name || 'Anonymous'  // FIXME: grab sender's name inside of this component...
 
@@ -112,7 +122,9 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
+        signal: controller.signal
       })
+      pendingForms.delete(form)
     } catch (error) {
       console.log('contact onSubmit failed with ', error)
     }

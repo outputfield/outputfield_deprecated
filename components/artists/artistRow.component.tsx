@@ -17,7 +17,12 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
     <div
       data-testid='artistRow'
       className={`
-        w-full flex flex-col relative `}>
+        w-full
+        flex
+        flex-col
+        relative
+      `}
+    >
       <DashedDivider />
       <div className="grow relative flex justify-center self-start items-center pt-[11px] pl-[13px] pb-[8px] pr-[11px]">
         <div className="mx-[10px] my-[24px]">
