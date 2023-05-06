@@ -7,9 +7,12 @@ import Image from 'next/image'
 import Divider from '../../components/dashedDivider'
 import { useRouter } from 'next/router'
 
-type Props = {}
+type Props = {
+  invites: any,
+  url: string,
+}
 
-async function getInvite(name: string) {
+async function getInvite(name?: string) {
   try {
     const EXAMPLE_PAYLOAD = {
       'invites': {
