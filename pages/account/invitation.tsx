@@ -117,50 +117,56 @@ const Invitation: React.FC<Props> = ({ invites, url }) => {
         </div>
       
         {url && (
-          <div className={`
-        text-base
-        border
-        border-grey
-        rounded-full
-        px-5
-        py-3
-        my-12
-        bg-blue
-    `}
-          onClick={() => copyToClipBoard(url)}
-          >
-            <input
-              readOnly
-              aria-label="invitation-link"
-              id="invitation-link" 
-              value={url}
-              className={`
-              h-12
-              w-4/5
-              rounded
-              px-2
+          <div
+            className={`
+              text-base
+              border
+              rounded-full
+              my-12
               py-3
-              overflow-auto
-              link__linear-gradient
-              drop-shadow-sm
-              outline-0
+              px-6
+              bg-blue
             `}
-            />
-            <button className={`
-              cursor-pointer 
-              rounded
-              drop-shadow-sm 
-              text-shadow-lg
-              shadow-highlight-glow
-              bg-black 
-              text-white 
-              uppercase 
-              p-2 
-              ml-2 
-              h-12
-            `} id="copy">
+            onClick={() => copyToClipBoard(url)}
+          >
+            <span className="flex">
+              <input
+                readOnly
+                aria-label="invitation-link"
+                id="invitation-link" 
+                value={url}
+                className={`
+                  h-12
+                  grow
+                  rounded
+                  px-2
+                  py-3
+                  overflow-auto
+                  link__linear-gradient
+                  drop-shadow-sm
+                  ring-0
+                `}
+              />
+              <button
+                id="copy"
+                className={`
+                cursor-pointer 
+                rounded
+                drop-shadow-sm 
+                text-shadow-lg
+                shadow-highlight-glow
+                bg-black 
+                text-white
+                uppercase 
+                p-2 
+                ml-2 
+                h-12
+              `}
+              >
             copy
-            </button>
+              </button>
+            </span>
+            
           </div>
         )}
 
