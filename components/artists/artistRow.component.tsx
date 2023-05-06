@@ -18,18 +18,21 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
       data-testid='artistRow'
       className={`
         w-full
+        min-h-40
         flex
         flex-col
         relative
       `}
     >
       <DashedDivider />
-      <div className="grow relative flex justify-center self-start items-center pt-[11px] pl-[13px] pb-[8px] pr-[11px]">
-        <div className="mx-[10px] my-[24px]">
+      <div className="grow relative flex justify-center self-start items-center">
+        <div className="py-9 mx-3 relative">
           <ProfilePicture />
-          {type == 'detail' && <div className="text-center font-serif mt-1">{artist?.pronouns}</div>}
+          {type == 'detail' && (
+            <div className="absolute text-center w-full font-serif mt-1 left">{artist?.pronouns}</div>
+          )}
         </div>
-        <div className="ml-3 py-auto text-lg">
+        <div className="ml-3 py-auto text-med">
           <p className="text-[18px]">{artist?.user.name}</p>
           <span className="lowercase font-serif">{`'${artist?.title}'`}</span>
           {artist?.title && artist?.location && (
@@ -38,7 +41,7 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
           <span>{artist?.location}</span>
         </div>
       </div>
-      <span className="text-right text-lg uppercase absolute right-[13px] bottom-[8px]">
+      <span className="text-med text-right uppercase absolute bottom-2 right-3">
         {artist?.mediums}
       </span>
       {type === 'detail' && <DashedDivider />}

@@ -24,7 +24,7 @@ const DashedDivider: React.FC<Props> = ({ className='', orientation='horizontal'
         style={{
           background: `center / contain repeat-x url(${longDash.src})`
         }}
-        className={`w-full h-8 ${className}`}
+        className={`w-full h-8 -my-4 ${className}`}
       />
     )
   }

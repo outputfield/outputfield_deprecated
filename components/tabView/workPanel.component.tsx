@@ -1,12 +1,11 @@
 import React from 'react'
-import { Pagination, A11y } from 'swiper'
-import { Swiper, SwiperSlide } from 'swiper/react'
-
-import 'swiper/css'
-import 'swiper/css/pagination'
 import { Link } from '@prisma/client'
 import ReactPlayer from 'react-player'
 import Image from 'next/legacy/image'
+import { A11y } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Scrollbar, FreeMode } from 'swiper'
+import 'swiper/css'
 
 interface Props {
   works: Link[];
@@ -18,18 +17,20 @@ const WorkPanel: React.FC<Props> = ({
 }) => {
   return (
     <Swiper
-      modules={[Pagination, A11y]}
-      pagination={{clickable: true}}
-      spaceBetween={0}
-      slidesPerView={1}
-      onSlideChange={() => console.log('slide change')}
-      onSwiper={swiper => console.log(swiper)}
-      className='h-72'>
+      modules={[A11y, Scrollbar, FreeMode]}
+      freeMode={true}
+      spaceBetween={30}
+      slidesPerView={'auto'}
+      scrollbar={{
+        hide: true,
+      }}
+      className='h-3/5'
+    >
       {works ? 
         works.map(({id, url}) => {
           const playable = ReactPlayer.canPlay(url)          
           return (
-            <SwiperSlide key={id}>
+            <SwiperSlide key={id} className='!h-auto !w-3/4'>
               {
                 playable ?
                   (
@@ -41,9 +42,10 @@ const WorkPanel: React.FC<Props> = ({
                   ) : (
                     <Image
                       src={url}
-                      layout="fill"
+                      width={300}
+                      height={300}
                       alt="This is a carousel slide"
-                      className='block w-full h-auto object-cover'
+                      className='block object-contain'
                     />
                   )
               }      
