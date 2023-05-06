@@ -50,7 +50,7 @@ export default async function (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name }: { name?: string } = req.query
+  const { name='' }: { name?: string } = req.query
   if (req.method === 'GET') {
     try {
       const artist = await getArtistWithUserAndInviterAndLinks(name)

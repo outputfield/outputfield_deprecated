@@ -47,6 +47,13 @@ interface Props {
   onClose: () => void
 }
 
+interface FormValues {
+  topic: string,
+  senderEmail: string,
+  subject: string,
+  message: string,
+}
+
 const Contact: React.FC<Props> = ({ artistData, onClose }) => {
   const {
     register,
@@ -55,7 +62,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     clearErrors,
     trigger,
     formState: { errors, isValid },
-  } = useForm({
+  } = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
       topic: '',
@@ -87,11 +94,11 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     }
   }
 
-  const onSubmit = async (data: any, e: BaseSyntheticEvent) => {
+  const onValid = async (data: FormValues, e?: BaseSyntheticEvent) => {
     trigger()
     try {
       const { senderEmail, subject, message } = data
-      const form = e.currentTarget
+      const form = e?.currentTarget as EventTarget
       const previousController = pendingForms.get(form)
 
       if (previousController) {
@@ -130,13 +137,13 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     }
   }
 
-  const onError = (errors:any, e: any) => console.log(errors, e)
+  const onError = (errors: any, e?: BaseSyntheticEvent) => console.log(errors, e)
 
   const RELEVANT_TOPICS = useMemo(() => TOPICS.filter(({ authenticated }) => Boolean(user) === authenticated), [user])
   
   return (
     <form
-      onSubmit={handleSubmit(onSubmit, onError)}
+      onSubmit={handleSubmit(onValid, onError)}
       className={`
         w-full
         h-full
