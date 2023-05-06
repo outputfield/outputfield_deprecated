@@ -93,14 +93,15 @@ const Invitation: React.FC<Props> = ({ invites, url }) => {
       </Head>
       <div className="p-4">
         <button onClick={() => router.back()}>
-          <Image src='/backArrowLg.svg' width='38' height='6' alt='back' /></button>
+          <Image src='/arrowCircleLg.svg' width='38' height='6' alt='back' />
+        </button>
         <h1 className={`
-        text-xl 
-        glow-black 
-        ml-2
-        mt-12 
-        `}>
-        Nominate an Artist
+          text-xl 
+          glow-black 
+          mt-12 
+          `}
+        >
+          Nominate an Artist
         </h1>
       </div>
       <Divider />
