@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { useUser } from '../../lib/useUser'
 import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
 import Image from 'next/image'
+import FormInput from '../formInput'
 
 // eslint-disable-next-line no-useless-escape
 const RE_EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -191,6 +192,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
       <div id="messageWrap" className="mx-4" onClick={messageClick}>
         {Boolean(user) === false && (
           <>
+            <label htmlFor='senderEmail'>Email</label>
             <input
               className={`
                 border-box
@@ -211,8 +213,8 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
                 focus:glow-blue
               `}
               type="text"
-              placeholder="Your email address"
-              id="contactSubject"
+              placeholder="yourpersonal@email.com"
+              id="senderEmail"
               autoComplete="off"
               {...register('senderEmail', {
                 required: 'EMAIL REQUIRED',
@@ -225,6 +227,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
             />
           </>
         )}
+        <label htmlFor='subject'>Subject</label>
         <input
           className={`
             border-box
@@ -247,13 +250,14 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
           `}
           type="text"
           placeholder="Subject"
-          id="contactSubject"
+          id="subject"
           autoComplete="off"
           {...register('subject', {
             required: 'SUBJECT REQUIRED',
             disabled: topic === null,
           })}
         />
+        <label htmlFor='message'>Message</label>
         <textarea
           className={`
             text-black
@@ -280,7 +284,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
             focus:glow-blue
           `}
           placeholder="Message"
-          id="contactMessage"
+          id="Message"
           {...register('message', {
             required: 'MESSAGE REQUIRED',
             disabled: topic === null,
