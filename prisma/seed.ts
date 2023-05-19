@@ -17,10 +17,41 @@ const main = async () => {
     `successfully created admin user: ${adminUser.name}, id: ${adminUser.id}`
   );
 
+  const adminArtist =  await prisma.artist.create({
+    data: {
+      id: "7f561890-9336-41e3-bb8b-73f4e518c9ae",
+      title: "admin artist",
+      pronouns: "she/her",
+      handle: "admin_artist",
+      bio: "I am an admin artist",
+      location: "Los Angeles, CA",
+      mediums: ["paint"],
+      mediumsOfInterest: ["paint", "sculpture"],
+      userId: adminUser.id,
+    }
+  })
+
+  console.log(
+    `successfully created admin artist: ${adminArtist.title}, id: ${adminArtist.id}`
+  );
+
+  const adminInvitable = await prisma.invitable.create({
+    data: {
+      id: "fab2771f-010a-4035-a0c8-923846e8fde4",
+      profileId: adminArtist.id,
+      profileType: "ARTIST",
+    }
+  });
+
+  console.log(
+    `successfully created admin invitable: ${adminInvitable.profileType}, id: ${adminInvitable.profileId}`
+  );
+
   const adminInvite = await prisma.invitation.create({
     data: {
       id: "57dcc37a-41de-4b4c-9df0-b5dd3e971cdf",
-      inviterId: adminUser.id,
+      inviterUserId: adminUser.id,
+      invitableId: adminInvitable.id,
     },
   });
 
@@ -30,7 +61,7 @@ const main = async () => {
 
   // iterate over applications and create the test applications
   applications.forEach(async (applicant) => {
-    console.log(`creating application: ${applicant}`);
+    console.log(`creating application: ${applicant.application.name}`);
 
     const app = await prisma.application.create({
       data: {
