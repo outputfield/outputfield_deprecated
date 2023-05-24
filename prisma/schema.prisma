@@ -41,9 +41,21 @@ model Invitation {
 
   createdAt DateTime @default(now()) @db.Timestamptz(6)
 
-  inviter     User          @relation(fields: [inviterId], references: [id])
-  inviterId   String        @unique @db.Uuid
+  inviter     Invitable? @relation(fields: [invitableId], references: [id])
+  invitableId String?    @unique @db.Uuid
+
   Application Application[]
+
+  inviterUserId String @db.Uuid
+  inviterUser   User   @relation(fields: [inviterUserId], references: [id])
+}
+
+model Invitable {
+  id          String       @id @db.Uuid
+  profileType String       @db.VarChar(50) // ARTIST, CURATOR, VENUE
+  profileId   String       @db.Uuid
+  Invitation  Invitation[]
+  Artist      Artist[]
 }
 
 model User {
@@ -79,6 +91,9 @@ model Artist {
   // Relation fields
   links Link[]
 
+  invitedById String?    @db.Uuid
+  invitedBy   Invitable? @relation(fields: [invitedById], references: [id])
+
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique @db.Uuid
   @@unique([userId, handle])
@@ -104,8 +119,8 @@ model Link {
   url   String @db.Text
   type  String @db.VarChar(50) // OTHER, WORK, etc.
 
-  artist    Artist?   @relation(fields: [artistId], references: [id], onDelete: Cascade)
-  artistId  String?   @db.Uuid
+  artist    Artist?  @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  artistId  String?  @db.Uuid
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   @@unique([url, artistId])
 }
