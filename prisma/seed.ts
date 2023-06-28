@@ -17,10 +17,41 @@ const main = async () => {
     `successfully created admin user: ${adminUser.name}, id: ${adminUser.id}`
   )
 
+  const adminArtist =  await prisma.artist.create({
+    data: {
+      id: "7f561890-9336-41e3-bb8b-73f4e518c9ae",
+      title: "admin artist",
+      pronouns: "she/her",
+      handle: "admin_artist",
+      bio: "I am an admin artist",
+      location: "Los Angeles, CA",
+      mediums: ["paint"],
+      mediumsOfInterest: ["paint", "sculpture"],
+      userId: adminUser.id,
+    }
+  })
+
+  console.log(
+    `successfully created admin artist: ${adminArtist.title}, id: ${adminArtist.id}`
+  );
+
+  const adminInvitable = await prisma.invitable.create({
+    data: {
+      id: "fab2771f-010a-4035-a0c8-923846e8fde4",
+      profileId: adminArtist.id,
+      profileType: "ARTIST",
+    }
+  });
+
+  console.log(
+    `successfully created admin invitable: ${adminInvitable.profileType}, id: ${adminInvitable.profileId}`
+  );
+
   const adminInvite = await prisma.invitation.create({
     data: {
-      id: '57dcc37a-41de-4b4c-9df0-b5dd3e971cdf',
-      inviterId: adminUser.id,
+      id: "57dcc37a-41de-4b4c-9df0-b5dd3e971cdf",
+      inviterUserId: adminUser.id,
+      invitableId: adminInvitable.id,
     },
   })
 
@@ -30,7 +61,7 @@ const main = async () => {
 
   // iterate over applications and create the test applications
   applications.forEach(async (applicant) => {
-    console.log(`creating application: ${applicant}`)
+    console.log(`creating application: ${applicant.application.name}`);
 
     const app = await prisma.application.create({
       data: {
@@ -79,14 +110,15 @@ const applications = [
       requiredLink: 'johnnyriches.com',
     },
     artist: {
-      id: '3139c61f-b80c-421b-bf85-bd6c940f5f16',
-      title: 'baby painter',
-      pronouns: 'he/him',
-      handle: 'bacheesos',
-      bio: 'He is super funny and talented',
-      location: 'Chicago',
-      mediums: ['paint'],
-      mediumsOfInterest: ['paint', 'sculpture'],
+      id: "3139c61f-b80c-421b-bf85-bd6c940f5f16",
+      title: "baby painter",
+      pronouns: "he/him",
+      handle: "bacheesos",
+      bio: "He is super funny and talented",
+      location: "Chicago",
+      mediums: ["paint"],
+      mediumsOfInterest: ["paint", "sculpture"],
+      invitedById: "fab2771f-010a-4035-a0c8-923846e8fde4"
     },
     links: [
       {
@@ -140,15 +172,16 @@ const applications = [
       requiredLink: 'ibrahimhopkins.com',
     },
     artist: {
-      id: 'd5e33baf-7dc2-413d-8047-eebcb447b06e',
-      pronouns: 'he/him',
-      handle: 'hopkins_art',
-      iconColor: '#ff00ff',
-      title: 'sculptor',
-      location: 'Chicago',
-      bio: 'He is an artist who documents jovial expression of life with sculptures of babies, who inspire him into incorporating himself at a young age. A great sculptor, he is known to show great care and attention to detail from early childhood, and he is very willing and able to show his art and to create art he feels will benefit all. He also takes a hard look into his work and knows why it is so important.',
-      mediums: ['tattoo'],
-      mediumsOfInterest: ['tattoo', 'installation'],
+      id: "d5e33baf-7dc2-413d-8047-eebcb447b06e",
+      pronouns: "he/him",
+      handle: "hopkins_art",
+      iconColor: "#ff00ff",
+      title: "sculptor",
+      location: "Chicago",
+      bio: "He is an artist who documents jovial expression of life with sculptures of babies, who inspire him into incorporating himself at a young age. A great sculptor, he is known to show great care and attention to detail from early childhood, and he is very willing and able to show his art and to create art he feels will benefit all. He also takes a hard look into his work and knows why it is so important.",
+      mediums: ["tattoo"],
+      mediumsOfInterest: ["tattoo", "installation"],
+      invitedById: "fab2771f-010a-4035-a0c8-923846e8fde4"
     },
     links: [
       {
@@ -202,15 +235,16 @@ const applications = [
       requiredLink: 'sofiawheeler.com',
     },
     artist: {
-      id: '9686185d-9aec-47b6-8266-b36515a08fbf',
-      pronouns: 'she/her',
-      handle: 'sofiawheeler',
-      iconColor: '#ff0000',
-      title: 'filmmaker',
-      location: 'New York',
-      bio: 'When we have some moments in our lives, we want to show people how important those moments are to us in certain ways. For us to do that, we need to be clear about what our experience of death is and what those experiences mean but also about us as family members. Photography should be a place where we feel that we have that connection and respect for the places that were lost. It does not mean we feel bad for what we have lost. It means that we truly are grateful for those in our lives we choose not to see or know about and for how we have affected them. It also means that we feel sorry for how our actions and lives affected them and we may do things that hurt or hurt in ways that hurt those of us.',
-      mediums: ['photo / film', 'sculpture'],
-      mediumsOfInterest: ['performance', 'design'],
+      id: "9686185d-9aec-47b6-8266-b36515a08fbf",
+      pronouns: "she/her",
+      handle: "sofiawheeler",
+      iconColor: "#ff0000",
+      title: "filmmaker",
+      location: "New York",
+      bio: "When we have some moments in our lives, we want to show people how important those moments are to us in certain ways. For us to do that, we need to be clear about what our experience of death is and what those experiences mean but also about us as family members. Photography should be a place where we feel that we have that connection and respect for the places that were lost. It does not mean we feel bad for what we have lost. It means that we truly are grateful for those in our lives we choose not to see or know about and for how we have affected them. It also means that we feel sorry for how our actions and lives affected them and we may do things that hurt or hurt in ways that hurt those of us.",
+      mediums: ["photo / film", "sculpture"],
+      mediumsOfInterest: ["performance", "design"],
+      invitedById: "fab2771f-010a-4035-a0c8-923846e8fde4"
     },
     links: [
       {
@@ -264,15 +298,16 @@ const applications = [
       requiredLink: 'conngarrison.com',
     },
     artist: {
-      id: 'b7d20ddf-c975-437a-86f8-cf0f23242d42',
-      pronouns: 'he/him',
-      handle: 'cgarrison',
-      iconColor: '#ffff00',
-      title: 'designer',
-      location: 'London',
-      bio: 'My career for a few years spent designing for the web, but I have become more passionate since then. My recent projects included a simple 3D logo of The Ultimate Fizz, a simple 3D photo of a video game, a video that has been updated to the latest 2D rendering technology and a gorgeous 3D painting. These are just some of the great projects that I have worked with over the years. I have been lucky enough to play a great amount of role on one of my favorite websites, the one that takes me from being an awesome and creative.',
-      mediums: ['design', '3d'],
-      mediumsOfInterest: ['design', 'visual'],
+      id: "b7d20ddf-c975-437a-86f8-cf0f23242d42",
+      pronouns: "he/him",
+      handle: "cgarrison",
+      iconColor: "#ffff00",
+      title: "designer",
+      location: "London",
+      bio: "My career for a few years spent designing for the web, but I have become more passionate since then. My recent projects included a simple 3D logo of The Ultimate Fizz, a simple 3D photo of a video game, a video that has been updated to the latest 2D rendering technology and a gorgeous 3D painting. These are just some of the great projects that I have worked with over the years. I have been lucky enough to play a great amount of role on one of my favorite websites, the one that takes me from being an awesome and creative.",
+      mediums: ["design", "3d"],
+      mediumsOfInterest: ["design", "visual"],
+      invitedById: "fab2771f-010a-4035-a0c8-923846e8fde4"
     },
     links: [
       {
@@ -326,15 +361,16 @@ const applications = [
       requiredLink: 'selimakhalil.com',
     },
     artist: {
-      id: 'a3d36665-150e-4a14-84a4-97595c6a3f50',
-      pronouns: 'she/they',
-      handle: 'selkhal00',
-      iconColor: '#00ffff',
-      title: 'bruha',
-      location: 'Manchester',
-      bio: 'Selima Khalil is an artist and DIY designer working within the realm of contemporary embroidery. She creates of one of a kind hand stitched artworks thoughtfully freed from the expectations of traditional Fine Art. Her work is inspired by classical art works that are often considered decorative or ornamental. She started her career with an eye to create new artworks as part of her project artfully. The result are a range of beautiful handcrafted pieces of contemporary artistic art. She hopes to have them to display at festivals and in schools.',
-      mediums: ['textile'],
-      mediumsOfInterest: ['photo / film', 'performance'],
+      id: "a3d36665-150e-4a14-84a4-97595c6a3f50",
+      pronouns: "she/they",
+      handle: "selkhal00",
+      iconColor: "#00ffff",
+      title: "bruha",
+      location: "Manchester",
+      bio: "Selima Khalil is an artist and DIY designer working within the realm of contemporary embroidery. She creates of one of a kind hand stitched artworks thoughtfully freed from the expectations of traditional Fine Art. Her work is inspired by classical art works that are often considered decorative or ornamental. She started her career with an eye to create new artworks as part of her project artfully. The result are a range of beautiful handcrafted pieces of contemporary artistic art. She hopes to have them to display at festivals and in schools.",
+      mediums: ["textile"],
+      mediumsOfInterest: ["photo / film", "performance"],
+      invitedById: "fab2771f-010a-4035-a0c8-923846e8fde4"
     },
     links: [
       {
@@ -404,6 +440,7 @@ const applications = [
         'design',
         'sound',
       ],
+      invitedById: "fab2771f-010a-4035-a0c8-923846e8fde4"
     },
     links: [
       {
