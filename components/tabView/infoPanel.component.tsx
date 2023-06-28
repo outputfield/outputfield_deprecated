@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { ArtistWithUserAndNominatedByAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
 import { Button } from '../Button'
 import Contact from '../artists/contact'
 
 interface Props {
-  artist: ArtistWithUserAndNominatedByAndWorkAndLinks;
+  artist: ArtistWithInviterAndUserAndLinks;
   className?: string;
   includeContact?: boolean;
 }
@@ -56,7 +56,7 @@ const InfoPanel: React.FC<Props> = ({
             <div id="artistLinks" className="relative mb-24 h-32">
               <img src="/dashedEllipses4.svg" className="absolute" />
               <div className="absolute flex flex-col space-y-4 mt-4 ml-4">
-                {artist?.links.map(({ title, url }) => (
+                {artist?.links.filter(({ type }) => type !== 'WORK').map(({ title, url }) => (
                   <a
                     key={url}
                     href={url}
@@ -70,7 +70,7 @@ const InfoPanel: React.FC<Props> = ({
               </div>
             </div>
             {
-              artist?.user.nominatedBy && (
+              artist?.user.application?.invitation.inviter && (
                 <div id="artistReference" className={'flex justify-end relative w-full h-20 mb-20'}>
                   <img src="/dashedEllipses2.svg" className="absolute" />
                   <div className="absolute uppercase mt-2 mr-8">
@@ -78,9 +78,9 @@ const InfoPanel: React.FC<Props> = ({
                     <br />
                     <a
                       className="underline glow-highlight"
-                      href={'/artists/'+artist?.user?.nominatedBy?.artist?.handle}
+                      href={'/artists/'+artist?.user.application?.invitation?.inviter?.artist?.handle}
                     >
-                      {artist?.user.nominatedBy?.name}
+                      {artist?.user.application?.invitation.inviter.name}
                     </a>
                   </div>
                 </div>

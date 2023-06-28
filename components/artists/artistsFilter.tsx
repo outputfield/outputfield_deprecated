@@ -3,6 +3,7 @@ import Overlay from '../../components/overlay'
 import Checkbox from '../../components/checkbox'
 import { Button } from '../../components/Button'
 import Image from 'next/image'
+import DashedDivider from '../dashedDivider'
 
 interface Props {
   isOpen: boolean,
@@ -73,13 +74,11 @@ const ArtistsFilter: React.FC<Props> = ({
     <Overlay aria-label="Artists Filter" className={`${isOpen? 'visible': 'hidden'}`}>
       <div className={`
         px-4
-        pb-4
         mt-0
         sm:mt-0
         sm:ml-4
         flex
         justify-between
-        border-long-dashed-b
       `}>
         <button
           className={'underline uppercase leading-6 disabled:text-gray' + (filtersCount === 0 && 'cursor-not-allowed')}
@@ -93,6 +92,7 @@ const ArtistsFilter: React.FC<Props> = ({
           <Image src="/closeIcon.svg" alt="close" width={16} height={16} />
         </button>
       </div>
+      <DashedDivider />
       <div className="my-5 text-center">
         <form className="mx-auto max-w-fit">
           {filterOptions.map(( medium ) => {

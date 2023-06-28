@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import React, { BaseSyntheticEvent, useMemo, useState } from 'react'
 import { ErrorMessage } from '@hookform/error-message'
 import { Button } from '../Button'
-import { FieldErrors, FieldValues, SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useUser } from '../../lib/useUser'
-import { ArtistWithUserAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
 import Image from 'next/image'
+import FormInput from '../formInput'
 
 // eslint-disable-next-line no-useless-escape
 const RE_EMAIL_PATTERN = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -43,8 +44,15 @@ const TOPICS = [
 ]
 
 interface Props {
-  artistData: ArtistWithUserAndWorkAndLinks,
+  artistData: ArtistWithInviterAndUserAndLinks,
   onClose: () => void
+}
+
+interface FormValues {
+  topic: string,
+  senderEmail: string,
+  subject: string,
+  message: string,
 }
 
 const Contact: React.FC<Props> = ({ artistData, onClose }) => {
@@ -55,7 +63,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     clearErrors,
     trigger,
     formState: { errors, isValid },
-  } = useForm({
+  } = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues: {
       topic: '',
@@ -66,6 +74,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
   })
   const [topic, setTopic] = useState(null)
   const user = useUser()
+  const pendingForms = new WeakMap()
 
   function selectTopic(event: any) {
     const { value } = event.target
@@ -86,10 +95,19 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
     }
   }
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onValid = async (data: FormValues, e?: BaseSyntheticEvent) => {
     trigger()
     try {
       const { senderEmail, subject, message } = data
+      const form = e?.currentTarget as EventTarget
+      const previousController = pendingForms.get(form)
+
+      if (previousController) {
+        previousController.abort()
+      }
+
+      const controller = new AbortController()
+      pendingForms.set(form, controller)
 
       const senderName = user.name || 'Anonymous'  // FIXME: grab sender's name inside of this component...
 
@@ -112,19 +130,21 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
+        signal: controller.signal
       })
+      pendingForms.delete(form)
     } catch (error) {
       console.log('contact onSubmit failed with ', error)
     }
   }
 
-  const onError: SubmitErrorHandler<FieldErrors> = (errors, e) => console.log(errors, e)
+  const onError = (errors: any, e?: BaseSyntheticEvent) => console.log(errors, e)
 
   const RELEVANT_TOPICS = useMemo(() => TOPICS.filter(({ authenticated }) => Boolean(user) === authenticated), [user])
   
   return (
     <form
-      onSubmit={handleSubmit(onSubmit, onError)}
+      onSubmit={handleSubmit(onValid, onError)}
       className={`
         w-full
         h-full
@@ -172,6 +192,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
       <div id="messageWrap" className="mx-4" onClick={messageClick}>
         {Boolean(user) === false && (
           <>
+            <label htmlFor='senderEmail'>Email</label>
             <input
               className={`
                 border-box
@@ -192,8 +213,8 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
                 focus:glow-blue
               `}
               type="text"
-              placeholder="Your email address"
-              id="contactSubject"
+              placeholder="yourpersonal@email.com"
+              id="senderEmail"
               autoComplete="off"
               {...register('senderEmail', {
                 required: 'EMAIL REQUIRED',
@@ -204,9 +225,9 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
                 }
               })}
             />
-            <div className="h-6 border-long-dashed-x" />
           </>
         )}
+        <label htmlFor='subject'>Subject</label>
         <input
           className={`
             border-box
@@ -229,14 +250,14 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
           `}
           type="text"
           placeholder="Subject"
-          id="contactSubject"
+          id="subject"
           autoComplete="off"
           {...register('subject', {
             required: 'SUBJECT REQUIRED',
             disabled: topic === null,
           })}
         />
-        <div className="h-6 border-long-dashed-x" />
+        <label htmlFor='message'>Message</label>
         <textarea
           className={`
             text-black
@@ -263,7 +284,7 @@ const Contact: React.FC<Props> = ({ artistData, onClose }) => {
             focus:glow-blue
           `}
           placeholder="Message"
-          id="contactMessage"
+          id="Message"
           {...register('message', {
             required: 'MESSAGE REQUIRED',
             disabled: topic === null,

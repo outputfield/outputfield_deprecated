@@ -45,24 +45,6 @@ html {
   .glow-black {
     text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   }
-
-  /* Generated with https://kovart.github.io/dashed-border-generator/. 
-     Native CSS properties don't support the customization of border-style. Therefore, we use a trick with an SVG image inside background-image property. */
-  .border-long-dashed {
-    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23333' stroke-width='1' stroke-dasharray='4' stroke-dashoffset='4' stroke-linecap='butt'/%3e%3c/svg%3e");
-  }
-
-  /* TODO: top and bottom only custom dashed border */
-  .border-long-dashed-x {}
-
-  /* TODO: top and bottom only custom dashed border */
-  .border-long-dashed-y {}
-
-  /* TODO: top only custom dashed border */
-  .border-long-dashed-t {}
-  
-  /* TODO: bottom only custom dashed border */
-  .border-long-dashed-b {}
 }
 
 @layer components {
@@ -86,6 +68,10 @@ html {
 
   .form-input__linear-gradient {
     background: linear-gradient(185.66deg, #EEEEF0 -31.99%, rgba(238, 238, 240, 0) 96.55%);
+  }
+
+  .link__linear-gradient {
+    background: linear-gradient(265.72deg, #FFFFFF -14.51%, rgba(253, 255, 226, 0.972778) 8.06%, rgba(255, 255, 255, 0.84) 118.15%);
   }
 }
 

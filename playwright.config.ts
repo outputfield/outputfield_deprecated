@@ -41,6 +41,8 @@ const config: PlaywrightTestConfig = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    // permissions: ['clipboard-read'],
+
   },
 
   /* Configure projects for major browsers */
@@ -49,16 +51,15 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        permissions: ['clipboard-read']
       },
     },
-
     {
       name: 'firefox',
       use: {
         ...devices['Desktop Firefox'],
       },
     },
-
     {
       name: 'webkit',
       use: {

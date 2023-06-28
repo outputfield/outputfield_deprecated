@@ -1,10 +1,11 @@
 import React from 'react'
 import Link from 'next/link'
-import { ArtistWithUserAndWorkAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
 import ProfilePicture from './profilePicture'
+import DashedDivider from '../dashedDivider'
 
 export interface ArtistRowProps {
-  artist: ArtistWithUserAndWorkAndLinks;
+  artist: ArtistWithInviterAndUserAndLinks;
   type: 'list' | 'detail';
   className?: string;
 }
@@ -16,15 +17,22 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
     <div
       data-testid='artistRow'
       className={`
-        ${type === 'detail' ? 'border-long-dashed-y' : ''} 
-        ${type === 'list' ? 'border-long-dashed-t' : ''} 
-        w-full flex flex-col relative pt-[11px] pl-[13px] pb-[8px] pr-[11px]`}>
+        w-full
+        min-h-40
+        flex
+        flex-col
+        relative
+      `}
+    >
+      <DashedDivider />
       <div className="grow relative flex justify-center self-start items-center">
-        <div className="mx-[10px] my-[24px]">
+        <div className="py-9 mx-3 relative">
           <ProfilePicture />
-          {type == 'detail' && <div className="text-center font-serif mt-1">{artist?.pronouns}</div>}
+          {type == 'detail' && (
+            <div className="absolute text-center w-full font-serif mt-1 left">{artist?.pronouns}</div>
+          )}
         </div>
-        <div className="ml-3 py-auto text-lg">
+        <div className="ml-3 py-auto text-med">
           <p className="text-[18px]">{artist?.user.name}</p>
           <span className="lowercase font-serif">{`'${artist?.title}'`}</span>
           {artist?.title && artist?.location && (
@@ -33,16 +41,17 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
           <span>{artist?.location}</span>
         </div>
       </div>
-      <span className="text-right text-lg uppercase absolute right-[13px] bottom-[8px]">
+      <span className="text-med text-right uppercase absolute bottom-2 right-3">
         {artist?.mediums}
       </span>
+      {type === 'detail' && <DashedDivider />}
     </div>
   )
   if (type === 'list') {
     return (
       <Link
         href={uri}
-        className="last-of-type:border-long-dashed-y"
+        className='cursor-pointer'
         legacyBehavior>
         {row}
       </Link>

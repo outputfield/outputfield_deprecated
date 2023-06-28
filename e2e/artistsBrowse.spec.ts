@@ -76,7 +76,7 @@ test.describe('Artists filter', () => {
 // ArtistsScreens
 //    View
 //    Contact
-test.describe.only('Artist view', () => {
+test.describe('Artist view', () => {
   test.beforeEach(async ({ page }) => {
     page.goto('/artists')
     await page.getByTestId('artistRow').first().click()

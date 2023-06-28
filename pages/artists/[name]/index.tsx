@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { GetStaticPropsContext, InferGetStaticPropsType } from 'next'
+import { GetStaticPropsContext } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 
 import { ArtistRow } from '../../../components/artists/artistRow.component'
@@ -9,7 +9,7 @@ import WorkPanel from '../../../components/tabView/workPanel.component'
 import InfoPanel from '../../../components/tabView/infoPanel.component'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
 import Image from 'next/legacy/image'
-import { getArtistWithUserAndWorkAndLinks } from '../../api/artists/[name]'
+import { getArtistWithUserAndInviterAndLinks, ArtistWithInviterAndUserAndLinks } from '../../api/artists/[name]'
 
 export const getStaticPaths = async () => {
   const data = await getArtistsWithUserAndWorkAndLinks()
@@ -31,7 +31,7 @@ interface IParams extends ParsedUrlQuery {
 export async function getStaticProps(context: GetStaticPropsContext) {
   const { name } = context.params as IParams
 
-  const res = await getArtistWithUserAndWorkAndLinks(name)
+  const res = await getArtistWithUserAndInviterAndLinks(name)
   const artist = JSON.parse(JSON.stringify(res))
   return {
     props: {
@@ -39,8 +39,11 @@ export async function getStaticProps(context: GetStaticPropsContext) {
     },
   }
 }
+interface Props {
+  artist: ArtistWithInviterAndUserAndLinks
+}
 
-const ArtistPage = ({ artist }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const ArtistPage: React.FC<Props> = ({ artist }) => {
   const router = useRouter()
 
   const closeArtist = () => {
@@ -58,7 +61,7 @@ const ArtistPage = ({ artist }: InferGetStaticPropsType<typeof getStaticProps>) 
         <ArtistRow artist={artist} type="detail" />
         <div className='p-6'/>
         <Tabs headers={['Work', 'Info']}>
-          <WorkPanel works={artist.work} />
+          <WorkPanel works={artist.links.filter(({ type }) => type === 'WORK')} />
           <InfoPanel artist={artist} />
         </Tabs>
       </div>

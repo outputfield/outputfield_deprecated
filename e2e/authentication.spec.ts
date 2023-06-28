@@ -26,7 +26,7 @@ test.describe('Non- user', () => {
   })
 })
 
-test.describe.only('User', () => {
+test.describe('User', () => {
   test.describe('after failed auth', () => {
     test('sees error feedback',async ({ page }) => {
       await page.goto('/login')
