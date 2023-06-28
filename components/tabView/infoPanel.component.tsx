@@ -69,7 +69,7 @@ const InfoPanel: React.FC<Props> = ({
                 ))}
               </div>
             </div>
-            {
+            {/* FIXME: {
               artist?.user.application?.invitation.inviter && (
                 <div id="artistReference" className={'flex justify-end relative w-full h-20 mb-20'}>
                   <img src="/dashedEllipses2.svg" className="absolute" />
@@ -85,7 +85,7 @@ const InfoPanel: React.FC<Props> = ({
                   </div>
                 </div>
               )
-            }
+            } */}
             {includeContact && (
               <Button onClick={() => setContactOpen(true)}>contact</Button>
             )}

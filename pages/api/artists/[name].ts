@@ -20,24 +20,11 @@ export const getArtistWithUserAndInviterAndLinks = (artistName: string) => {
         select: {
           name: true,
           email: true,
-          application: {
-            select: {
-              invitation: {
-                select: {
-                  inviter: {
-                    select: {
-                      name: true,
-                      artist: {
-                        select: {
-                          handle: true
-                        }
-                      } 
-                    }
-                  }
-                }
-              }
-            }
-          },
+          // invitedBy: {
+          //   select: {
+          //     profileType === 'ARTIST' ? 
+          //   }
+          // }
         },
       },
     },
