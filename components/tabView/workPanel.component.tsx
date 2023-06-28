@@ -65,13 +65,15 @@ const WorkPanel: React.FC<Props> = ({
         onClose={handleClose}
         aria-label={openImg}
       >
-        <Image
-          src={openImg}
-          width={300}
-          height={300}
-          alt={openImg}
-          className='block object-contain'
-        />
+        <div>
+          <Image
+            src={openImg}
+            width={300}
+            height={300}
+            alt={openImg}
+            className='block object-contain'
+          />
+        </div>
       </Modal>
       <Swiper
         modules={[A11y, Scrollbar, FreeMode]}
