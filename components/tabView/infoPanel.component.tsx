@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
-import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithUser, Inviter } from '../../pages/api/artists/[name]'
 import { Button } from '../Button'
 import Contact from '../artists/contact'
 
 interface Props {
-  artist: ArtistWithInviterAndUserAndLinks;
+  artist: ArtistWithUser;
+  inviter: Inviter,
   className?: string;
   includeContact?: boolean;
 }
 
 const InfoPanel: React.FC<Props> = ({
   artist,
+  inviter,
   className,
   includeContact = true,
 }) => {
@@ -69,8 +71,8 @@ const InfoPanel: React.FC<Props> = ({
                 ))}
               </div>
             </div>
-            {/* FIXME: {
-              artist?.user.application?.invitation.inviter && (
+            {
+              Object.keys(inviter).length !== 0 && (
                 <div id="artistReference" className={'flex justify-end relative w-full h-20 mb-20'}>
                   <img src="/dashedEllipses2.svg" className="absolute" />
                   <div className="absolute uppercase mt-2 mr-8">
@@ -78,14 +80,14 @@ const InfoPanel: React.FC<Props> = ({
                     <br />
                     <a
                       className="underline glow-highlight"
-                      href={'/artists/'+artist?.user.application?.invitation?.inviter?.artist?.handle}
+                      href={'/artists/'+inviter.handle}
                     >
-                      {artist?.user.application?.invitation.inviter.name}
+                      {inviter.user.name}
                     </a>
                   </div>
                 </div>
               )
-            } */}
+            }
             {includeContact && (
               <Button onClick={() => setContactOpen(true)}>contact</Button>
             )}

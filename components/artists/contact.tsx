@@ -3,7 +3,7 @@ import { ErrorMessage } from '@hookform/error-message'
 import { Button } from '../Button'
 import { useForm } from 'react-hook-form'
 import { useUser } from '../../lib/useUser'
-import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithUser } from '../../pages/api/artists/[name]'
 import Image from 'next/image'
 import FormInput from '../formInput'
 
@@ -44,7 +44,7 @@ const TOPICS = [
 ]
 
 interface Props {
-  artistData: ArtistWithInviterAndUserAndLinks,
+  artistData: ArtistWithUser,
   onClose: () => void
 }
 

@@ -9,7 +9,7 @@ import WorkPanel from '../../../components/tabView/workPanel.component'
 import InfoPanel from '../../../components/tabView/infoPanel.component'
 import { getArtistsWithUserAndWorkAndLinks } from '../../api/artists'
 import Image from 'next/legacy/image'
-import { getArtistWithUserAndInviterAndLinks, ArtistWithInviterAndUserAndLinks } from '../../api/artists/[name]'
+import { getArtistByHandle, ArtistWithUser, getArtistInviter, Inviter } from '../../api/artists/[name]'
 
 export const getStaticPaths = async () => {
   const data = await getArtistsWithUserAndWorkAndLinks()
@@ -30,20 +30,27 @@ interface IParams extends ParsedUrlQuery {
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const { name } = context.params as IParams
-
-  const res = await getArtistWithUserAndInviterAndLinks(name)
-  const artist = JSON.parse(JSON.stringify(res))
+  
+  const artistRes = await getArtistByHandle(name)
+  const artist = JSON.parse(JSON.stringify(artistRes))
+  
+  const { invitedBy: { profileType, profileId } } = artist
+  const inviterRes = await getArtistInviter(profileType, profileId)
+  const inviter = JSON.parse(JSON.stringify(inviterRes))
+  
   return {
     props: {
       artist,
+      inviter
     },
   }
 }
 interface Props {
-  artist: ArtistWithInviterAndUserAndLinks
+  artist: ArtistWithUser,
+  inviter: Inviter
 }
 
-const ArtistPage: React.FC<Props> = ({ artist }) => {
+const ArtistPage: React.FC<Props> = ({ artist, inviter }) => {
   const router = useRouter()
 
   const closeArtist = () => {
@@ -62,7 +69,7 @@ const ArtistPage: React.FC<Props> = ({ artist }) => {
         <div className='p-6'/>
         <Tabs headers={['Work', 'Info']}>
           <WorkPanel works={artist.links.filter(({ type }) => type === 'WORK')} />
-          <InfoPanel artist={artist} />
+          <InfoPanel artist={artist} inviter={inviter} />
         </Tabs>
       </div>
     ) : (
