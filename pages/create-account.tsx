@@ -7,13 +7,31 @@ import { UserCreateInputWithArtist, UserWithArtist } from './api/signUp'
 import { makeid, partition } from '../lib/utils'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { getAllMediums } from './api/create-account'
+import { MediumOptionT } from '../components/ProfileForm/MediumsCombobox'
 
 export type Work = {
   title: string,
   url: string,
 }
 
-export default function CreateAccount() {
+export async function getStaticProps() {  
+  const mediumsRes = await getAllMediums()
+  const mediums = JSON.parse(JSON.stringify(mediumsRes)).map((m:any) => ({id: m.id, label: m.name}))
+  console.log('fetched mediums', mediums)
+
+  return {
+    props: {
+      mediums
+    },
+  }
+}
+
+interface Props {
+  mediums: MediumOptionT[];
+}
+
+export default function CreateAccount({ mediums }: Props) {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
   const [ message, setMessage ] = useState('')
   const router = useRouter()
@@ -216,6 +234,7 @@ export default function CreateAccount() {
         <ProfileForm
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
+          mediums={mediums}
         />
         <div className="text-center text-sm text-blue">
           {message}

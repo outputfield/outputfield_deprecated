@@ -33,12 +33,6 @@ export type ISignUpInputs = {
 
 type ISignUpInputsAndWorks = ISignUpInputs & { works: FormData[] }
 
-interface Props {
-  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => Promise<void>;
-  isSubmitting: boolean;
-  profileData?: ISignUpInputsAndWorks | undefined;
-}
-
 type Add = {
   type: 'ADD',
   key: number,
@@ -56,7 +50,14 @@ interface UploadWorksState {
   [key: number]: FormData;
 }
 
-export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Props) {
+interface Props {
+  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => Promise<void>;
+  isSubmitting: boolean;
+  profileData?: ISignUpInputsAndWorks | undefined;
+  mediums: MediumOptionT[];
+}
+
+export default function ProfileForm({ onSubmit, isSubmitting, profileData, mediums }: Props) {
   const {
     register,
     handleSubmit,
@@ -233,18 +234,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
             <MediumsCombobox
               name="mediums"
               label="Mediums"
-              options={[
-                {
-                  id: 1,
-                  label: 'wood'
-                }, {
-                  id: 2, 
-                  label: 'metal'
-                }, {
-                  id: 3, 
-                  label: 'sculpture'
-                }
-              ]}
+              options={mediums}
               selectedMediums={watch('mediums') || []}
               setSelectedMediums={(values) => setValue('mediums', values)}
             />
@@ -254,18 +244,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
             <MediumsCombobox
               name="mediumsOfInterest"
               label="Mediums of Interest"
-              options={[
-                {
-                  id: 1,
-                  label: 'wood'
-                }, {
-                  id: 2, 
-                  label: 'metal'
-                }, {
-                  id: 3, 
-                  label: 'sculpture'
-                }
-              ]}
+              options={mediums}
               selectedMediums={watch('mediumsOfInterest') || []}
               setSelectedMediums={(values) => setValue('mediumsOfInterest', values)}
             />
@@ -398,7 +377,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                           `}>
                             {filenames[key]}
                           </p>
-                          <button
+                          <a
                             onClick={handleDeleteWork(key)}
                             className={`
                               absolute
@@ -407,7 +386,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                             `}
                           >
                             <Image src='/trashIcon.svg' alt='x' height='24' width='24' />
-                          </button>
+                          </a>
                         </>
                       ) : (
                         <Image
