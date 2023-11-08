@@ -3,10 +3,10 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
-test.describe('Apply', () => {
+test.describe.only('Apply', () => {
   test.beforeEach(async ({ page }) => {
     const nominatorId = 0
-    await page.goto(`/applications?i=${nominatorId}`)
+    await page.goto(`/apply?i=${nominatorId}`)
   })
 
   test('should not have any automatically detectable accessibility issues', async ({ page }) => {
@@ -60,17 +60,14 @@ test.describe('Apply', () => {
     await page.getByRole('tabpanel', { name: 'Upload' }).getByLabel('Upload').setInputFiles('./public/extarrow.png')
 
     // expect no errors to be visible
-    expect(page.getByText('Please add at least one work.')).toBeHidden
+    expect(page.getByText('Please add at least three works.')).toBeHidden
   
-    // TODO: (passes up to here)
     // - - - SUBMISSION - - -
     // expect redirect to /login
-    const navigationPromise = page.waitForNavigation()
-    const saveButton = page.getByText('SAVE')
+    const saveButton = page.getByText('SUBMIT')
     await saveButton.click()
-    await navigationPromise
-    expect(page).toHaveURL(/.*login/)
+    await page.waitForURL('**/login')
 
-    // expect API POST req with body... {}
+    // TODO: expect API POST req with body... {}
   })
 })

@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test'
 import AxeBuilder from '@axe-core/playwright'
 
-test.describe.only('Invitations', () => {
+test.describe('Invitations', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/account/invitation')
   })
@@ -13,7 +13,7 @@ test.describe.only('Invitations', () => {
   })
 
   test('should show remaining invites out of total', async ({ page }) => {
-    await expect(page.getByTestId('invitation-remaining')).toHaveText('You have 2/3 invites remaining.')
+    await expect(page.getByTestId('invitation-remaining')).toHaveText('Please note, you have only have 2/3 referrals left. View referral history.')
   })
 
   test('should generate copyable invitation link', async ({ page, browserName }) => {
