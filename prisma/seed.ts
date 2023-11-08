@@ -4,99 +4,6 @@ const prisma = new PrismaClient({
   log: ['error', 'warn'],
 })
 
-const main = async () => {
-  const adminUser = await prisma.user.create({
-    data: {
-      id: '57f89cef-ffa4-41bb-a44a-0b7a06cf98b2',
-      name: 'Ada Lovelace',
-      email: 'lacelove@gmail.com',
-    },
-  })
-
-  console.log(
-    `successfully created admin user: ${adminUser.name}, id: ${adminUser.id}`
-  )
-
-  const adminArtist =  await prisma.artist.create({
-    data: {
-      id: '7f561890-9336-41e3-bb8b-73f4e518c9ae',
-      title: 'admin artist',
-      pronouns: 'she/her',
-      handle: 'admin_artist',
-      bio: 'I am an admin artist',
-      location: 'Los Angeles, CA',
-      mediums: ['paint'],
-      mediumsOfInterest: ['paint', 'sculpture'],
-      userId: adminUser.id,
-    }
-  })
-
-  console.log(
-    `successfully created admin artist: ${adminArtist.title}, id: ${adminArtist.id}`
-  )
-
-  const adminInvitable = await prisma.invitable.create({
-    data: {
-      id: 'fab2771f-010a-4035-a0c8-923846e8fde4',
-      profileId: adminArtist.id,
-      profileType: 'ARTIST',
-    }
-  })
-
-  console.log(
-    `successfully created admin invitable: ${adminInvitable.profileType}, id: ${adminInvitable.profileId}`
-  )
-
-  const adminInvite = await prisma.invitation.create({
-    data: {
-      id: '57dcc37a-41de-4b4c-9df0-b5dd3e971cdf',
-      inviterUserId: adminUser.id,
-      invitableId: adminInvitable.id,
-    },
-  })
-
-  console.log(
-    `successfully created admin invitation: ${adminInvite.id} for ${adminUser.id}`
-  )
-
-  // iterate over applications and create the test applications
-  applications.forEach(async (applicant) => {
-    console.log(`creating application: ${applicant.application.name}`)
-
-    const app = await prisma.application.create({
-      data: {
-        ...applicant.application,
-        invitationId: adminInvite.id,
-      },
-    })
-
-    console.log(`successfully created application: ${app.name}`)
-
-    const user = await prisma.user.create({
-      data: {
-        id: applicant.user.id,
-        name: applicant.application.name,
-        email: applicant.application.email,
-        applicationId: app.id,
-      },
-    })
-
-    console.log(`successfully created user: ${user.name}`)
-
-    const artist = await prisma.artist.create({
-      data: {
-        ...applicant.artist,
-        userId: user.id,
-        links: {
-          create: applicant.links,
-        },
-      },
-    })
-
-    console.log(`successfully created artist: ${artist.handle}`)
-  })
-}
-
 const applications = [
   {
     user: {
@@ -482,6 +389,175 @@ const applications = [
     ],
   },
 ]
+const main = async () => {
+  const adminUser = await prisma.user.create({
+    data: {
+      id: '57f89cef-ffa4-41bb-a44a-0b7a06cf98b2',
+      name: 'Ada Lovelace',
+      email: 'lacelove@gmail.com',
+    },
+  })
+
+  console.log(
+    `successfully created admin user: ${adminUser.name}, id: ${adminUser.id}`
+  )
+
+  const adminArtist =  await prisma.artist.create({
+    data: {
+      id: '7f561890-9336-41e3-bb8b-73f4e518c9ae',
+      title: 'admin artist',
+      pronouns: 'she/her',
+      handle: 'admin_artist',
+      bio: 'I am an admin artist',
+      location: 'Los Angeles, CA',
+      mediums: {
+        create: [
+          {
+            medium: {
+              connectOrCreate: {
+                where: {
+                  name: 'paint',
+                },
+                create: {
+                  name: 'paint',
+                },
+              }
+            },
+          }
+        ]
+      },
+      mediumsOfInterest: {
+        create: [
+          {
+            medium: {
+              connectOrCreate: {
+                where: {
+                  name: 'paint',
+                },
+                create: {
+                  name: 'paint',
+                },
+              }
+            },
+          },
+          {
+            medium: {
+              connectOrCreate: {
+                where: {
+                  name: 'sculpture'
+                },
+                create: {
+                  name: 'sculpture',
+                },
+              }
+            },
+          }
+        ]
+      },
+      userId: adminUser.id,
+    }
+  })
+
+  console.log(
+    `successfully created admin artist: ${adminArtist.title}, id: ${adminArtist.id}`
+  )
+
+  const adminInvitable = await prisma.invitable.create({
+    data: {
+      id: 'fab2771f-010a-4035-a0c8-923846e8fde4',
+      profileId: adminArtist.id,
+      profileType: 'ARTIST',
+    }
+  })
+
+  console.log(
+    `successfully created admin invitable: ${adminInvitable.profileType}, id: ${adminInvitable.profileId}`
+  )
+
+  const adminInvite = await prisma.invitation.create({
+    data: {
+      id: '57dcc37a-41de-4b4c-9df0-b5dd3e971cdf',
+      inviterUserId: adminUser.id,
+      invitableId: adminInvitable.id,
+    },
+  })
+
+  console.log(
+    `successfully created admin invitation: ${adminInvite.id} for ${adminUser.id}`
+  )
+
+  // iterate over applications and create the test applications
+  for (const applicant of applications) {
+  // applications.forEach(async (applicant) => {
+    console.log(`creating application: ${applicant.application.name}`)
+
+    const app = await prisma.application.create({
+      data: {
+        ...applicant.application,
+        invitationId: adminInvite.id,
+      },
+    })
+
+    console.log(`successfully created application: ${app.name}`)
+
+    const user = await prisma.user.create({
+      data: {
+        id: applicant.user.id,
+        name: applicant.application.name,
+        email: applicant.application.email,
+        applicationId: app.id,
+      },
+    })
+
+    console.log(`successfully created user: ${user.name}`)
+
+    const artist = await prisma.artist.create({
+      data: {
+        ...applicant.artist,
+        userId: user.id,
+        links: {
+          create: applicant.links,
+        },
+        mediums: {
+          create: applicant.artist.mediums.map(m => (
+            {
+              medium: {
+                connectOrCreate: {
+                  where: {
+                    name: m,
+                  },
+                  create: {
+                    name: m,
+                  },
+                }
+              },
+            }
+          ))
+        },
+        mediumsOfInterest: {
+          create: applicant.artist.mediumsOfInterest.map(m => (
+            {
+              medium: {
+                connectOrCreate: {
+                  where: {
+                    name: m,
+                  },
+                  create: {
+                    name: m,
+                  },
+                }
+              },
+            }
+          ))
+        },
+      },
+    })
+
+    console.log(`successfully created artist: ${artist.handle}`)
+  // })
+  }
+}
+
 
 main()
   .then(async () => {
