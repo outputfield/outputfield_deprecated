@@ -50,7 +50,7 @@ const Header = () => {
             <Image
               width={16}
               height={16}
-              src="/selectArrow.svg"
+              src="/selectArrowBlue.svg"
               alt="select arrow"
               className="justify-self-end"
             />

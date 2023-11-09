@@ -18,7 +18,6 @@ export type Work = {
 export async function getStaticProps() {  
   const mediumsRes = await getAllMediums()
   const mediums = JSON.parse(JSON.stringify(mediumsRes)).map((m:any) => ({id: m.id, label: m.name}))
-  console.log('fetched mediums', mediums)
 
   return {
     props: {

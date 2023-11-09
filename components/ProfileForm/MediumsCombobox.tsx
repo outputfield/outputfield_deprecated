@@ -31,6 +31,19 @@ export default function MediumsCombobox({
         return medium.label.toLowerCase().includes(query.toLowerCase())
       })
   
+  function handleSetQuery(event: BaseSyntheticEvent) {
+    const value = event.target.value.includes(',') ?
+      event.target.value.split(selectedMediums.join(','))[1] 
+      : event.target.value
+    setQuery(value)
+  }
+
+  function handleSetMediums(mediums: MediumOptionT[]) {
+    console.log(mediums)
+    setSelectedMediums(mediums)
+    setQuery('')
+  }
+
   function clearMediums(e: BaseSyntheticEvent) {
     e.preventDefault()
     setSelectedMediums([])
@@ -59,7 +72,7 @@ export default function MediumsCombobox({
             multiple
             nullable
             value={selectedMediums}
-            onChange={setSelectedMediums}
+            onChange={handleSetMediums}
             name={name}
           >
             <div className="w-full relative mt-1 text-base">
@@ -83,13 +96,27 @@ export default function MediumsCombobox({
                   {selectedMediums.map((medium) => (
                     <div
                       key={medium.id}
-                      className={'ml-1 my-1 py-2 px-4 rounded-full bg-blue text-white max-w-fit shrink-0'}
+                      className={`
+                        flex
+                        justify-center
+                        justify-items-center
+                        ml-1
+                        my-1
+                        pl-4
+                        pr-3
+                        py-2
+                        rounded-full
+                        bg-blue
+                        text-white
+                        max-w-fit
+                        shrink
+                      `}
                     >
-                      {medium.label}
+                      <p className='pt-0.5'>{medium.label}</p>
                       <button
                         onClick={() => setSelectedMediums(selectedMediums.filter(({ id }) => id !== medium.id))}
                         className='font-gray ml-3'>
-                      X
+                        <Image src="/closeIconWhite.svg" alt="close" width={24} height={24} />
                       </button>
                     </div>
                   ))}
@@ -98,27 +125,27 @@ export default function MediumsCombobox({
                     {({ open }) => (
                       <>
                         <Combobox.Input
-                          className=" border-none py-2 px-3 text-sm leading-5 text-gray-900 focus:ring-0 grow"
-                          onChange={(event) => {
-                            const value = event.target.value.includes(',') ? event.target.value.split(selectedMediums.join(','))[1] : event.target.value
-                            setQuery(value)
-                          }}
+                          className=" border-none py-3 px-2 text-base leading-5 text-gray-900 focus:ring-0 grow"
+                          onChange={handleSetQuery}
                           value={query}
                         />
                         { Boolean(selectedMediums.length) && (
-                          <button className="absolute right-6 underline" onClick={clearMediums}>
+                          <button className="absolute right-8 underline" onClick={clearMediums}>
                         clear
                           </button>
                         )}
                         <button className="absolute right-2 shrink">
-                          { open ? '^': 'v'}
+                          <Image
+                            width={16}
+                            height={16}
+                            src="/selectArrowBlack.svg"
+                            alt="select arrow"
+                            className={`justify-self-end ${ open && 'rotate-180	'}`}
+                          />
                         </button>
                       </>
                     )}
                   </Combobox.Button>
-                 
-                  
-                    
                 </div>
               </div>
               <Transition
