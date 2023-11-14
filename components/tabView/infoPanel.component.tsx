@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { ArtistWithUser, Inviter } from '../../pages/api/artists/[name]'
 import { Button } from '../Button'
 import Contact from '../artists/contact'
+import Image from 'next/image'
 
 interface Props {
   artist: ArtistWithUser;
@@ -9,8 +10,6 @@ interface Props {
   className?: string;
   includeContact?: boolean;
 }
-
-// TODO: convert img to Image for performance
 
 const InfoPanel: React.FC<Props> = ({
   artist,
@@ -29,17 +28,16 @@ const InfoPanel: React.FC<Props> = ({
         id="infoPanel">
         {contactOpen ? <Contact artistData={artist} onClose={closeContact}/> : (
           <>
-            {/* FIXME: bio is running over */}
             <div
               id="bio"
-              className="w-full mt-5 ml-4 mr-3 mb-8 border-box whitespace-pre-wrap uppercase">
+              className="mt-5 ml-4 mr-3 mb-8 border-box whitespace-pre-wrap uppercase">
               {artist?.bio}
             </div>
 
             <div
               id="mediums"
               className="relative uppercase inline-block h-36 w-9/12 mb-16 mx-auto content-box ">
-              <img src="/dashedCircle.svg" className="absolute ml-4" />
+              <Image src="/dashedCircle.svg" alt="" width="160" height="160" className="absolute ml-4" />
               <div className="flex flex-col justify-between mt-4 h-full">
                 {artist?.mediums.length !== 0 && (
                   <div className="relative">
@@ -59,7 +57,7 @@ const InfoPanel: React.FC<Props> = ({
             </div>
 
             <div id="artistLinks" className="relative mb-24 h-32">
-              <img src="/dashedEllipses4.svg" className="absolute" />
+              <Image src="/dashedEllipses4.svg" alt="" width="78" height="209" className="absolute" />
               <div className="absolute flex flex-col space-y-4 mt-4 ml-4">
                 {artist?.links.filter(({ type }) => type !== 'WORK').map(({ title, url }) => (
                   <a
@@ -69,7 +67,7 @@ const InfoPanel: React.FC<Props> = ({
                     rel="noreferrer"
                     className="uppercase flex space-x-2 items-center">
                     <span>{title}</span>
-                    <img src="/externalLinkIcon.svg" />
+                    <Image src="/externalLinkIcon.svg" alt="external link" width="26" height="26" />
                   </a>
                 ))}
               </div>
@@ -77,7 +75,7 @@ const InfoPanel: React.FC<Props> = ({
             {
               Object.keys(inviter).length !== 0 && (
                 <div id="artistReference" className={'flex justify-end relative w-full h-20 mb-20'}>
-                  <img src="/dashedEllipses2.svg" className="absolute" />
+                  <Image src="/dashedEllipses2.svg" alt="" width="111" height="111" className="absolute" />
                   <div className="absolute uppercase mt-2 mr-8">
                   Referred By:
                     <br />
