@@ -7,8 +7,9 @@ import prisma from '../../lib/prisma'
 import { usePaginatedArtists } from '../../lib/usePaginatedArtists'
 import Layout from '../../components/layout'
 import Image from 'next/image'
+import { Medium } from '@prisma/client'
 
-const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
+const ArtistListPage = ({ mediums }: { mediums: Medium[]}) => {
   const [filterOpen, setFilterOpen] = useState(false)
   const router = useRouter()
 
@@ -189,21 +190,30 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
 }
 
 export async function getStaticProps() {
-  const uniqueMediumsRes = await prisma.artist.findMany({
-    select: {
-      mediums: true,
-    },
+  // const uniqueMediumsRes = await prisma.medium.findAll({
+  //   select: {
+  //     mediums: true,
+  //   },
+  // })
+  // const data = JSON.parse(JSON.stringify(uniqueMediumsRes))
+  // const mediums = data.reduce((a: any, c: any) => {
+  //   return [...a, ...c['mediums']]
+  // }, [])
+  // const uniqueMediums = mediums.filter((v: any, i: any, a: any) => a.indexOf(v) === i)
+  // return {
+  //   props: {
+  //     mediums: uniqueMediums || [],
+  //   },
+  // }
+
+  const mediumsRes = await prisma.medium.findMany({
+    select: { id: true, name: true }
   })
-  const data = JSON.parse(JSON.stringify(uniqueMediumsRes))
-  const mediums = data.reduce((a: any, c: any) => {
-    return [...a, ...c['mediums']]
-  }, [])
-  const uniqueMediums = mediums.filter((v: any, i: any, a: any) => a.indexOf(v) === i)
+  const mediums = JSON.parse(JSON.stringify(mediumsRes))
   return {
-    props: {
-      mediums: uniqueMediums || [],
-    },
+    props: { mediums }
   }
+
 }
 
 export default ArtistListPage

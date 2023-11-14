@@ -78,6 +78,7 @@ export default async function (
   if (req.method === 'GET') {
     try {
       const artist = await getArtistByHandle(handle)
+      // FIXME:
       const inviter = await getArtistInviter(artist?.invitedBy?.profileType, artist?.invitedBy?.profileId)
       if (!artist) {
         return res.status(404)

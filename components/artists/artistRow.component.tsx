@@ -42,7 +42,7 @@ export const ArtistRow = ({ artist, type }: ArtistRowProps) => {
         </div>
       </div>
       <span className="text-med text-right uppercase absolute bottom-2 right-3">
-        {artist?.mediums}
+        {artist?.mediums?.map(({ mediumName }) => mediumName).join(', ')}
       </span>
       {type === 'detail' && <DashedDivider />}
     </div>

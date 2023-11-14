@@ -4,13 +4,14 @@ import Checkbox from '../../components/checkbox'
 import { Button } from '../../components/Button'
 import Image from 'next/image'
 import DashedDivider from '../dashedDivider'
+import { Medium } from '@prisma/client'
 
 interface Props {
   isOpen: boolean,
   onClose: () => void;
   onSubmit: (filters: string[]) => void;
   onUnmount: () => void;
-  filterOptions: string[];
+  filterOptions: Medium[];
   selectedFilters: string[];
 }
 
@@ -38,7 +39,7 @@ const ArtistsFilter: React.FC<Props> = ({
         return Object.keys(_state).reduce((acc, curr) => ({[curr]: false, ...acc }), {})
       }
     },
-    filterOptions.reduce((acc, curr) => ({[curr]: selectedFilters.includes(curr), ...acc}), {})
+    filterOptions.reduce((acc, {name}) => ({[name]: selectedFilters.includes(name), ...acc}), {})
   )
 
   const filtersCount = useMemo(() => {
@@ -95,13 +96,13 @@ const ArtistsFilter: React.FC<Props> = ({
       <DashedDivider />
       <div className="my-5 text-center">
         <form className="mx-auto max-w-fit">
-          {filterOptions.map(( medium ) => {
+          {filterOptions.map(( {id, name} ) => {
             return (
               <Checkbox
-                key={medium}
-                name={medium}
-                label={medium}
-                value={state ? state[medium] : false}
+                key={id}
+                name={name}
+                label={name}
+                value={state ? state[name] : false}
                 onChange={onCheckChange}
               />
             )

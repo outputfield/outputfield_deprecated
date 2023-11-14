@@ -10,6 +10,8 @@ interface Props {
   includeContact?: boolean;
 }
 
+// TODO: convert img to Image for performance
+
 const InfoPanel: React.FC<Props> = ({
   artist,
   inviter,
@@ -27,6 +29,7 @@ const InfoPanel: React.FC<Props> = ({
         id="infoPanel">
         {contactOpen ? <Contact artistData={artist} onClose={closeContact}/> : (
           <>
+            {/* FIXME: bio is running over */}
             <div
               id="bio"
               className="w-full mt-5 ml-4 mr-3 mb-8 border-box whitespace-pre-wrap uppercase">
@@ -42,14 +45,14 @@ const InfoPanel: React.FC<Props> = ({
                   <div className="relative">
                     <b>Mediums:</b>
                     <br />
-                    {artist?.mediums.join(', ')}
+                    {artist?.mediums.map(({ mediumName }) => mediumName).join(', ')}
                   </div>
                 )}
                 {artist?.mediumsOfInterest.length !== 0 && (
                   <div className="relative self-end">
                     <b>Mediums Of Interest:</b>
                     <br />
-                    {artist?.mediumsOfInterest.join(', ')}
+                    {artist?.mediumsOfInterest.map(({ mediumName }) => mediumName).join(', ')}
                   </div>
                 )}
               </div>
