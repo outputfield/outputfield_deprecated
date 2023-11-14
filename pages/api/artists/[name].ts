@@ -36,7 +36,7 @@ export type ArtistWithUser = Prisma.PromiseReturnType<typeof getArtistByHandle>
 
 // type PrismaModel = Prisma.ArtistDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined> 
 // | Prisma.VenueDelegate<Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>
-export const getArtistInviter = (profileType: string | undefined, profileId: string) => {
+export const getArtistInviter = (profileType: string | undefined, profileId: string | undefined) => {
   let profileTable = ''
   switch (profileType) {
   case 'ARTIST':
@@ -46,8 +46,6 @@ export const getArtistInviter = (profileType: string | undefined, profileId: str
   default:
     break
   }
-
-  console.log(profileType, profileId)
 
   if (!profileTable) {
     // throw new Error('profileType not recognized')
@@ -78,7 +76,6 @@ export default async function (
   if (req.method === 'GET') {
     try {
       const artist = await getArtistByHandle(handle)
-      // FIXME:
       const inviter = await getArtistInviter(artist?.invitedBy?.profileType, artist?.invitedBy?.profileId)
       if (!artist) {
         return res.status(404)
