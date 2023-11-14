@@ -50,9 +50,9 @@ const findArtists = (page: string, limit: string, search: string, filters: strin
         ]
         : undefined,
     },
-    // orderBy: {
-    //   name: 'asc', // TODO: sort title
-    // },
+    orderBy: {
+      title: 'asc',
+    },
   })
 }
 
