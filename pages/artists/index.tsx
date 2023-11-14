@@ -70,7 +70,7 @@ const ArtistListPage = ({ mediums }: { mediums: Medium[]}) => {
     <Layout>
       <div className="text-base">
         {/* Artist search & ArtistsFilter */}
-        <div className="relative min-h-44 px-4 pb-4 flex flex-col space-y-14">
+        <div className=" min-h-44 px-4 pb-4 flex flex-col space-y-14 sticky top-0 z-50 backdrop-blur-md">
           {/* Filter button */}
           <div className="flex flex-col items-center my-1">
             <button
@@ -94,21 +94,21 @@ const ArtistListPage = ({ mediums }: { mediums: Medium[]}) => {
               <input
                 placeholder="Search"
                 className={`
-                  text-base
-                  block
-                  z-0
-                  border
-                  border-black
-                  uppercase
-                  shadow
-                  focus:border-blue
-                  transition
-                  pr-0
-                  focus:pl-8
-                  motion-reduce:transition-none
-                  motion-reduce:hover:transform-none
-                  peer
-                  rounded-none w-full`
+                    text-base
+                    block
+                    z-0
+                    border
+                    border-black
+                    uppercase
+                    shadow
+                    focus:border-blue
+                    transition
+                    pr-0
+                    focus:pl-8
+                    motion-reduce:transition-none
+                    motion-reduce:hover:transform-none
+                    peer
+                    rounded-none w-full`
                 }
                 type="text"
                 value={searchTerm}
@@ -133,37 +133,17 @@ const ArtistListPage = ({ mediums }: { mediums: Medium[]}) => {
                   <Image src="/clearInputIcon.svg" alt="Clear search input" width={12} height={12} />
                 </button>
               )}
-              {/* FIXME: on search focus, blur bg */}
-              <div
-                className={`
-                  hidden
-                  peer-focus:block
-                  z-50
-                  fixed
-                  inset-0
-                  bg-gray-100
-                  bg-opacity-75
-                  transition-opacity
-                  w-full
-                  h-screen
-                  blurred
-                  border
-                  border-red-500
-                `}
-                aria-hidden="true">
-              </div>
-              {/*  /////////////////////////////  */}
             </label>
 
             <div className="flex flex-col justify-around">
               <button
                 onClick={resetAll}
                 className="uppercase underline mx-auto">
-                reset all
+                  reset all
               </button>
               <p>
-                ({artists.length + ' result' + (artists.length == 1 ? '' : 's')}
-                )
+                  ({artists.length + ' result' + (artists.length == 1 ? '' : 's')}
+                  )
               </p>
             </div>
           </div>
