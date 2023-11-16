@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid'
 
 import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
-import { UserCreateInputWithArtist, UserWithArtist } from './api/signUp'
+import { UserCreateInputWithArtist, UserWithArtist } from './api/createAccount'
 import { makeid, partition } from '../lib/utils'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
@@ -50,7 +50,7 @@ export default function CreateAccount({ mediums }: Props) {
   ): Promise<UserWithArtist> {
     let newUser: UserWithArtist
     try {
-      const res = await fetch('/api/signUp', {
+      const res = await fetch('/api/createAccount', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -61,7 +61,7 @@ export default function CreateAccount({ mediums }: Props) {
       newUser = await res.json()
       return newUser
     } catch (err) {
-      throw new Error(`Failed to /signUp: ${err}`)
+      throw new Error(`Failed to /createAccount: ${err}`)
     }
   }
 

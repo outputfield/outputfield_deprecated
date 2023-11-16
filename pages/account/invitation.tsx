@@ -31,7 +31,7 @@ async function getInvite(name?: string) {
     //   payload = await res.json()
     return EXAMPLE_PAYLOAD
   } catch (err) {
-    throw new Error(`Failed to /signUp: ${err}`)
+    throw new Error(`Failed to /createAccount: ${err}`)
   }
 }
 

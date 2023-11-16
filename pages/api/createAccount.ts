@@ -1,4 +1,3 @@
-// TODO: rename endpoint to 'api/createAccount'
 import prisma from '../../lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Prisma } from '@prisma/client'

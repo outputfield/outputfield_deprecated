@@ -37,8 +37,8 @@
 // //   expect(user).toBeNull()
 // // })
 
-// test('POST /api/signUp', async({ request, baseURL }) => {
-//   const postRequest = await request.post(`${baseURL}/api/signUp`, {
+// test('POST /api/createAccount', async({ request, baseURL }) => {
+//   const postRequest = await request.post(`${baseURL}/api/createAccount`, {
 //     data: NEW_USER
 //   })
 //   console.log(postRequest)
