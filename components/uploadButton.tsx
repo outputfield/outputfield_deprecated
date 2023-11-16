@@ -1,25 +1,9 @@
 import React, { useState, ChangeEvent } from 'react'
 import { Button } from './Button'
 
-function DropzoneComponent({ handleDrop }: any) {
+// TODO: Prop type
+function UploadButton({ handleDrop }: any) {
   const [file, setFile] = useState<File | undefined>()
-
-  // // TODO: Create preview thumbNail
-  // const thumbNail = false && (
-  //   <div key={file?.name}>
-  //     <Image
-  //       src={file?.preview || ''}
-  //       alt={file?.name}
-  //       height="10"
-  //       width="10"
-  //     />
-  //   </div>
-  // )
-
-  // clean up
-  // useEffect(() => () => {
-  //   URL.revokeObjectURL(file?.preview || '')
-  // }, [file])
 
   async function handleImageUpload(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault()
@@ -43,7 +27,6 @@ function DropzoneComponent({ handleDrop }: any) {
     <section>
       <label htmlFor="file-upload" className='cursor-pointer'>
         <div>
-          {/* TODO: {thumbNail} */}
           {file && (
             <p>{file.name} - {file.size}</p>
           )}
@@ -55,4 +38,4 @@ function DropzoneComponent({ handleDrop }: any) {
   )
 }
 
-export default DropzoneComponent
+export default UploadButton

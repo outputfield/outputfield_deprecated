@@ -72,8 +72,8 @@
 // })
 
 
-// test('PUT /api/addArtistWorks', async({ request, baseURL }) => {
-//   const putRequest = await request.put(`${baseURL}/api/addArtistWorks`, {
+// test('PUT /api/createArtistLinks', async({ request, baseURL }) => {
+//   const putRequest = await request.put(`${baseURL}/api/createArtistLinks`, {
 //     data: {
 //       artistHandle: NEW_USER.Handle,
 //       works: [{

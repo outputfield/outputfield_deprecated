@@ -9,6 +9,7 @@ import FormInput from '../formInput'
 import { Button } from '../Button'
 import EmbedPanel from './embedPanel'
 import UploadPanel from './uploadPanel'
+import ProfileImageUpload from './ProfileImgUpload'
 import Spinner from '../spinner'
 import MediumsCombobox, { MediumOptionT } from './MediumsCombobox'
 import { removeProperty } from '../../lib/utils'
@@ -27,7 +28,7 @@ export type ISignUpInputs = {
   mediumsOfInterest: MediumOptionT[];
   pronouns: string;
   location: string;
-  profileImg: string;
+  profileImg?: FormData;
   links: ProfileLink[];
   email: string;
 };
@@ -52,7 +53,7 @@ interface UploadWorksState {
 }
 
 interface Props {
-  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => Promise<void>;
+  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[], profileImg: FormData) => Promise<void>;
   isSubmitting: boolean;
   profileData?: ISignUpInputsAndWorks | undefined;
   mediums: MediumOptionT[];
@@ -79,6 +80,11 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData, mediu
 
   const [uploadOpen, setUploadOpen] = useState(false)
   const [uploadNum, setUploadNum] = useState(-1)
+  const setUploadDialogOpen = (key: number) => (e: BaseSyntheticEvent) => {
+    e.preventDefault()
+    setUploadNum(key)
+    setUploadOpen(true)
+  }
   const closeUpload = () => setUploadOpen(false)
 
   function init(works: FormData[]) {
@@ -102,6 +108,22 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData, mediu
     profileData?.works || [],
     init
   )
+
+  const handleUploadWork = (uploadNum: number) => (file: FormData) => {
+    dispatch({ type: 'ADD', key: uploadNum, work: file })
+    closeUpload()
+  }
+
+  const handleEmbedWork = (work: FormData) => {
+    dispatch({ type: 'ADD', key: uploadNum, work })
+    closeUpload()
+  }
+
+  const handleDeleteWork = (uploadNum: number) => (e: BaseSyntheticEvent) => {
+    e.stopPropagation()
+    e.preventDefault()
+    dispatch({ type: 'DELETE', key: uploadNum })
+  }
   
   const filenames = useMemo(() => Object.keys(state).reduce((acc:any, key:any) => {
     const formData = state[key] as FormData
@@ -119,27 +141,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData, mediu
     }
   }, {}), [state])
 
-  const handleUploadWork = (uploadNum: number) => (file: FormData) => {
-    dispatch({ type: 'ADD', key: uploadNum, work: file })
-    closeUpload()
-  }
-
-  const handleEmbedWork = (work: FormData) => {
-    dispatch({ type: 'ADD', key: uploadNum, work })
-    closeUpload()
-  }
-
-  const handleDeleteWork = (uploadNum: number) => (e: BaseSyntheticEvent) => {
-    e.stopPropagation()
-    e.preventDefault()
-    dispatch({ type: 'DELETE', key: uploadNum })
-  }
-
-  const setUploadDialogOpen = (key: number) => (e: BaseSyntheticEvent) => {
-    e.preventDefault()
-    setUploadNum(key)
-    setUploadOpen(true)
-  }
+  const [profileImg, setProfileImg] = useState<FormData | undefined>()
 
   return (
     <>
@@ -179,7 +181,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData, mediu
       
       <form
         onSubmit={handleSubmit(
-          ((data: ISignUpInputs, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state))) as SubmitHandler<ISignUpInputs>)}
+          ((data: ISignUpInputs, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state), profileImg as FormData)) as SubmitHandler<ISignUpInputs>)}
         className="w-full max-w-lg my-8"
       >
         <div className="flex flex-wrap -mx-3 mb-6">
@@ -225,7 +227,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData, mediu
               required
               icon
             />
-            
           </div>
           <div className="w-full px-3">
             <MediumsCombobox
@@ -271,7 +272,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData, mediu
         <div className="flex flex-col mx-3 mb-2">
           <h2 className='text-lg ml-2 my-6 glow-black'>Upload Profile Image</h2>
           <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border-long-dashed">
-            {/* TODO: */}
+            <ProfileImageUpload handleDrop={setProfileImg} />
           </div>
         </div>
 
