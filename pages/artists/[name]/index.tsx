@@ -34,10 +34,13 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   const artistRes = await getArtistByHandle(name)
   const artist = JSON.parse(JSON.stringify(artistRes))
   
-  const { invitedBy: { profileType, profileId } } = artist
-  const inviterRes = await getArtistInviter(profileType, profileId)
-  const inviter = JSON.parse(JSON.stringify(inviterRes))
-  
+  let inviter = null
+  if (artist.invitedBy) {
+    const { invitedBy: { profileType, profileId } } = artist
+    const inviterRes = await getArtistInviter(profileType, profileId)
+    inviter = JSON.parse(JSON.stringify(inviterRes))
+  }
+
   return {
     props: {
       artist,

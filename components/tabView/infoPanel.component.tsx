@@ -73,7 +73,7 @@ const InfoPanel: React.FC<Props> = ({
               </div>
             </div>
             {
-              Object.keys(inviter).length !== 0 && (
+              inviter && Object.keys(inviter).length !== 0 && (
                 <div id="artistReference" className={'flex justify-end relative w-full h-20 mb-20'}>
                   <Image src="/dashedEllipses2.svg" alt="" width="111" height="111" className="absolute" />
                   <div className="absolute uppercase mt-2 mr-8">

@@ -18,6 +18,7 @@ const ProfilePicture: React.FC<Props> = ({
         height={80}
         width={80}
         className="profile-pic__image"
+        priority
       />
     </div>
   )
