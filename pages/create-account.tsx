@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { getAllMediums } from './api/create-account'
 import { MediumOptionT } from '../components/ProfileForm/MediumsCombobox'
+import { URLPattern } from 'next/server'
 
 export type Work = {
   title: string,
@@ -64,8 +65,8 @@ export default function CreateAccount({ mediums }: Props) {
     }
   }
 
-  // 2. Upload files to DO
-  async function uploadFiles(
+  // 2. Upload works to DO
+  async function uploadWorks(
     files: FormData[], 
     handle: string,
     controller: AbortController
@@ -112,8 +113,8 @@ export default function CreateAccount({ mediums }: Props) {
     return works.map((w: {title: string, url: string }) => ({...w, type: 'WORK'}))
   }
 
-  // 3. Update user with added works
-  async function updateUserWithWorks(
+  // 3. Update artist with added works
+  async function updateArtistWithWorks(
     works: Work[], 
     handle: string, 
     controller: AbortController
@@ -129,13 +130,62 @@ export default function CreateAccount({ mediums }: Props) {
           signal: controller.signal
         }
       )
+      console.log('successfully updated artist with works!')
+    } catch (error) {
+      throw new Error(`Failed to update artist Works: ${error}`)
+    }
+  }
+
+  // 4. Upload profileImg
+  async function uploadFiles(
+    file: FormData,
+    handle: string,
+    controller: AbortController
+  ) {
+    try {
+      file.set('name', 'profileImg')
+      file.append('artistHandle', handle)
+      const res = await fetch(
+        'api/uploadFile',
+        {
+          method: 'PUT',
+          body: file,
+          signal: controller.signal
+        }
+      )
+      const uploadedProfileImg = await res.json()
+      console.log(uploadedProfileImg)
+
+      return uploadedProfileImg
+    } catch (error) {
+      throw new Error(`Failed to /uploadFile profileImg: ${error}`)
+    }
+  }
+
+  // 3. Update user with profileImg
+  async function updateUserWithProfileImg(
+    url: URLPattern, 
+    handle: string, 
+    controller: AbortController
+  ) {
+    try {
+      await fetch('/api/addArtistWorks',
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            artistHandle: handle,
+            url
+          }),
+          signal: controller.signal
+        }
+      )
       console.log('successfully updated user with works!')
     } catch (error) {
       throw new Error(`Failed to update user Works: ${error}`)
     }
   }
 
-  // 4. Revalidate Artist's page
+  // 5. Revalidate Artist's page
   async function revalidateArtistPage(
     pathToRevalidate: string,
     controller: AbortController
@@ -194,8 +244,8 @@ export default function CreateAccount({ mediums }: Props) {
         controller
       )
       const userId = newUser.artist? newUser.artist.handle : `artist${newUser.id}`
-      const works = await uploadFiles(files, userId, controller)
-      await updateUserWithWorks(
+      const works = await uploadWorks(files, userId, controller)
+      await updateArtistWithWorks(
         works as Work[],
         userId,
         controller
