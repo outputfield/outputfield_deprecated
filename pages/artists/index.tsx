@@ -70,7 +70,7 @@ const ArtistListPage = ({ mediums }: { mediums: Medium[]}) => {
     <Layout>
       <div className="text-base">
         {/* Artist search & ArtistsFilter */}
-        <div className=" min-h-44 px-4 pb-4 flex flex-col space-y-14 sticky top-0 z-50 backdrop-blur-md">
+        <div className=" min-h-44 px-4 pb-4 flex flex-col space-y-14 sticky top-0 z-40 backdrop-blur-md">
           {/* Filter button */}
           <div className="flex flex-col items-center my-1">
             <button
@@ -170,22 +170,6 @@ const ArtistListPage = ({ mediums }: { mediums: Medium[]}) => {
 }
 
 export async function getStaticProps() {
-  // const uniqueMediumsRes = await prisma.medium.findAll({
-  //   select: {
-  //     mediums: true,
-  //   },
-  // })
-  // const data = JSON.parse(JSON.stringify(uniqueMediumsRes))
-  // const mediums = data.reduce((a: any, c: any) => {
-  //   return [...a, ...c['mediums']]
-  // }, [])
-  // const uniqueMediums = mediums.filter((v: any, i: any, a: any) => a.indexOf(v) === i)
-  // return {
-  //   props: {
-  //     mediums: uniqueMediums || [],
-  //   },
-  // }
-
   const mediumsRes = await prisma.medium.findMany({
     select: { id: true, name: true }
   })
@@ -193,7 +177,6 @@ export async function getStaticProps() {
   return {
     props: { mediums }
   }
-
 }
 
 export default ArtistListPage
