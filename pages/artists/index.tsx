@@ -7,8 +7,9 @@ import prisma from '../../lib/prisma'
 import { usePaginatedArtists } from '../../lib/usePaginatedArtists'
 import Layout from '../../components/layout'
 import Image from 'next/image'
+import { Medium } from '@prisma/client'
 
-const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
+const ArtistListPage = ({ mediums }: { mediums: Medium[]}) => {
   const [filterOpen, setFilterOpen] = useState(false)
   const router = useRouter()
 
@@ -69,7 +70,7 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
     <Layout>
       <div className="text-base">
         {/* Artist search & ArtistsFilter */}
-        <div className="relative min-h-44 px-4 pb-4 flex flex-col space-y-14">
+        <div className=" min-h-44 px-4 pb-4 flex flex-col space-y-14 sticky top-0 z-40 backdrop-blur-md">
           {/* Filter button */}
           <div className="flex flex-col items-center my-1">
             <button
@@ -93,21 +94,21 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
               <input
                 placeholder="Search"
                 className={`
-                  text-base
-                  block
-                  z-0
-                  border
-                  border-black
-                  uppercase
-                  shadow
-                  focus:border-blue
-                  transition
-                  pr-0
-                  focus:pl-8
-                  motion-reduce:transition-none
-                  motion-reduce:hover:transform-none
-                  peer
-                  rounded-none w-full`
+                    text-base
+                    block
+                    z-0
+                    border
+                    border-black
+                    uppercase
+                    shadow
+                    focus:border-blue
+                    transition
+                    pr-0
+                    focus:pl-8
+                    motion-reduce:transition-none
+                    motion-reduce:hover:transform-none
+                    peer
+                    rounded-none w-full`
                 }
                 type="text"
                 value={searchTerm}
@@ -132,37 +133,17 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
                   <Image src="/clearInputIcon.svg" alt="Clear search input" width={12} height={12} />
                 </button>
               )}
-              {/* FIXME: on search focus, blur bg */}
-              <div
-                className={`
-                  hidden
-                  peer-focus:block
-                  z-50
-                  fixed
-                  inset-0
-                  bg-gray-100
-                  bg-opacity-75
-                  transition-opacity
-                  w-full
-                  h-screen
-                  blurred
-                  border
-                  border-red-500
-                `}
-                aria-hidden="true">
-              </div>
-              {/*  /////////////////////////////  */}
             </label>
 
             <div className="flex flex-col justify-around">
               <button
                 onClick={resetAll}
                 className="uppercase underline mx-auto">
-                reset all
+                  reset all
               </button>
               <p>
-                ({artists.length + ' result' + (artists.length == 1 ? '' : 's')}
-                )
+                  ({artists.length + ' result' + (artists.length == 1 ? '' : 's')}
+                  )
               </p>
             </div>
           </div>
@@ -189,20 +170,12 @@ const ArtistListPage = ({ mediums }: { mediums: string[]}) => {
 }
 
 export async function getStaticProps() {
-  const uniqueMediumsRes = await prisma.artist.findMany({
-    select: {
-      mediums: true,
-    },
+  const mediumsRes = await prisma.medium.findMany({
+    select: { id: true, name: true }
   })
-  const data = JSON.parse(JSON.stringify(uniqueMediumsRes))
-  const mediums = data.reduce((a: any, c: any) => {
-    return [...a, ...c['mediums']]
-  }, [])
-  const uniqueMediums = mediums.filter((v: any, i: any, a: any) => a.indexOf(v) === i)
+  const mediums = JSON.parse(JSON.stringify(mediumsRes))
   return {
-    props: {
-      mediums: uniqueMediums || [],
-    },
+    props: { mediums }
   }
 }
 

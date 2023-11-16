@@ -37,8 +37,8 @@
 // //   expect(user).toBeNull()
 // // })
 
-// test('POST /api/signUp', async({ request, baseURL }) => {
-//   const postRequest = await request.post(`${baseURL}/api/signUp`, {
+// test('POST /api/createAccount', async({ request, baseURL }) => {
+//   const postRequest = await request.post(`${baseURL}/api/createAccount`, {
 //     data: NEW_USER
 //   })
 //   console.log(postRequest)
@@ -72,8 +72,8 @@
 // })
 
 
-// test('PUT /api/addArtistWorks', async({ request, baseURL }) => {
-//   const putRequest = await request.put(`${baseURL}/api/addArtistWorks`, {
+// test('PUT /api/createArtistLinks', async({ request, baseURL }) => {
+//   const putRequest = await request.put(`${baseURL}/api/createArtistLinks`, {
 //     data: {
 //       artistHandle: NEW_USER.Handle,
 //       works: [{

@@ -1,11 +1,13 @@
 import Image from 'next/legacy/image'
 import React from 'react'
-import { FieldErrors, Path, UseFormRegister } from 'react-hook-form'
+import { FieldErrors, Path, UseFormRegister, UseFormRegisterReturn } from 'react-hook-form'
 import { ISignUpInputs } from './ProfileForm'
 import { ErrorMessage } from '@hookform/error-message'
+import { IApplyInputs } from '../pages/apply'
 
 type InputProps = {
-  register: UseFormRegister<ISignUpInputs>;
+  // register: UseFormRegister<ISignUpInputs> | UseFormRegister<IApplyInputs>;
+  register: any; // FIXME: 
   errors?: FieldErrors;
   name: Path<ISignUpInputs>;
   label?: string;

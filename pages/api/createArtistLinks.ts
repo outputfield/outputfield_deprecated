@@ -1,10 +1,10 @@
 import prisma from '../../lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-export default async function addArtistWorks(req: NextApiRequest, res: NextApiResponse) {
+export default async function createArtistLinks(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'PUT') {
     const {
-      artistHandle, works
+      artistHandle, links
     } = JSON.parse(req.body)
     const result = await prisma.artist.update({
       where: {
@@ -12,7 +12,7 @@ export default async function addArtistWorks(req: NextApiRequest, res: NextApiRe
       },
       data: {
         links: {
-          create: works
+          create: links
         }
       }
     })

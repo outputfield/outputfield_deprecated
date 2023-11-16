@@ -3,17 +3,36 @@ import { Prisma } from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid'
 
 import ProfileForm, { ISignUpInputs } from '../components/ProfileForm'
-import { UserCreateInputWithArtist, UserWithArtist } from './api/signUp'
+import { UserCreateInputWithArtist, UserWithArtist } from './api/createAccount'
 import { makeid, partition } from '../lib/utils'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { getAllMediums } from './api/create-account'
+import { MediumOptionT } from '../components/ProfileForm/MediumsCombobox'
+import { URLPattern } from 'next/server'
+import DashedDivider from '../components/dashedDivider'
 
 export type Work = {
   title: string,
   url: string,
 }
 
-export default function CreateAccount() {
+export async function getStaticProps() {  
+  const mediumsRes = await getAllMediums()
+  const mediums = JSON.parse(JSON.stringify(mediumsRes)).map((m:any) => ({id: m.id, label: m.name}))
+
+  return {
+    props: {
+      mediums
+    },
+  }
+}
+
+interface Props {
+  mediums: MediumOptionT[];
+}
+
+export default function CreateAccount({ mediums }: Props) {
   const [ isSubmitting, setIsSubmitting ] = useState(false)
   const [ message, setMessage ] = useState('')
   const router = useRouter()
@@ -32,7 +51,7 @@ export default function CreateAccount() {
   ): Promise<UserWithArtist> {
     let newUser: UserWithArtist
     try {
-      const res = await fetch('/api/signUp', {
+      const res = await fetch('/api/createAccount', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -43,12 +62,12 @@ export default function CreateAccount() {
       newUser = await res.json()
       return newUser
     } catch (err) {
-      throw new Error(`Failed to /signUp: ${err}`)
+      throw new Error(`Failed to /createAccount: ${err}`)
     }
   }
 
-  // 2. Upload files to DO
-  async function uploadFiles(
+  // 2. Upload works to DO
+  async function uploadWorks(
     files: FormData[], 
     handle: string,
     controller: AbortController
@@ -95,30 +114,78 @@ export default function CreateAccount() {
     return works.map((w: {title: string, url: string }) => ({...w, type: 'WORK'}))
   }
 
-  // 3. Update user with added works
-  async function updateUserWithWorks(
+  // 3. Update artist with added works
+  async function updateArtistWithWorks(
     works: Work[], 
     handle: string, 
     controller: AbortController
   ) {
     try {
-      await fetch('/api/addArtistWorks',
+      await fetch('/api/createArtistLinks',
         {
           method: 'PUT',
           body: JSON.stringify({
             artistHandle: handle,
-            works
+            links: works
           }),
           signal: controller.signal
         }
       )
-      console.log('successfully updated user with works!')
+      console.log('successfully updated artist with works!')
     } catch (error) {
-      throw new Error(`Failed to update user Works: ${error}`)
+      throw new Error(`Failed to update artist Works: ${error}`)
     }
   }
 
-  // 4. Revalidate Artist's page
+  // 4. Upload profileImg
+  async function uploadProfileImg(
+    file: FormData,
+    handle: string,
+    controller: AbortController
+  ) {
+    try {
+      file.append('artistHandle', handle)
+      const res = await fetch(
+        'api/uploadFile',
+        {
+          method: 'PUT',
+          body: file,
+          signal: controller.signal
+        }
+      )
+      const uploadedProfileImg = await res.json()
+      console.log(uploadedProfileImg)
+
+      return uploadedProfileImg
+    } catch (error) {
+      throw new Error(`Failed to /uploadFile profileImg: ${error}`)
+    }
+  }
+
+  // 5. Update user with profileImg
+  async function updateUserWithProfileImg(
+    url: URLPattern, 
+    handle: string, 
+    controller: AbortController
+  ) {
+    try {
+      await fetch('/api/createArtistLinks',
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            artistHandle: handle,
+            links: { title: 'profileImg', type: 'PROFILE_IMG', url }
+          }),
+          signal: controller.signal
+        }
+      )
+      console.log('successfully updated user with profile image!')
+    } catch (error) {
+      throw new Error(`Failed to update user profile image: ${error}`)
+    }
+  }
+
+  // 6. Revalidate Artist's page
   async function revalidateArtistPage(
     pathToRevalidate: string,
     controller: AbortController
@@ -144,7 +211,12 @@ export default function CreateAccount() {
   // - - - END HELPER FNs - - -
 
   // Pass submit handler fn into ProfileForm
-  const handleSubmit = async (event: BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => {
+  const handleSubmit = async (
+    event: BaseSyntheticEvent,
+    data: ISignUpInputs,
+    files: FormData[],
+    profileImg: FormData | undefined
+  ) => {
     const form = event.currentTarget
     const previousController = pendingForms.get(form)
 
@@ -169,20 +241,25 @@ export default function CreateAccount() {
           id,
           name: data.name,
           handle: data.handle,
-          mediums: data.mediums.map(({ label }) => label),
-          mediumsOfInterest: data.mediumsOfInterest.map(({ label }) => label),
+          mediums: data.mediums.map(({ label }) => label) as Prisma.MediumsOnArtistCreateNestedManyWithoutArtistInput,
+          mediumsOfInterest: data.mediumsOfInterest.map(({ label }) => label) as Prisma.MediumsOfInterestOnArtistCreateNestedManyWithoutArtistInput,
           links: data.links as Prisma.LinkCreateNestedManyWithoutArtistInput,
           email: _email,
         },
         controller
       )
       const userId = newUser.artist? newUser.artist.handle : `artist${newUser.id}`
-      const works = await uploadFiles(files, userId, controller)
-      await updateUserWithWorks(
+      const works = await uploadWorks(files, userId, controller)
+      await updateArtistWithWorks(
         works as Work[],
         userId,
         controller
       )
+      
+      if (profileImg) {
+        const uploadedProfileImg = await uploadProfileImg(profileImg, userId, controller)
+        await updateUserWithProfileImg(uploadedProfileImg, userId, controller)
+      }
 
       // Trigger revalidation, on new artist's page only
       await revalidateArtistPage(`/artists/${newUser.artist?.handle}`, controller)
@@ -211,11 +288,11 @@ export default function CreateAccount() {
         <h1 className='glow-black text-xl ml-4 mt-16'>
           New Profile
         </h1>
-        {/* TODO: use this full width Divider Component everywhere*/}
-        <div className='w-full mt-5 border-long-dashed-t'></div>
+        <DashedDivider />
         <ProfileForm
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
+          mediums={mediums}
         />
         <div className="text-center text-sm text-blue">
           {message}

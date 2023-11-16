@@ -1,5 +1,5 @@
 import React from 'react'
-import DropzoneComponent from '../dropzoneComponent'
+import UploadButton from '../uploadButton'
 
 type UploadPanelProps = {
     handleUploadWork: (uploadNum: number) => (file: FormData) => void,
@@ -14,10 +14,10 @@ export default function UploadPanel({
   handleUploadWork,
   uploadNum
 }: UploadPanelProps) {
-  const MemoDropzoneComponent = React.memo(({ uploadNum }: DropzoneProps) => {
-    return <DropzoneComponent handleDrop={handleUploadWork(uploadNum)} />
+  const MemoUploadButton = React.memo(({ uploadNum }: DropzoneProps) => {
+    return <UploadButton handleDrop={handleUploadWork(uploadNum)} />
   })
-  MemoDropzoneComponent.displayName = 'MemoDropzoneComponent'
+  MemoUploadButton.displayName = 'MemoUploadButton'
   return (
     <div className="pt-24 text-center">
       <p>
@@ -31,7 +31,7 @@ export default function UploadPanel({
         <li>documents (pdf)</li>
       </ul>
       <br /><br /><br />
-      <MemoDropzoneComponent uploadNum={uploadNum} />
+      <MemoUploadButton uploadNum={uploadNum} />
     </div>
   )
 }

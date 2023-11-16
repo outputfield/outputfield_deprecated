@@ -1,4 +1,3 @@
-// TODO: rename to create-account
 import prisma from '../../lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Prisma } from '@prisma/client'
@@ -66,8 +65,8 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
         handle,
         pronouns,
         location,
-        mediums, // FIXME: (v2) parse this into String[]
-        mediumsOfInterest, // FIXME: (v2) parse this into String[]
+        mediums,
+        mediumsOfInterest,
         links,
         bio,
         email,

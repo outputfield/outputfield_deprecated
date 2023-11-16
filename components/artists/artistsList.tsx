@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react'
 
 import { ArtistRow } from './artistRow.component'
-import { ArtistWithInviterAndUserAndLinks } from '../../pages/api/artists/[name]'
+import { ArtistWithUser } from '../../pages/api/artists/[name]'
 import DashedDivider from '../dashedDivider'
 
 interface Props {
-  artists: ArtistWithInviterAndUserAndLinks[];
+  artists: ArtistWithUser[];
   fetchMore: () => any;
   isLoadingMore: boolean;
   isReachingEnd: boolean;

@@ -9,6 +9,7 @@ import FormInput from '../formInput'
 import { Button } from '../Button'
 import EmbedPanel from './embedPanel'
 import UploadPanel from './uploadPanel'
+import ProfileImageUpload from './ProfileImgUpload'
 import Spinner from '../spinner'
 import MediumsCombobox, { MediumOptionT } from './MediumsCombobox'
 import { removeProperty } from '../../lib/utils'
@@ -27,17 +28,12 @@ export type ISignUpInputs = {
   mediumsOfInterest: MediumOptionT[];
   pronouns: string;
   location: string;
+  profileImg?: FormData;
   links: ProfileLink[];
   email: string;
 };
 
 type ISignUpInputsAndWorks = ISignUpInputs & { works: FormData[] }
-
-interface Props {
-  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[]) => Promise<void>;
-  isSubmitting: boolean;
-  profileData?: ISignUpInputsAndWorks | undefined;
-}
 
 type Add = {
   type: 'ADD',
@@ -56,7 +52,14 @@ interface UploadWorksState {
   [key: number]: FormData;
 }
 
-export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Props) {
+interface Props {
+  onSubmit: (e: React.BaseSyntheticEvent, data: ISignUpInputs, files: FormData[], profileImg: FormData) => Promise<void>;
+  isSubmitting: boolean;
+  profileData?: ISignUpInputsAndWorks | undefined;
+  mediums: MediumOptionT[];
+}
+
+export default function ProfileForm({ onSubmit, isSubmitting, profileData, mediums }: Props) {
   const {
     register,
     handleSubmit,
@@ -77,6 +80,11 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
 
   const [uploadOpen, setUploadOpen] = useState(false)
   const [uploadNum, setUploadNum] = useState(-1)
+  const setUploadDialogOpen = (key: number) => (e: BaseSyntheticEvent) => {
+    e.preventDefault()
+    setUploadNum(key)
+    setUploadOpen(true)
+  }
   const closeUpload = () => setUploadOpen(false)
 
   function init(works: FormData[]) {
@@ -100,23 +108,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
     profileData?.works || [],
     init
   )
-  
-  const filenames = useMemo(() => Object.keys(state).reduce((acc:any, key:any) => {
-    const formData = state[key] as FormData
-    if (formData) {
-      if (formData.get('workType') === 'embeddedWork') {
-        const filename = formData.get('title')
-        return {...acc, [key]: filename}
-      } else if (formData.get('workType') === 'uploadedWork') {
-        const file = formData.get('file')
-        const filename = file instanceof File ? file.name : ''
-        return {...acc, [key]: filename}
-      }
-    } else {
-      return {...acc, [key]: ''}
-    }
-  }, {}), [state])
-  console.log(filenames)
 
   const handleUploadWork = (uploadNum: number) => (file: FormData) => {
     dispatch({ type: 'ADD', key: uploadNum, work: file })
@@ -133,14 +124,24 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
     e.preventDefault()
     dispatch({ type: 'DELETE', key: uploadNum })
   }
+  
+  const filenames = useMemo(() => Object.keys(state).reduce((acc:any, key:any) => {
+    const formData = state[key] as FormData
+    if (formData) {
+      if (formData.get('workType') === 'embeddedWork') {
+        const filename = formData.get('title')
+        return {...acc, [key]: filename}
+      } else if (formData.get('workType') === 'uploadedWork') {
+        const file = formData.get('file')
+        const filename = file instanceof File ? file.name : ''
+        return {...acc, [key]: filename}
+      }
+    } else {
+      return {...acc, [key]: ''}
+    }
+  }, {}), [state])
 
-  const setUploadDialogOpen = (key: number) => (e: BaseSyntheticEvent) => {
-    e.preventDefault()
-    setUploadNum(key)
-    setUploadOpen(true)
-  }
-
-  console.log(errors)
+  const [profileImg, setProfileImg] = useState<FormData | undefined>()
 
   return (
     <>
@@ -180,7 +181,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
       
       <form
         onSubmit={handleSubmit(
-          ((data: ISignUpInputs, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state))) as SubmitHandler<ISignUpInputs>)}
+          ((data: ISignUpInputs, e: BaseSyntheticEvent) => onSubmit(e, data, Object.values(state), profileImg as FormData)) as SubmitHandler<ISignUpInputs>)}
         className="w-full max-w-lg my-8"
       >
         <div className="flex flex-wrap -mx-3 mb-6">
@@ -226,46 +227,21 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
               required
               icon
             />
-            
           </div>
           <div className="w-full px-3">
-            {/* TODO: dynamically fetch mediums options */}
             <MediumsCombobox
               name="mediums"
               label="Mediums"
-              options={[
-                {
-                  id: 1,
-                  label: 'wood'
-                }, {
-                  id: 2, 
-                  label: 'metal'
-                }, {
-                  id: 3, 
-                  label: 'sculpture'
-                }
-              ]}
+              options={mediums}
               selectedMediums={watch('mediums') || []}
               setSelectedMediums={(values) => setValue('mediums', values)}
             />
           </div>
           <div className="w-full px-3">
-            {/* TODO: dynamically fetch mediums options */}
             <MediumsCombobox
               name="mediumsOfInterest"
               label="Mediums of Interest"
-              options={[
-                {
-                  id: 1,
-                  label: 'wood'
-                }, {
-                  id: 2, 
-                  label: 'metal'
-                }, {
-                  id: 3, 
-                  label: 'sculpture'
-                }
-              ]}
+              options={mediums}
               selectedMediums={watch('mediumsOfInterest') || []}
               setSelectedMediums={(values) => setValue('mediumsOfInterest', values)}
             />
@@ -280,7 +256,6 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
               required
               icon
             />
-            
           </div>
           <div className="w-full px-3">
             <FormInput
@@ -291,6 +266,13 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
               as='textarea'
               icon
             />
+          </div>
+        </div>
+
+        <div className="flex flex-col mx-3 mb-2">
+          <h2 className='text-lg ml-2 my-6 glow-black'>Upload Profile Image</h2>
+          <div className="w-full md:w-1/3 px-4 py-6 mb-6 md:mb-0 border-long-dashed">
+            <ProfileImageUpload handleDrop={setProfileImg} />
           </div>
         </div>
 
@@ -398,7 +380,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                           `}>
                             {filenames[key]}
                           </p>
-                          <button
+                          <a
                             onClick={handleDeleteWork(key)}
                             className={`
                               absolute
@@ -407,7 +389,7 @@ export default function ProfileForm({ onSubmit, isSubmitting, profileData }: Pro
                             `}
                           >
                             <Image src='/trashIcon.svg' alt='x' height='24' width='24' />
-                          </button>
+                          </a>
                         </>
                       ) : (
                         <Image

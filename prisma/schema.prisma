@@ -85,10 +85,11 @@ model Artist {
   location          String?  @db.VarChar(255)
   iconColor         String?  @db.VarChar(50)
   handle            String   @unique @db.Text
-  mediums           String[]
-  mediumsOfInterest String[]
 
   // Relation fields
+  mediums           MediumsOnArtist[]
+  mediumsOfInterest MediumsOfInterestOnArtist[]
+  
   links Link[]
 
   invitedById String?    @db.Uuid
@@ -97,6 +98,31 @@ model Artist {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique @db.Uuid
   @@unique([userId, handle])
+}
+
+model Medium {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  mediumOnArtists MediumsOnArtist[]
+  mediumOfInterestOnArtists MediumsOfInterestOnArtist[]
+}
+
+model MediumsOnArtist {
+  artist     Artist     @relation(fields: [artistId], references: [id])
+  artistId   String     @db.Uuid // relation scalar field (used in the `@relation` attribute above)
+  medium   Medium @relation(fields: [mediumName], references: [name])
+  mediumName String // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([artistId, mediumName])
+}
+
+model MediumsOfInterestOnArtist {
+  artist     Artist     @relation(fields: [artistId], references: [id])
+  artistId   String     @db.Uuid // relation scalar field (used in the `@relation` attribute above)
+  medium   Medium @relation(fields: [mediumName], references: [name])
+  mediumName String // relation scalar field (used in the `@relation` attribute above)
+
+  @@id([artistId, mediumName])
 }
 
 // TODO:
